@@ -51,8 +51,14 @@ Pure core, adapters at the edges. Full rules in `.claude/rules/architecture.md`.
   in `Docs/rules.jpeg`) — and a start date.
 - **Today** shows the day, the rings, the streak and the rules of your own challenge. Tapping a
   simple rule completes it; tapping a measured one opens its detail screen.
-- **Habit detail** holds the counters for water and reading. The timers, the morning detox and the
-  weigh-in arrive in later features.
+- **Habit detail** holds the controls each rule needs: counters for water and reading, timers for
+  the skill, spirituality and connection rules, two sessions for the workouts, and the morning
+  detox windows. The weigh-in arrives in a later feature.
+
+## Screenshots
+
+`Docs/screenshots.md` — captured from the app running for real, not mockups. Regenerate them with
+`node Docs/screenshots/capture.mjs` while `npm run web` is up on port 8090.
 
 ## Constraints
 

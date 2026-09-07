@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 import { calculateDayCompletion } from '@/domain/completion';
+import { ChallengeModeEnum } from '@/domain/modes';
 import { DayRecord } from '@/domain/types';
 
 const FIXTURES = join(__dirname, '..', '..', 'fixtures');
@@ -20,7 +21,7 @@ describe('day fixtures agree with the completion rules', () => {
     (fileName) => {
       const fixture = readDayFixture(fileName);
 
-      const derived = calculateDayCompletion(fixture.habits);
+      const derived = calculateDayCompletion(fixture.habits, ChallengeModeEnum.HARD);
 
       expect(derived.completedHabits).toBe(fixture.completedHabits);
       expect(derived.totalHabits).toBe(fixture.totalHabits);

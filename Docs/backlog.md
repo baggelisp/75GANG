@@ -176,7 +176,26 @@ a future start date is rejected; the name is genuinely optional.
 
 ---
 
-## [ ] 07 — Today screen
+## [~] 07 — Challenge modes: Easy, Medium and Hard
+
+Three challenges instead of one. The rules in `Docs/rules.jpeg` are the **Hard** challenge and are
+never softened; Easy (6 rules) and Medium (9 rules) are strict subsets at lighter targets.
+
+**Acceptance**
+- `src/domain/modes.ts` defines the three, with per-mode habit lists and target overrides.
+- Completion and perfect-day are scored against the user's own challenge, not always eleven.
+- The challenge record stores its mode; a record without one is rejected.
+- Onboarding offers the three and defaults to Hard.
+- Every habit of a lighter challenge appears in a harder one at an equal or harder target.
+
+**Tests first** — the same day scores differently in each mode; a habit from a harder challenge
+never inflates an easier day; the ladder invariant holds.
+
+**device-only:** none.
+
+---
+
+## [ ] 08 — Today screen
 
 The home screen from `Docs/mockups/home-screen.html`, top to bottom. Build it against that file
 open in a second browser tab.
@@ -209,7 +228,7 @@ mockup.
 
 ---
 
-## [ ] 08 — Tap habits and the day record write path
+## [ ] 09 — Tap habits and the day record write path
 
 The three pure-tap habits (`no-alcohol`, `diet`, `no-devices-bed`) and the shared write path.
 
@@ -228,7 +247,7 @@ both; a rejected write rolls the UI back.
 
 ---
 
-## [ ] 09 — Water and reading counters
+## [ ] 10 — Water and reading counters
 
 **Acceptance**
 - Water: `0 / 3 Litres`, +250 ml / +500 ml / +1 L, auto-completes at 3 L.
@@ -244,7 +263,7 @@ increments all land; an increment above target does not break the percentage.
 
 ---
 
-## [ ] 10 — Timers: workouts, skill, spirituality, connection
+## [ ] 11 — Timers: workouts, skill, spirituality, connection
 
 **Acceptance**
 - `calculateElapsedMinutes(startedAt, now)` from feature 04 is the only source of elapsed time.
@@ -264,7 +283,7 @@ incomplete, two of 45 complete; one 90-minute session is **not** two workouts.
 
 ---
 
-## [ ] 11 — Morning detox
+## [ ] 12 — Morning detox
 
 **Acceptance**
 - "I woke up" starts both windows at once from a single `wokeUpAt` timestamp.
@@ -281,7 +300,7 @@ twice does not restart a running window.
 
 ---
 
-## [ ] 12 — Weigh-in and progress photo
+## [ ] 13 — Weigh-in and progress photo
 
 **Acceptance**
 - Weight in kg to one decimal, with `-` / `+` and direct entry.
@@ -300,7 +319,7 @@ picker leaves the record untouched.
 
 ---
 
-## [ ] 13 — Progress screen and the 75-day grid
+## [ ] 14 — Progress screen and the 75-day grid
 
 **Acceptance**
 - Current day, days completed, days remaining, current streak, best streak.
@@ -324,7 +343,7 @@ does not divide by zero.
 
 ---
 
-## [ ] 14 — Journal
+## [ ] 15 — Journal
 
 **Acceptance**
 - One entry per day: how was your day, what went well, what was difficult, what to improve.
@@ -340,7 +359,7 @@ rather than appending; a very long entry is handled.
 
 ---
 
-## [ ] 15 — Profile, settings and reset/restart
+## [ ] 16 — Profile, settings and reset/restart
 
 **Acceptance**
 - Name, start date, current day, current and best streak.
@@ -358,7 +377,7 @@ rather than appending; a very long entry is handled.
 
 ---
 
-## [ ] 16 — Export and import
+## [ ] 17 — Export and import
 
 **Acceptance**
 - Export writes the five keys wrapped in the spec's header to
@@ -379,7 +398,7 @@ a failed import leaves the existing data completely intact; a missing photo path
 
 ---
 
-## [ ] 17 — Local notifications
+## [ ] 18 — Local notifications
 
 **Acceptance**
 - Morning and evening reminders at the times in settings, scheduled locally with
@@ -396,7 +415,7 @@ today schedules for tomorrow; disabling cancels everything; reset cancels everyt
 
 ---
 
-## [ ] 18 — Achievements
+## [ ] 19 — Achievements
 
 **Acceptance**
 - The five MVP badges: 7 Day Warrior, Perfect Week, 30 Day Discipline, Halfway There (day 38),
@@ -412,7 +431,7 @@ days, not seven days; badges recompute correctly after a reset.
 
 ---
 
-## [ ] 19 — Perfect Day celebration
+## [ ] 20 — Perfect Day celebration
 
 **Acceptance**
 - Fires when the 11th habit of the day completes, once per day, not on every subsequent render.

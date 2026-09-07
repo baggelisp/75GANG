@@ -5,6 +5,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { useTranslation } from '@/i18n';
+import { ChallengeMode, ChallengeModeEnum } from '@/domain/modes';
 import { useRepositories } from '@/storage/repositoryContext';
 import { radii } from '@/theme/radii';
 import { spacing } from '@/theme/spacing';
@@ -12,6 +13,7 @@ import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
 import { addDays, formatLongDate, toLocalIsoDate } from '@/utils/DateUtility';
 
+import { ModePicker } from './_components/ModePicker';
 import { StartDateStepper } from './_components/StartDateStepper';
 import { StartErrorMessage } from './_components/StartErrorMessage';
 import {
@@ -47,6 +49,7 @@ export const StartChallengeScreen = () => {
   const earliestStart = addDays(today, -EARLIEST_START_OFFSET_DAYS);
 
   const [name, setName] = useState('');
+  const [mode, setMode] = useState<ChallengeMode>(ChallengeModeEnum.HARD);
   const [startDate, setStartDate] = useState(today);
   const { startChallenge, error, isSaving } = useStartChallenge();
 
@@ -70,7 +73,7 @@ export const StartChallengeScreen = () => {
   };
 
   const handleStart = async () => {
-    const result = await startChallenge({ name, startDate, today });
+    const result = await startChallenge({ name, startDate, mode, today });
 
     if (!result.ok) {
       return;
@@ -95,6 +98,11 @@ export const StartChallengeScreen = () => {
             style={styles.input}
           />
           <Text style={styles.hint}>{t('start.nameHint')}</Text>
+        </View>
+
+        <View style={styles.field}>
+          <Text style={styles.label}>{t('modes.label')}</Text>
+          <ModePicker selected={mode} onSelect={setMode} />
         </View>
 
         <View style={styles.field}>

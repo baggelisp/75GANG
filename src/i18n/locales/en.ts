@@ -90,6 +90,22 @@ export const en = {
     next: 'Next',
     done: 'Get started',
   },
+  modes: {
+    label: 'Choose your challenge',
+    ruleCount: '{count} rules',
+    easy: {
+      name: 'Easy',
+      summary: 'The base habits. Build the routine before you raise the bar.',
+    },
+    medium: {
+      name: 'Medium',
+      summary: 'Adds diet, focused work and real conversation, at tougher targets.',
+    },
+    hard: {
+      name: 'Hard',
+      summary: 'The full 75 Hard Gang Way. Two workouts, the morning detox, daily weigh-in.',
+    },
+  },
   start: {
     title: 'Start your challenge',
     nameLabel: 'Your name',

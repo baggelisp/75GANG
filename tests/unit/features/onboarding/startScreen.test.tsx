@@ -98,6 +98,7 @@ describe('the start screen', () => {
       StorageKeyEnum.CHALLENGE,
       JSON.stringify({
         startDate: '2026-07-10',
+        mode: 'hard',
         totalDays: 75,
         currentStreak: 41,
         longestStreak: 41,
@@ -123,5 +124,33 @@ describe('the start screen', () => {
       expect(screen.getByRole('alert')).toBeTruthy();
     });
     expect(JSON.parse(store.snapshot()[StorageKeyEnum.CHALLENGE] ?? '{}').currentStreak).toBe(41);
+  });
+});
+
+describe('choosing a challenge', () => {
+  it('offers all three challenges, each announcing its rule count and summary', () => {
+    renderStartScreen();
+
+    expect(screen.getByLabelText(/^Easy\. 6 rules\./)).toBeTruthy();
+    expect(screen.getByLabelText(/^Medium\. 9 rules\./)).toBeTruthy();
+    expect(screen.getByLabelText(/^Hard\. 11 rules\./)).toBeTruthy();
+  });
+
+  it('defaults to Hard, the challenge the app is named after', () => {
+    renderStartScreen();
+
+    expect(screen.getByLabelText(/^Hard\./).props.accessibilityState.selected).toBe(true);
+  });
+
+  it('stores the challenge the user actually picked', async () => {
+    const store = renderStartScreen();
+
+    fireEvent.press(screen.getByLabelText(/^Easy\./));
+    fireEvent.press(screen.getByLabelText('Start the 75 day challenge'));
+
+    await waitFor(() => {
+      expect(store.snapshot()[StorageKeyEnum.CHALLENGE]).toBeDefined();
+    });
+    expect(JSON.parse(store.snapshot()[StorageKeyEnum.CHALLENGE] ?? '{}').mode).toBe('easy');
   });
 });

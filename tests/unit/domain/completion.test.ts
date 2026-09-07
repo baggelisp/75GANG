@@ -1,6 +1,9 @@
 import { calculateDayCompletion, decideHabitIsComplete } from '@/domain/completion';
 import { HabitIdEnum } from '@/domain/habitIds';
+import { ChallengeModeEnum } from '@/domain/modes';
 import { HabitRecord } from '@/domain/types';
+
+const HARD = ChallengeModeEnum.HARD;
 
 const boolean = (completed: boolean): HabitRecord => ({ completed });
 const withValue = (value: number): HabitRecord => ({ completed: false, value });
@@ -11,13 +14,13 @@ describe('decideHabitIsComplete for a tapped habit', () => {
     [HabitIdEnum.DIET, true],
     [HabitIdEnum.NO_DEVICES_BED, true],
   ])('treats %s as complete when it is tapped', (habitId, completed) => {
-    expect(decideHabitIsComplete(habitId, boolean(completed))).toBe(true);
+    expect(decideHabitIsComplete(habitId, boolean(completed), HARD)).toBe(true);
   });
 
   it.each([HabitIdEnum.NO_ALCOHOL, HabitIdEnum.DIET, HabitIdEnum.NO_DEVICES_BED])(
     'treats %s as incomplete while it is untapped',
     (habitId) => {
-      expect(decideHabitIsComplete(habitId, boolean(false))).toBe(false);
+      expect(decideHabitIsComplete(habitId, boolean(false), HARD)).toBe(false);
     },
   );
 });
@@ -36,11 +39,11 @@ describe('decideHabitIsComplete at the counter boundaries', () => {
     ['connection at 14 minutes', HabitIdEnum.CONNECTION, 14, false],
     ['connection at 15 minutes', HabitIdEnum.CONNECTION, 15, true],
   ])('scores %s as %s', (_description, habitId, value, expected) => {
-    expect(decideHabitIsComplete(habitId, withValue(value))).toBe(expected);
+    expect(decideHabitIsComplete(habitId, withValue(value), HARD)).toBe(expected);
   });
 
   it('treats a missing value as incomplete rather than as zero-complete', () => {
-    expect(decideHabitIsComplete(HabitIdEnum.WATER, { completed: false })).toBe(false);
+    expect(decideHabitIsComplete(HabitIdEnum.WATER, { completed: false }, HARD)).toBe(false);
   });
 });
 
@@ -61,7 +64,7 @@ describe('decideHabitIsComplete for the two workouts', () => {
   ])('scores %s as %s', (_description, sessions, expected) => {
     const record: HabitRecord = { completed: false, sessions };
 
-    expect(decideHabitIsComplete(HabitIdEnum.WORKOUTS, record)).toBe(expected);
+    expect(decideHabitIsComplete(HabitIdEnum.WORKOUTS, record, HARD)).toBe(expected);
   });
 });
 
@@ -76,7 +79,7 @@ describe('decideHabitIsComplete for the morning detox', () => {
   ])('scores %s as %s', (_description, phoneFreeMinutes, noContentMinutes, expected) => {
     const record: HabitRecord = { completed: false, phoneFreeMinutes, noContentMinutes };
 
-    expect(decideHabitIsComplete(HabitIdEnum.MORNING_DETOX, record)).toBe(expected);
+    expect(decideHabitIsComplete(HabitIdEnum.MORNING_DETOX, record, HARD)).toBe(expected);
   });
 });
 
@@ -91,7 +94,7 @@ describe('decideHabitIsComplete for the weigh-in', () => {
       true,
     ],
   ])('scores %s as %s', (_description, record, expected) => {
-    expect(decideHabitIsComplete(HabitIdEnum.WEIGH_IN, record as HabitRecord)).toBe(expected);
+    expect(decideHabitIsComplete(HabitIdEnum.WEIGH_IN, record as HabitRecord, HARD)).toBe(expected);
   });
 });
 
@@ -132,7 +135,7 @@ describe('calculateDayCompletion', () => {
   });
 
   it('reports an untouched day as zero of eleven', () => {
-    const day = calculateDayCompletion({});
+    const day = calculateDayCompletion({}, HARD);
 
     expect(day.completedHabits).toBe(0);
     expect(day.totalHabits).toBe(11);
@@ -147,24 +150,26 @@ describe('calculateDayCompletion', () => {
       [HabitIdEnum.READING]: withValue(15),
     };
 
-    expect(calculateDayCompletion(habits).completedHabits).toBe(2);
+    expect(calculateDayCompletion(habits, HARD).completedHabits).toBe(2);
   });
 
   it.each([
     [[HabitIdEnum.NO_ALCOHOL, HabitIdEnum.DIET], 18],
     [[HabitIdEnum.NO_ALCOHOL], 9],
   ])('rounds the percentage to the nearest whole number, not down', (completedIds, expected) => {
-    expect(calculateDayCompletion(allEleven(completedIds)).completionPercentage).toBe(expected);
+    expect(calculateDayCompletion(allEleven(completedIds), HARD).completionPercentage).toBe(
+      expected,
+    );
   });
 
   it('rounds ten of eleven up to 91 rather than down to 90', () => {
     const habits = { ...aPerfectDay(), [HabitIdEnum.CONNECTION]: withValue(0) };
 
-    expect(calculateDayCompletion(habits).completionPercentage).toBe(91);
+    expect(calculateDayCompletion(habits, HARD).completionPercentage).toBe(91);
   });
 
   it('calls eleven of eleven a perfect day', () => {
-    const day = calculateDayCompletion(aPerfectDay());
+    const day = calculateDayCompletion(aPerfectDay(), HARD);
 
     expect(day.completedHabits).toBe(11);
     expect(day.completionPercentage).toBe(100);
@@ -174,7 +179,7 @@ describe('calculateDayCompletion', () => {
   it('is not a perfect day when a measured habit is only flagged, never measured', () => {
     const habits = { ...aPerfectDay(), [HabitIdEnum.WATER]: { completed: true } };
 
-    const day = calculateDayCompletion(habits);
+    const day = calculateDayCompletion(habits, HARD);
 
     expect(day.completedHabits).toBe(10);
     expect(day.perfectDay).toBe(false);
@@ -183,6 +188,6 @@ describe('calculateDayCompletion', () => {
   it('ignores a habit id it does not recognise instead of counting it', () => {
     const habits = { 'not-a-habit': { completed: true } };
 
-    expect(calculateDayCompletion(habits).completedHabits).toBe(0);
+    expect(calculateDayCompletion(habits, HARD).completedHabits).toBe(0);
   });
 });

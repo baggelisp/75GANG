@@ -6,6 +6,7 @@ import {
   CHALLENGE_LENGTH_DAYS,
   decideChallengeStatus,
 } from '@/domain/challenge';
+import { ChallengeMode } from '@/domain/modes';
 import { IsoDate } from '@/domain/types';
 import { useRepositories } from '@/storage/repositoryContext';
 
@@ -22,6 +23,7 @@ export type StartError = (typeof StartErrorEnum)[keyof typeof StartErrorEnum];
 export type StartChallengeInput = {
   name: string;
   startDate: IsoDate;
+  mode: ChallengeMode;
   today: IsoDate;
 };
 
@@ -69,6 +71,7 @@ export const useStartChallenge = () => {
   const startChallenge = async ({
     name,
     startDate,
+    mode,
     today,
   }: StartChallengeInput): Promise<StartChallengeResult> => {
     const dateError = decideStartDateError(startDate, today);
@@ -103,6 +106,7 @@ export const useStartChallenge = () => {
 
     const challengeWritten = await repositories.challenge.write({
       startDate,
+      mode,
       totalDays: CHALLENGE_LENGTH_DAYS,
       currentStreak: 0,
       longestStreak: 0,

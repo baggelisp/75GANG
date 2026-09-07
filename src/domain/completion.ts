@@ -1,22 +1,21 @@
-import { findHabit } from './habits';
-import { HabitId, TOTAL_HABITS } from './habitIds';
+import { countHabitsForMode, findHabitForMode, Habit } from './habits';
+import { ChallengeMode } from './modes';
 import {
   NO_CONTENT_MINUTES_REQUIRED,
   PHONE_FREE_MINUTES_REQUIRED,
   TargetType,
   TargetTypeEnum,
-  WORKOUT_MINUTES_REQUIRED,
 } from './targets';
 import { DayCompletion, HabitRecord } from './types';
 
 const PERCENTAGE_SCALE = 100;
 
-type CompletionRule = (record: HabitRecord, targetValue: number | null) => boolean;
+type CompletionRule = (record: HabitRecord, habit: Habit) => boolean;
 
 const decideTapIsComplete: CompletionRule = (record) => record.completed === true;
 
-const decideCounterReachesTarget: CompletionRule = (record, targetValue) => {
-  if (targetValue === null) {
+const decideCounterReachesTarget: CompletionRule = (record, habit) => {
+  if (habit.targetValue === null) {
     return false;
   }
 
@@ -24,11 +23,14 @@ const decideCounterReachesTarget: CompletionRule = (record, targetValue) => {
     return false;
   }
 
-  return record.value >= targetValue;
+  return record.value >= habit.targetValue;
 };
 
-const decideSessionsAreComplete: CompletionRule = (record, targetValue) => {
-  if (targetValue === null) {
+const decideSessionsAreComplete: CompletionRule = (record, habit) => {
+  const sessionsRequired = habit.targetValue;
+  const minutesRequired = habit.sessionMinutes;
+
+  if (sessionsRequired === null || minutesRequired === null) {
     return false;
   }
 
@@ -36,11 +38,9 @@ const decideSessionsAreComplete: CompletionRule = (record, targetValue) => {
     return false;
   }
 
-  const longEnough = record.sessions.filter(
-    (session) => session.minutes >= WORKOUT_MINUTES_REQUIRED,
-  );
+  const longEnough = record.sessions.filter((session) => session.minutes >= minutesRequired);
 
-  return longEnough.length >= targetValue;
+  return longEnough.length >= sessionsRequired;
 };
 
 const decideWindowsAreComplete: CompletionRule = (record) => {
@@ -76,28 +76,43 @@ const RULES_BY_TARGET_TYPE: Readonly<Record<TargetType, CompletionRule>> = {
 };
 
 /**
- * Whether one habit meets its own rule. Completion is always derived from the recorded value, so a
- * stale `completed` flag can never disagree with the numbers the user actually entered.
+ * Whether one habit meets its own rule in this challenge.
+ *
+ * The mode decides the target, so 2 litres completes water on Easy and does not on Hard.
+ * Completion is always derived from the recorded value, so a stale `completed` flag can never
+ * disagree with the numbers the user actually entered.
  */
-export const decideHabitIsComplete = (habitId: string, record: HabitRecord): boolean => {
-  const habit = findHabit(habitId as HabitId);
+export const decideHabitIsComplete = (
+  habitId: string,
+  record: HabitRecord,
+  mode: ChallengeMode,
+): boolean => {
+  const habit = findHabitForMode(habitId, mode);
 
   if (habit === null) {
     return false;
   }
 
-  return RULES_BY_TARGET_TYPE[habit.targetType](record, habit.targetValue);
+  return RULES_BY_TARGET_TYPE[habit.targetType](record, habit);
 };
 
-export const calculateDayCompletion = (habits: Record<string, HabitRecord>): DayCompletion => {
+/**
+ * A day's score in this challenge. Habits that belong to a harder mode are ignored, so a record
+ * carried over from a reset never inflates an Easy day.
+ */
+export const calculateDayCompletion = (
+  habits: Record<string, HabitRecord>,
+  mode: ChallengeMode,
+): DayCompletion => {
+  const totalHabits = countHabitsForMode(mode);
   const completedHabits = Object.entries(habits).filter(([habitId, record]) =>
-    decideHabitIsComplete(habitId, record),
+    decideHabitIsComplete(habitId, record, mode),
   ).length;
 
   return {
     completedHabits,
-    totalHabits: TOTAL_HABITS,
-    completionPercentage: Math.round((completedHabits / TOTAL_HABITS) * PERCENTAGE_SCALE),
-    perfectDay: completedHabits === TOTAL_HABITS,
+    totalHabits,
+    completionPercentage: Math.round((completedHabits / totalHabits) * PERCENTAGE_SCALE),
+    perfectDay: completedHabits === totalHabits,
   };
 };

@@ -40,17 +40,21 @@ export const formatLongDate = (isoDate: IsoDate, locale: string): string => {
   });
 };
 
-const LAST_MILLISECOND_OF_DAY = 86399999;
+const ONE_DAY_IN_MILLISECONDS = 86400000;
+
+export const startOfLocalDay = (isoDate: IsoDate): Date => {
+  const [year, month, day] = isoDate.split('-').map(Number);
+
+  return new Date(year ?? 0, (month ?? 1) - 1, day ?? 1);
+};
 
 /**
- * The last instant of a local calendar day.
+ * The boundary a local calendar day ends at — midnight at the start of the next one.
  *
- * A timer left running overnight is settled against this rather than against the moment the app
- * was next opened, so yesterday is worth what it actually ran for.
+ * A timer or a detox window left running overnight is settled against this rather than against
+ * the moment the app was next opened, so yesterday is worth what it actually ran for. It is the
+ * exclusive boundary rather than 23:59:59.999, because an hour that ends exactly at midnight is a
+ * full hour and must not bank as fifty-nine minutes.
  */
-export const endOfLocalDay = (isoDate: IsoDate): Date => {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  const startOfDay = new Date(year ?? 0, (month ?? 1) - 1, day ?? 1);
-
-  return new Date(startOfDay.getTime() + LAST_MILLISECOND_OF_DAY);
-};
+export const endOfLocalDay = (isoDate: IsoDate): Date =>
+  new Date(startOfLocalDay(isoDate).getTime() + ONE_DAY_IN_MILLISECONDS);

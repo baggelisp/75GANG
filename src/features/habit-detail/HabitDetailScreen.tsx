@@ -92,6 +92,8 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
           onToggleOutdoor={toggleOutdoor}
           onRecordByHand={recordByHand}
           onUndoLast={detail.undoLastWorkout}
+          onWakeUp={detail.wakeUp}
+          onClearWakeUp={detail.clearWokeUp}
         />
 
         <HabitWriteErrorBanner isVisible={detail.writeFailed} onDismiss={detail.dismissError} />

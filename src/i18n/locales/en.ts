@@ -194,6 +194,16 @@ export const en = {
     recordByHandAccessibility: 'Record a workout of {minutes} minutes without timing it',
     undoSession: 'Remove the last workout',
   },
+  detox: {
+    wokeUp: 'I woke up',
+    wokeUpAccessibility: 'Start the morning windows from now',
+    phoneWindow: 'No phone',
+    contentWindow: 'No content',
+    honesty: 'On your honour. The app does not block or watch your phone, it only keeps count.',
+    reading: '{elapsed} / {target}',
+    clear: 'Reset this morning',
+    clearAccessibility: 'Reset the morning windows and start again',
+  },
   common: {
     start: 'Start',
     cancel: 'Cancel',

@@ -15,8 +15,11 @@ import { TodayLoading } from './_components/TodayLoading';
 import { TodayRingsCard } from './_components/TodayRingsCard';
 import { TodayTiles } from './_components/TodayTiles';
 import { TodayUnavailable } from './_components/TodayUnavailable';
+import { WriteErrorBanner } from './_components/WriteErrorBanner';
+import { useHabitToggle } from './_hooks/useHabitToggle';
 import { TodayStatusEnum, useToday } from './_hooks/useToday';
 import { decideAvatarInitial } from './decideAvatarInitial';
+import { decideChallengeMode } from './decideChallengeMode';
 
 /**
  * The home screen. Everything on it is derived on read — the day number from the start date, the
@@ -27,6 +30,10 @@ export const TodayScreen = () => {
   const { t, locale } = useTranslation();
   const router = useRouter();
   const today = useToday();
+  const { toggleHabit, writeFailed, dismissError } = useHabitToggle({
+    mode: decideChallengeMode(today.challenge),
+    onWritten: today.refresh,
+  });
 
   if (today.status === TodayStatusEnum.LOADING) {
     return <TodayLoading />;
@@ -47,10 +54,16 @@ export const TodayScreen = () => {
       })
     : t('today.dayKickerOutsideChallenge', { date: formatLongDate(today.today, locale) });
 
-  const openRule = (habitId: string) => {
+  const pressRule = (habitId: string) => {
     const habit = today.habits.find((candidate) => candidate.id === habitId);
 
-    if (habit === undefined || habit.targetType === TargetTypeEnum.BOOLEAN) {
+    if (habit === undefined) {
+      return;
+    }
+
+    if (habit.targetType === TargetTypeEnum.BOOLEAN) {
+      void toggleHabit(habitId);
+
       return;
     }
 
@@ -83,6 +96,8 @@ export const TodayScreen = () => {
           totalHabits={today.completion.totalHabits}
         />
 
+        <WriteErrorBanner isVisible={writeFailed} onDismiss={dismissError} />
+
         <ChallengeCard perfectDays={today.perfectDays} daysRemaining={today.daysRemaining} />
 
         <RuleList
@@ -90,7 +105,7 @@ export const TodayScreen = () => {
           records={today.records}
           mode={today.challenge.mode}
           completedHabits={today.completion.completedHabits}
-          onPressRule={openRule}
+          onPressRule={pressRule}
         />
       </ScrollView>
     </Screen>

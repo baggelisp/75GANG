@@ -9,6 +9,8 @@ export type DateKeyedRepository<TEntry> = {
   readAll(): Promise<Result<Record<IsoDate, TEntry> | null>>;
   readOne(date: IsoDate): Promise<Result<TEntry | null>>;
   save(date: IsoDate, entry: TEntry): Promise<Result<TEntry>>;
+  /** Reads one date, transforms it and writes it back as a single serialised step. */
+  update(date: IsoDate, change: (current: TEntry | null) => TEntry): Promise<Result<TEntry>>;
   clear(): Promise<void>;
 };
 
@@ -79,5 +81,45 @@ export const createDateKeyedRepository = <TEntry>({
     return succeed(entry);
   };
 
-  return { readAll: records.read, readOne, save, clear: records.clear };
+  /**
+   * The read and the write happen inside one queued step, so two taps landing together each see
+   * the other's change. Reading, transforming and saving separately would let the second tap
+   * overwrite the first habit with a record built before it existed.
+   */
+  const update = async (
+    date: IsoDate,
+    change: (current: TEntry | null) => TEntry,
+  ): Promise<Result<TEntry>> => {
+    if (!isIsoDate(date)) {
+      return fail(StorageErrorEnum.INVALID_SHAPE, key);
+    }
+
+    const changed = { entry: null as TEntry | null };
+
+    const written = await records.update((currentMap) => {
+      const entry = change(currentMap?.[date] ?? null);
+
+      // Validated before it can reach the store: persisting a malformed entry and then reporting
+      // failure would drop that day from history on the next read, silently.
+      if (!isEntry(entry)) {
+        return currentMap ?? {};
+      }
+
+      changed.entry = entry;
+
+      return { ...(currentMap ?? {}), [date]: entry };
+    });
+
+    if (!written.ok) {
+      return written;
+    }
+
+    if (changed.entry === null) {
+      return fail(StorageErrorEnum.INVALID_SHAPE, key);
+    }
+
+    return succeed(changed.entry);
+  };
+
+  return { readAll: records.read, readOne, save, update, clear: records.clear };
 };

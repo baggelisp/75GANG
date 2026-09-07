@@ -229,7 +229,7 @@ mockup.
 
 ---
 
-## [ ] 09 — Tap habits and the day record write path
+## [~] 09 — Tap habits and the day record write path
 
 The three pure-tap habits (`no-alcohol`, `diet`, `no-devices-bed`) and the shared write path.
 

@@ -8,6 +8,7 @@ import { HabitRecord } from '@/domain/types';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
 
+import { describeHabitNote } from '../describeHabitNote';
 import { describeHabitProgress } from '../describeHabitProgress';
 import { RuleRow } from './RuleRow';
 import { TodayCardHeader } from './TodayCardHeader';
@@ -32,11 +33,17 @@ export const RuleList = ({
   const describe = (habit: Habit): string | null => {
     const progress = describeHabitProgress(habit, records[habit.id]);
 
-    if (progress === null) {
+    if (progress !== null) {
+      return t(progress.key, progress.values);
+    }
+
+    const noteKey = describeHabitNote(habit);
+
+    if (noteKey === null) {
       return null;
     }
 
-    return t(progress.key, progress.values);
+    return t(noteKey);
   };
 
   return (

@@ -1,0 +1,778 @@
+<title>75 G-ANG Home Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+  /* ---------- presentation ground ---------- */
+  :root {
+    --paper: #F9F5F0;
+    --paper-dot: rgba(26, 25, 28, 0.10);
+    --paper-ink: #1A191C;
+    --paper-dim: #6C6870;
+    --paper-line: #E2DCD3;
+    --paper-panel: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #131215;
+      --paper-dot: rgba(249, 245, 240, 0.07);
+      --paper-ink: #F4F1EE;
+      --paper-dim: #97929B;
+      --paper-line: #2A282E;
+      --paper-panel: #1C1B1F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #131215;
+    --paper-dot: rgba(249, 245, 240, 0.07);
+    --paper-ink: #F4F1EE;
+    --paper-dim: #97929B;
+    --paper-line: #2A282E;
+    --paper-panel: #1C1B1F;
+  }
+
+  /* ---------- the app: one dark world, from mockup.png ---------- */
+  :root {
+    --app-bg: #1A191C;
+    --card: #252429;
+    --card-2: #2E2D33;
+    --hair: rgba(255, 255, 255, 0.07);
+    --on-dark: #F4F3F6;
+    --on-dark-2: #9A98A1;
+    --on-dark-3: #6E6C76;
+    --ink: #1A1712;
+    --coral: #EE9080;
+    --lav: #A6ADED;
+    --butter: #F1DD79;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image: radial-gradient(var(--paper-dot) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--paper-ink);
+    font-family: Manrope, ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 44px 24px 72px;
+    display: grid;
+    grid-template-columns: 396px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  @media (max-width: 940px) {
+    .wrap { grid-template-columns: minmax(0, 1fr); gap: 40px; justify-items: center; }
+  }
+
+  .masthead {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 18px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--paper-line);
+    width: 100%;
+  }
+
+  .masthead h1 {
+    margin: 0;
+    font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 25px;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+  }
+
+  .masthead p { margin: 0; color: var(--paper-dim); font-size: 13.5px; }
+
+  /* ================= PHONE ================= */
+
+  .phone {
+    width: 396px;
+    max-width: 100%;
+    background: var(--app-bg);
+    border-radius: 42px;
+    padding: 18px 14px 0;
+    box-shadow: 0 26px 60px rgba(26, 25, 28, 0.28);
+    color: var(--on-dark);
+    position: sticky;
+    top: 30px;
+  }
+
+  @media (max-width: 940px) { .phone { position: static; } }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: 0 6px;
+  }
+
+  /* header */
+
+  .head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 4px 2px;
+  }
+
+  .kicker {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-dark-2);
+  }
+
+  .head h2 {
+    margin: 5px 0 0;
+    font-family: Archivo, sans-serif;
+    font-weight: 800;
+    font-size: 27px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .avatar {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(150deg, #4A4550, #2B2A30);
+    display: grid;
+    place-items: center;
+    font-family: Archivo, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--on-dark);
+  }
+
+  .avatar::after {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--butter);
+    border: 2.5px solid var(--app-bg);
+  }
+
+  /* cards */
+
+  .card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 16px 17px;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--on-dark-2);
+  }
+
+  .pill {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--hair);
+    border-radius: 99px;
+    padding: 4px 10px;
+    color: var(--on-dark-2);
+  }
+
+  /* rings block */
+
+  .rings {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .rings svg { display: block; width: 128px; height: 128px; }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .leg-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .leg-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .leg-label.c { color: var(--coral); }
+  .leg-label.l { color: var(--lav); }
+  .leg-label.y { color: var(--butter); }
+
+  .leg-value {
+    font-family: Archivo, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    margin-top: 1px;
+  }
+
+  .leg-value small {
+    font-family: Manrope, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--on-dark-2);
+    margin-left: 3px;
+  }
+
+  .leg-frac {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--on-dark-2);
+    font-variant-numeric: tabular-nums;
+    align-self: center;
+  }
+
+  /* colour tiles */
+
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+  }
+
+  .tile {
+    border-radius: 24px;
+    padding: 15px 16px 16px;
+    color: var(--ink);
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tile.butter { background: var(--butter); }
+  .tile.lav { background: var(--lav); }
+
+  .tile-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .tile-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .tile-num {
+    font-family: Archivo, sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    margin-top: auto;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tile-num small {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    opacity: 0.6;
+  }
+
+  .tile-foot {
+    margin-top: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.66;
+  }
+
+  /* chart */
+
+  /* split stat */
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .split div b {
+    display: block;
+    font-family: Archivo, sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .split div span {
+    display: block;
+    margin-top: 6px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--on-dark-2);
+  }
+
+  /* rules */
+
+  .rules { display: flex; flex-direction: column; gap: 3px; margin-top: 8px; }
+
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-radius: 14px;
+    padding: 9px 8px;
+    color: var(--on-dark);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .rule + .rule { border-top: 1px solid var(--hair); border-radius: 0; }
+  .rule:hover { background: var(--card-2); border-radius: 14px; }
+  .rule:focus-visible { outline: 2px solid var(--lav); outline-offset: -2px; }
+
+  .box {
+    flex: none;
+    width: 21px;
+    height: 21px;
+    border-radius: 7px;
+    border: 1.5px solid rgba(255, 255, 255, 0.16);
+    display: grid;
+    place-items: center;
+  }
+
+  .box svg { width: 11px; height: 11px; opacity: 0; }
+
+  .rule[aria-pressed="true"] .box {
+    background: var(--coral);
+    border-color: var(--coral);
+  }
+
+  .rule[aria-pressed="true"] .box svg { opacity: 1; }
+
+  .rule-txt { flex: 1; min-width: 0; }
+
+  .rule-name {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .rule[aria-pressed="true"] .rule-name { color: var(--on-dark-2); }
+
+  .rule-sub {
+    display: block;
+    margin-top: 2px;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--on-dark-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .live {
+    flex: none;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lav);
+  }
+
+  /* tab bar */
+
+  .tabbar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    align-items: center;
+    margin: 6px -6px 0;
+    padding: 12px 10px 18px;
+    border-top: 1px solid var(--hair);
+  }
+
+  .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 4px;
+    border-radius: 99px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-dark-3);
+  }
+
+  .tab svg { width: 15px; height: 15px; }
+  .tab.on { background: var(--coral); color: var(--ink); }
+
+  /* ================= PALETTE PANEL ================= */
+
+  .panel { display: flex; flex-direction: column; gap: 30px; width: 100%; }
+
+  .block h3 {
+    margin: 0 0 5px;
+    font-family: Archivo, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .block > p {
+    margin: 0 0 14px;
+    color: var(--paper-dim);
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 10px;
+  }
+
+  .sw {
+    border-radius: 16px;
+    padding: 14px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid transparent;
+  }
+
+  .sw b { font-family: Archivo, sans-serif; font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .sw code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; letter-spacing: 0.04em; opacity: 0.8; }
+  .sw em { display: block; font-style: normal; font-size: 10.5px; margin-top: 3px; opacity: 0.68; }
+  .sw.ink { color: var(--ink); }
+  .sw.light { color: #F4F3F6; border-color: var(--paper-line); }
+
+  .notes { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+
+  .notes li {
+    display: flex;
+    gap: 11px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    background: var(--paper-panel);
+    border: 1px solid var(--paper-line);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+
+  .dot { flex: none; width: 11px; height: 11px; border-radius: 3px; margin-top: 4px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>75 G-ANG — Home</h1>
+    <p>Palette taken from <code>Docs/mockup.png</code>. Tap a rule to toggle it.</p>
+  </header>
+
+  <!-- ==================== PHONE ==================== -->
+  <div class="phone">
+    <div class="app">
+
+      <div class="head">
+        <div>
+          <div class="kicker">Sun, 7 Sep · Day 12 of 75</div>
+          <h2>Hey, Vangelis</h2>
+        </div>
+        <div class="avatar">V</div>
+      </div>
+
+      <!-- rings -->
+      <section class="card">
+        <div class="card-head">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+            Today
+          </div>
+          <span class="badge">55% Complete</span>
+        </div>
+
+        <div class="rings">
+          <svg viewBox="0 0 128 128" role="img" aria-label="Habits 6 of 11, workouts 1 of 2, water 2.5 of 3 litres">
+            <g transform="rotate(-90 64 64)" fill="none" stroke-linecap="round" stroke-width="12">
+              <circle cx="64" cy="64" r="52" stroke="rgba(255,255,255,0.07)"/>
+              <circle cx="64" cy="64" r="38" stroke="rgba(255,255,255,0.07)"/>
+              <circle cx="64" cy="64" r="24" stroke="rgba(255,255,255,0.07)"/>
+              <circle cx="64" cy="64" r="52" stroke="#EE9080" stroke-dasharray="178 327"/>
+              <circle cx="64" cy="64" r="38" stroke="#A6ADED" stroke-dasharray="119 239"/>
+              <circle cx="64" cy="64" r="24" stroke="#F1DD79" stroke-dasharray="126 151"/>
+            </g>
+          </svg>
+
+          <div class="legend">
+            <div class="leg-row">
+              <div>
+                <div class="leg-label c">Habits</div>
+                <div class="leg-value">6<small>done</small></div>
+              </div>
+              <div class="leg-frac">6/11</div>
+            </div>
+            <div class="leg-row">
+              <div>
+                <div class="leg-label l">Workouts</div>
+                <div class="leg-value">48<small>min</small></div>
+              </div>
+              <div class="leg-frac">1/2</div>
+            </div>
+            <div class="leg-row">
+              <div>
+                <div class="leg-label y">Water</div>
+                <div class="leg-value">2.5<small>L</small></div>
+              </div>
+              <div class="leg-frac">2.5/3</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- colour tiles -->
+      <div class="duo">
+        <div class="tile butter">
+          <div class="tile-head">
+            <span class="tile-label">Streak</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c1 4-3 5-3 9a5 5 0 0 0 10 0c0-1-.4-2-1-3 .2 3-1.6 4-2 2 .4-4-3-6-4-8z"/></svg>
+          </div>
+          <div class="tile-num">4</div>
+          <div class="tile-foot">Best 6 days</div>
+        </div>
+
+        <div class="tile lav">
+          <div class="tile-head">
+            <span class="tile-label">Weight</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M12 8v4"/><path d="M9.5 15h5"/></svg>
+          </div>
+          <div class="tile-num">88.4<small> kg</small></div>
+          <div class="tile-foot">−1.6 since day 1</div>
+        </div>
+      </div>
+
+      <!-- split -->
+      <section class="card">
+        <div class="card-head">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            Challenge
+          </div>
+          <span class="badge">63 to go</span>
+        </div>
+        <div class="split">
+          <div><b>10</b><span>Perfect days</span></div>
+          <div><b>63</b><span>Days remaining</span></div>
+        </div>
+      </section>
+
+      <!-- rules -->
+      <section class="card">
+        <div class="card-head">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="M4 6l1 1 2-2"/><path d="M4 12l1 1 2-2"/><path d="M4 18l1 1 2-2"/></svg>
+            The 11 rules
+          </div>
+          <span class="badge" id="counter">6 / 11</span>
+        </div>
+
+        <div class="rules" id="rules">
+          <button class="rule" type="button" aria-pressed="true">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">No alcohol &amp; no cigarettes</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="true">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">Healthy diet</span><span class="rule-sub">No cheat meal · nothing after 22:00</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="false">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">3 litres of water</span><span class="rule-sub">2.5 / 3 L</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="false">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">2 workouts, 45 min each</span><span class="rule-sub">Workout 2 · 12:05 / 45:00</span></span>
+            <span class="live">Running</span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="true">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">45 min business or skill</span><span class="rule-sub">45:00 · no distractions</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="false">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">Read 15 pages</span><span class="rule-sub">12 / 15 pages</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="false">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">Morning detox</span><span class="rule-sub">Phone 1:00 ✓ · content 2:25 / 3:00</span></span>
+            <span class="live">Running</span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="false">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">No devices in bed</span><span class="rule-sub">Confirm tonight</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="true">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">Weigh-in &amp; mirror photo</span><span class="rule-sub">88.4 kg · photo saved</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="true">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">15 min spirituality</span><span class="rule-sub">Meditation · 15:00</span></span>
+          </button>
+
+          <button class="rule" type="button" aria-pressed="false">
+            <span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#1A1712" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+            <span class="rule-txt"><span class="rule-name">15 min with someone you love</span><span class="rule-sub">0 / 15 min</span></span>
+          </button>
+        </div>
+      </section>
+
+      <nav class="tabbar">
+        <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>Today</div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-6 4 3 5-7 4 4"/></svg>Progress</div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v18H6a2 2 0 0 1-2-2z"/><path d="M8 7h7"/><path d="M8 11h7"/></svg>Journal</div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4"/></svg>Profile</div>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- ==================== PANEL ==================== -->
+  <div class="panel">
+
+    <div class="block">
+      <h3>Accents</h3>
+      <p>Three colours only. Coral is the primary — it carries the active tab, the checkbox, and the trend line. Butter and lavender are the two tile fills. There is no fourth colour and no green.</p>
+      <div class="swatches">
+        <div class="sw ink" style="background:#EE9080"><b>Coral</b><span><code>#EE9080</code><em>Primary · active · charts</em></span></div>
+        <div class="sw ink" style="background:#F1DD79"><b>Butter</b><span><code>#F1DD79</code><em>Streak · water ring</em></span></div>
+        <div class="sw ink" style="background:#A6ADED"><b>Lavender</b><span><code>#A6ADED</code><em>Weight · timers running</em></span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Surfaces &amp; text</h3>
+      <p>A warm near-black ground with one card grey above it. The greys are warm, not blue — that is what makes the coral sit naturally rather than glow.</p>
+      <div class="swatches">
+        <div class="sw light" style="background:#1A191C"><b>Ground</b><span><code>#1A191C</code><em>App background</em></span></div>
+        <div class="sw light" style="background:#252429"><b>Card</b><span><code>#252429</code><em>Every card</em></span></div>
+        <div class="sw light" style="background:#2E2D33"><b>Raised</b><span><code>#2E2D33</code><em>Pressed, hover</em></span></div>
+        <div class="sw light" style="background:#9A98A1"><b>Secondary</b><span><code>#9A98A1</code><em>Labels</em></span></div>
+        <div class="sw light" style="background:#6E6C76"><b>Tertiary</b><span><code>#6E6C76</code><em>Axis, hints</em></span></div>
+        <div class="sw light" style="background:#1A1712"><b>Ink</b><span><code>#1A1712</code><em>Text on coral/butter/lavender</em></span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>How it is applied</h3>
+      <ul class="notes">
+        <li><span class="dot" style="background:#EE9080"></span><span><b>Coral means done or active.</b> Completed checkbox, selected tab, the live trend line. Nothing else uses it.</span></li>
+        <li><span class="dot" style="background:#F1DD79"></span><span><b>One filled tile per row, never three.</b> The two colour tiles sit against dark cards above and below so they stay loud.</span></li>
+        <li><span class="dot" style="background:#A6ADED"></span><span><b>Lavender marks a timer that is running</b> — rules 4 and 7 for most of the day.</span></li>
+        <li><span class="dot" style="background:#1A1712"></span><span><b>Text on any filled tile is <code>#1A1712</code>.</b> White drops to roughly 1.5:1 on all three accents and is unreadable.</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const rules = document.getElementById('rules');
+  const counter = document.getElementById('counter');
+
+  function refresh() {
+    const total = rules.querySelectorAll('.rule').length;
+    const done = rules.querySelectorAll('.rule[aria-pressed="true"]').length;
+
+    counter.textContent = done + ' / ' + total;
+  }
+
+  rules.addEventListener('click', (e) => {
+    const rule = e.target.closest('.rule');
+
+    if (!rule) return;
+
+    rule.setAttribute('aria-pressed', rule.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    refresh();
+  });
+
+  refresh();
+</script>

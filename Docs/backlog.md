@@ -195,7 +195,7 @@ never inflates an easier day; the ladder invariant holds.
 
 ---
 
-## [~] 08 — Today screen
+## [~] 08 — Today screen — PR #8
 
 The home screen from `Docs/mockups/home-screen.html`, top to bottom. Build it against that file
 open in a second browser tab.

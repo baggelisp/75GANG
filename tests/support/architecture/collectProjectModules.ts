@@ -4,6 +4,9 @@ import { join, relative } from 'path';
 import { ModuleUnderTest } from './findViolations';
 
 const GOVERNED_ROOTS: readonly string[] = ['src', 'app'];
+
+/** Roots scanned for device-library imports, which are banned in tests as well as in src. */
+export const DEVICE_LIBRARY_ROOTS: readonly string[] = ['src', 'app', 'tests'];
 const MODULE_EXTENSIONS: readonly string[] = ['.ts', '.tsx'];
 const DECLARATION_SUFFIX = '.d.ts';
 
@@ -43,5 +46,11 @@ const walkDirectory = (projectRoot: string, directory: string): ModuleUnderTest[
     ];
   });
 
+export const collectModulesUnder = (
+  projectRoot: string,
+  roots: readonly string[],
+): ModuleUnderTest[] =>
+  roots.flatMap((root) => walkDirectory(projectRoot, join(projectRoot, root)));
+
 export const collectProjectModules = (projectRoot: string): ModuleUnderTest[] =>
-  GOVERNED_ROOTS.flatMap((root) => walkDirectory(projectRoot, join(projectRoot, root)));
+  collectModulesUnder(projectRoot, GOVERNED_ROOTS);

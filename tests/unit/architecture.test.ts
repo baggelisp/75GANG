@@ -198,6 +198,31 @@ describe('findViolationsInModule for the layers above the domain', () => {
     expect(violations[0]?.reason).toBe(ArchitectureViolationEnum.FORBIDDEN_IMPORT);
   });
 
+  it.each([
+    ['storage', "import { dayRepository } from '@/storage/repositories/dayRepository';"],
+    ['a feature', "import { TodayScreen } from '@/features/today/TodayScreen';"],
+    ['AsyncStorage directly', "import Store from '@react-native-async-storage/async-storage';"],
+  ])('rejects a shared component importing %s', (_description, source) => {
+    const violations = findViolationsInModule({
+      filePath: 'src/components/charts/TrendLine.tsx',
+      source,
+    });
+
+    expect(violations).toHaveLength(1);
+    expect(violations[0]?.reason).toBe(ArchitectureViolationEnum.FORBIDDEN_IMPORT);
+  });
+
+  it('accepts a shared component importing React, a render library, the domain and the theme', () => {
+    const source = [
+      "import { View } from 'react-native';",
+      "import Svg from 'react-native-svg';",
+      "import { HABITS } from '@/domain/habits';",
+      "import { colors } from '@/theme/tokens';",
+    ].join('\n');
+
+    expect(findViolationsInModule({ filePath: 'src/components/Card.tsx', source })).toEqual([]);
+  });
+
   it('accepts a feature importing the domain and a repository', () => {
     const source = [
       "import { HABITS } from '@/domain/habits';",

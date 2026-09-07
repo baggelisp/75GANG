@@ -52,7 +52,7 @@ fixture module importing `expo-file-system` from `src/domain/` is rejected.
 
 ---
 
-## [ ] 02 — Theme, fonts and base primitives
+## [~] 02 — Theme, fonts and base primitives
 
 The design system from `.claude/rules/design-system.md` as code, plus the shared primitives every
 screen needs. `Docs/mockups/home-screen.html` is the authority on every number here — read its CSS
@@ -87,6 +87,11 @@ containing a `#`, a `shadowOpacity`, or a raw `fontSize`.
 
 **Live review:** the primitives on a scratch screen, screenshotted beside the mockup at 396px.
 **device-only:** none.
+
+**Known deviation (web):** the render is held for the fonts on native only, where the splash screen
+covers the wait. On web there is no splash and holding the tree exports an empty page under static
+rendering, so the first paint uses the fallback face and swaps to Archivo/Manrope when they arrive.
+A `/live` screenshot may catch that reflow — it is expected, not a regression.
 
 ---
 

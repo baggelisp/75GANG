@@ -159,7 +159,7 @@ value; a missing key is reported loudly in development rather than rendering bla
 
 ---
 
-## [~] 06 — Onboarding
+## [~] 06 — Onboarding — PR #6
 
 **Acceptance**
 - Welcome → challenge explanation → the 11 rules → start-date picker → optional name → Start.

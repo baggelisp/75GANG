@@ -1,0 +1,10 @@
+node_modules
+.expo
+dist
+coverage
+package-lock.json
+
+# Binding documents — formatted by hand, never rewritten by a tool.
+Docs/
+.claude/
+CLAUDE.md

@@ -1,0 +1,4 @@
+// A legal domain module: pure, no I/O, `now` injected by the caller.
+import { HABIT_COUNT } from '@/domain/habits';
+
+export const decideDayIsPerfect = (completedHabits: number) => completedHabits === HABIT_COUNT;

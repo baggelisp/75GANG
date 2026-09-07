@@ -1,0 +1,5 @@
+// Never reach for new Date() here — `now` is injected. The words "Date.now()" in this comment
+// must not be mistaken for a real clock read.
+const CLOCK_WARNING = 'do not call Date.now() in the domain';
+
+export const describeRule = () => CLOCK_WARNING;

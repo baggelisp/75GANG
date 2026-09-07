@@ -1,0 +1,4 @@
+// A deliberately illegal module: the domain reaching sideways into the storage layer.
+import { challengeRepository } from '@/storage/repositories/challengeRepository';
+
+export const loadChallenge = () => challengeRepository.read();

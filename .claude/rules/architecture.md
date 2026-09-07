@@ -83,7 +83,7 @@ src/
 | `src/storage/adapters/**` | its own library + `src/storage/ports/**` | `src/features/**`, another adapter |
 | `src/storage/repositories/**` | `src/storage/ports/**`, `src/domain/**` | an adapter directly, `src/features/**` |
 | `src/features/**` | `src/domain/**`, `src/storage/repositories/**`, `src/components/**`, `src/theme/**` | `src/storage/adapters/**`, `@react-native-async-storage/*`, `expo-file-system` |
-| `app/**` | `src/features/**`, `src/theme/**` | `src/storage/**`, `src/domain/**` directly |
+| `app/**` | `src/features/**`, `src/theme/**`, and `src/storage/bootstrap` in `_layout.tsx` only | any other `src/storage/**`, `src/domain/**` directly |
 
 Anything under `app/` is a route: it imports one screen component and renders it. Logic in a route
 file is a review CRITICAL.
@@ -107,8 +107,14 @@ If one of these ever needs a mock to test, the boundary is in the wrong place.
 
 `src/storage/bootstrap.ts` is the only module that constructs an adapter. It builds the
 repositories once and hands them to a React context in `app/_layout.tsx`. Nothing else calls
-`new AsyncStorageKeyValueStore()`. Tests build the same repositories over an in-memory
-`KeyValueStore` — that is the whole point of the port.
+`new AsyncStorageKeyValueStore()`.
+
+This is the single exception to the `app/**` row above: the route layer may import
+`src/storage/bootstrap` and nothing else under `src/storage`. The architecture test encodes the
+exemption by exact path, so `@/storage/adapters/...` from a route still fails.
+
+Tests build the same repositories over an in-memory `KeyValueStore` — that is the whole point of
+the port.
 
 ## Adding a habit tracker
 

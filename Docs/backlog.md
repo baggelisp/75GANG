@@ -52,7 +52,7 @@ fixture module importing `expo-file-system` from `src/domain/` is rejected.
 
 ---
 
-## [~] 02 — Theme, fonts and base primitives
+## [~] 02 — Theme, fonts and base primitives — PR #2
 
 The design system from `.claude/rules/design-system.md` as code, plus the shared primitives every
 screen needs. `Docs/mockups/home-screen.html` is the authority on every number here — read its CSS

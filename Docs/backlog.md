@@ -176,7 +176,7 @@ a future start date is rejected; the name is genuinely optional.
 
 ---
 
-## [~] 07 — Challenge modes: Easy, Medium and Hard — PR #7
+## [~] 07 — Challenge modes: Easy, Medium and Hard — PR #7 — PR #7
 
 Three challenges instead of one. The rules in `Docs/rules.jpeg` are the **Hard** challenge and are
 never softened; Easy (6 rules) and Medium (9 rules) are strict subsets at lighter targets.

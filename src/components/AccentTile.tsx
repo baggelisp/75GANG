@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   footnote: {
     ...typography.microLabel,
     color: colors.ink,
+    marginTop: spacing.ms,
   },
 });
 

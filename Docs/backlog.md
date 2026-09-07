@@ -195,7 +195,7 @@ never inflates an easier day; the ladder invariant holds.
 
 ---
 
-## [ ] 08 — Today screen
+## [~] 08 — Today screen
 
 The home screen from `Docs/mockups/home-screen.html`, top to bottom. Build it against that file
 open in a second browser tab.
@@ -208,8 +208,9 @@ open in a second browser tab.
   percentage-complete pill in the card header.
 - **Two filled tiles side by side** — Streak in butter, Weight in lavender. Content in `ink`.
 - **Challenge card** — perfect days and days remaining as two big numbers.
-- **The 11 rules** — a tappable checklist, one row per rule, separated by hairlines, with a coral
-  checkbox carrying an `ink` check mark when done. The whole row is the tap target.
+- **The rules of the user's own challenge** — a tappable checklist, one row per rule, separated by
+  hairlines, with a coral checkbox carrying an `ink` check mark when done. The whole row is the tap
+  target. Six rows on Easy, nine on Medium, eleven on Hard (this bullet predates feature 07).
 - **Tab bar** — Today, Progress, Journal, Profile. The active tab is a coral pill.
 - The screen derives everything from the day record and the challenge. Nothing displayed is read
   from a stored duplicate.

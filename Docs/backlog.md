@@ -284,7 +284,7 @@ incomplete, two of 45 complete; one 90-minute session is **not** two workouts.
 
 ---
 
-## [~] 12 — Morning detox
+## [~] 12 — Morning detox — PR #12
 
 **Acceptance**
 - "I woke up" starts both windows at once from a single `wokeUpAt` timestamp.

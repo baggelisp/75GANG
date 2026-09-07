@@ -30,7 +30,7 @@ and are the reason the rest go quickly.
 
 ---
 
-## [~] 01 — Scaffold and the verification gate
+## [~] 01 — Scaffold and the verification gate — PR #1
 
 Expo + TypeScript project, Expo Router, and the single command everything else is judged by.
 

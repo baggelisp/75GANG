@@ -1,7 +1,7 @@
-import { PlaceholderScreen } from '@/features/placeholder/PlaceholderScreen';
+import { EntryScreen } from '@/features/entry/EntryScreen';
 
 const IndexRoute = () => {
-  return <PlaceholderScreen />;
+  return <EntryScreen />;
 };
 
 export default IndexRoute;

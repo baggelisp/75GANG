@@ -117,7 +117,7 @@ complete record.
 
 ---
 
-## [~] 04 — Challenge, completion and streak domain
+## [~] 04 — Challenge, completion and streak domain — PR #4
 
 The pure core. No React, no storage, `now` injected everywhere.
 

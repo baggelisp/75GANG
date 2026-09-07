@@ -1,9 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { applyCounterStep, findCounter } from '@/domain/counters';
+import { pauseTimer, startTimer } from '@/domain/timers';
+import {
+  finishWorkout,
+  recordWorkoutManually,
+  removeLastWorkout,
+  startWorkout,
+} from '@/domain/workouts';
 import { applyHabitChange } from '@/domain/dayRecord';
 import { findHabitForMode, Habit } from '@/domain/habits';
 import { Challenge, DayRecord, HabitRecord } from '@/domain/types';
+import { settleRunningTimers } from '@/features/shared/settleTimers';
 import { useRepositories } from '@/storage/repositoryContext';
 import { toLocalIsoDate } from '@/utils/DateUtility';
 
@@ -43,13 +51,14 @@ export const useHabitDetail = (habitId: string) => {
   });
 
   const load = useCallback(async () => {
-    const today = toLocalIsoDate(repositories.clock.now());
-    const [challengeResult, dayResult] = await Promise.all([
+    const now = repositories.clock.now();
+    const today = toLocalIsoDate(now);
+    const [challengeResult, daysResult] = await Promise.all([
       repositories.challenge.read(),
-      repositories.days.readOne(today),
+      repositories.days.readAll(),
     ]);
 
-    if (!challengeResult.ok || !dayResult.ok || challengeResult.value === null) {
+    if (!challengeResult.ok || !daysResult.ok || challengeResult.value === null) {
       setView((current) => ({ ...current, status: HabitDetailStatusEnum.UNAVAILABLE }));
 
       return;
@@ -64,11 +73,18 @@ export const useHabitDetail = (habitId: string) => {
       return;
     }
 
+    const history = await settleRunningTimers(
+      repositories,
+      daysResult.value ?? {},
+      challenge.mode,
+      now,
+    );
+
     setView({
       status: HabitDetailStatusEnum.READY,
       habit,
       challenge,
-      record: dayResult.value?.habits[habitId] ?? null,
+      record: history[today]?.habits[habitId] ?? null,
       writeFailed: false,
     });
   }, [habitId, repositories]);
@@ -77,12 +93,12 @@ export const useHabitDetail = (habitId: string) => {
     load();
   }, [load]);
 
-  const step = async (amount: number): Promise<boolean> => {
+  const writeRecord = async (
+    build: (current: HabitRecord | undefined, now: Date) => HabitRecord,
+  ): Promise<boolean> => {
     const challenge = view.challenge;
-    const habit = view.habit;
-    const counter = habit === null ? null : findCounter(habit);
 
-    if (challenge === null || counter === null) {
+    if (challenge === null) {
       return false;
     }
 
@@ -94,10 +110,7 @@ export const useHabitDetail = (habitId: string) => {
       .update(date, (current: DayRecord | null) =>
         applyHabitChange(
           current,
-          {
-            habitId,
-            record: applyCounterStep(current?.habits[habitId], amount, counter.precision),
-          },
+          { habitId, record: build(current?.habits[habitId], now) },
           challenge.mode,
           updatedAt,
         ),
@@ -110,8 +123,6 @@ export const useHabitDetail = (habitId: string) => {
       return false;
     }
 
-    // Taken from the write's own result rather than re-read. Two reads racing have no ordering
-    // guarantee, and a stale one winning would leave the screen showing less than was saved.
     setView((current) => ({
       ...current,
       record: written.value.habits[habitId] ?? null,
@@ -121,9 +132,47 @@ export const useHabitDetail = (habitId: string) => {
     return true;
   };
 
+  const step = (amount: number): Promise<boolean> => {
+    const habit = view.habit;
+    const counter = habit === null ? null : findCounter(habit);
+
+    if (counter === null) {
+      return Promise.resolve(false);
+    }
+
+    return writeRecord((current) => applyCounterStep(current, amount, counter.precision));
+  };
+
+  const start = (): Promise<boolean> => writeRecord((current, now) => startTimer(current, now));
+
+  const pause = (): Promise<boolean> => writeRecord((current, now) => pauseTimer(current, now));
+
+  const beginWorkout = (isOutdoor: boolean): Promise<boolean> =>
+    writeRecord((current, now) => startWorkout(current, now, isOutdoor));
+
+  const endWorkout = (): Promise<boolean> =>
+    writeRecord((current, now) => finishWorkout(current, now));
+
+  const addWorkoutByHand = (minutes: number, isOutdoor: boolean): Promise<boolean> =>
+    writeRecord((current, now) => recordWorkoutManually(current, minutes, isOutdoor, now));
+
+  const undoLastWorkout = (): Promise<boolean> =>
+    writeRecord((current) => removeLastWorkout(current));
+
   const dismissError = () => {
     setView((current) => ({ ...current, writeFailed: false }));
   };
 
-  return { ...view, step, dismissError, refresh: load };
+  return {
+    ...view,
+    step,
+    start,
+    pause,
+    beginWorkout,
+    endWorkout,
+    addWorkoutByHand,
+    undoLastWorkout,
+    dismissError,
+    refresh: load,
+  };
 };

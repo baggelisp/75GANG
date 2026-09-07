@@ -264,7 +264,7 @@ increments all land; an increment above target does not break the percentage.
 
 ---
 
-## [ ] 11 — Timers: workouts, skill, spirituality, connection
+## [~] 11 — Timers: workouts, skill, spirituality, connection
 
 **Acceptance**
 - `calculateElapsedMinutes(startedAt, now)` from feature 04 is the only source of elapsed time.

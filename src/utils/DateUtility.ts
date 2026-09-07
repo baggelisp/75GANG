@@ -39,3 +39,18 @@ export const formatLongDate = (isoDate: IsoDate, locale: string): string => {
     timeZone: 'UTC',
   });
 };
+
+const LAST_MILLISECOND_OF_DAY = 86399999;
+
+/**
+ * The last instant of a local calendar day.
+ *
+ * A timer left running overnight is settled against this rather than against the moment the app
+ * was next opened, so yesterday is worth what it actually ran for.
+ */
+export const endOfLocalDay = (isoDate: IsoDate): Date => {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  const startOfDay = new Date(year ?? 0, (month ?? 1) - 1, day ?? 1);
+
+  return new Date(startOfDay.getTime() + LAST_MILLISECOND_OF_DAY);
+};

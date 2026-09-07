@@ -13,6 +13,7 @@ import { collectPerfectDates } from '@/domain/history';
 import { calculateHabitProgress, HabitProgress } from '@/domain/progress';
 import { calculateCurrentStreak, calculateLongestStreak } from '@/domain/streaks';
 import { Challenge, DayCompletion, HabitRecord } from '@/domain/types';
+import { settleRunningTimers } from '@/features/shared/settleTimers';
 import { useRepositories } from '@/storage/repositoryContext';
 import { toLocalIsoDate } from '@/utils/DateUtility';
 
@@ -95,7 +96,8 @@ export const useToday = (): TodayView & { refresh: () => void } => {
   });
 
   const load = useCallback(async () => {
-    const today = toLocalIsoDate(repositories.clock.now());
+    const now = repositories.clock.now();
+    const today = toLocalIsoDate(now);
     const [challengeResult, profileResult, daysResult] = await Promise.all([
       repositories.challenge.read(),
       repositories.profile.read(),
@@ -116,7 +118,10 @@ export const useToday = (): TodayView & { refresh: () => void } => {
       return;
     }
 
-    const history = daysResult.value ?? {};
+    const stored = daysResult.value ?? {};
+    // Bank every running timer before deriving anything: minutes that have genuinely run must
+    // count towards the day, the perfect day and the streak, not only once the user pauses.
+    const history = await settleRunningTimers(repositories, stored, challenge.mode, now);
     const records = history[today]?.habits ?? {};
     const currentDay = calculateCurrentDay(challenge.startDate, today);
     const perfectDates = collectPerfectDates(history, challenge.mode);

@@ -117,7 +117,7 @@ complete record.
 
 ---
 
-## [ ] 04 — Challenge, completion and streak domain
+## [~] 04 — Challenge, completion and streak domain
 
 The pure core. No React, no storage, `now` injected everywhere.
 
@@ -130,6 +130,10 @@ The pure core. No React, no storage, `now` injected everywhere.
   percentage, perfect day.
 - `src/domain/streaks.ts` — current and longest streak from the day records.
 - Every function is pure and takes `now`/`today` as an argument.
+
+**Deferred to feature 05:** habit `name` and `description` are user-facing strings and live in the
+translation layer keyed by habit id, not on the habit definition. `src/i18n/` does not exist yet,
+so they are absent rather than relocated — land the `en`/`el` keys with feature 05.
 
 **Tests first** — the full boundary table from `.claude/rules/testing.md`: 2.9 vs 3.0 L, 14 vs 15
 pages, one vs two 45-minute sessions, one vs both detox windows, weight-without-photo; day 1,

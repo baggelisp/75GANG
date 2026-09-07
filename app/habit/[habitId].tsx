@@ -1,11 +1,11 @@
-import { ComingSoonScreen } from '@/features/shared/ComingSoonScreen';
+import { useLocalSearchParams } from 'expo-router';
 
-/**
- * The habit detail screen lands in features 10 to 13. This stub exists so a measured rule on the
- * Today screen has somewhere to go rather than dead-ending on the unmatched-route screen.
- */
+import { HabitDetailScreen } from '@/features/habit-detail/HabitDetailScreen';
+
 const HabitDetailRoute = () => {
-  return <ComingSoonScreen titleKey="today.sectionRules" />;
+  const { habitId } = useLocalSearchParams<{ habitId: string }>();
+
+  return <HabitDetailScreen habitId={habitId} />;
 };
 
 export default HabitDetailRoute;

@@ -7,6 +7,8 @@ module.exports = defineConfig([
   expoConfig,
   prettierConfig,
   {
-    ignores: ['dist/*', '.expo/*', 'coverage/*', 'Docs/mockups/*'],
+    // Docs holds documentation tooling, not app code — the screenshot script pulls in
+    // playwright, which is deliberately not a dependency of the app.
+    ignores: ['dist/*', '.expo/*', 'coverage/*', 'Docs/**'],
   },
 ]);

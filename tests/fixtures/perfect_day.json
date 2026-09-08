@@ -1,0 +1,20 @@
+{
+  "habits": {
+    "no-alcohol": { "completed": true, "value": null },
+    "diet": { "completed": true, "value": null },
+    "water": { "completed": true, "value": 3 },
+    "workouts": { "completed": true, "value": 2, "sessions": [] },
+    "skill": { "completed": true, "value": 45 },
+    "reading": { "completed": true, "value": 15 },
+    "morning-detox": { "completed": true, "value": null },
+    "no-devices-bed": { "completed": true, "value": null },
+    "weigh-in": { "completed": true, "value": null },
+    "spirituality": { "completed": true, "value": 15 },
+    "connection": { "completed": true, "value": 15 }
+  },
+  "completedHabits": 11,
+  "totalHabits": 11,
+  "completionPercentage": 100,
+  "perfectDay": true,
+  "updatedAt": "2026-09-06T21:14:00.000Z"
+}

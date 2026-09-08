@@ -1,44 +1,42 @@
-import { StyleSheet, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { Screen } from '@/components/Screen';
 import { colors } from '@/theme/tokens';
+import { spacing } from '@/theme/spacing';
+import { typography } from '@/theme/typography';
 
 const APP_NAME = '75 G-ANG';
 const TAGLINE = '75 Days. 11 Rules. A Better You.';
 
 /**
- * Temporary boot target for feature 01, replaced by the Today screen in feature 07.
- *
- * Its spacing and type sizes are raw numbers on purpose: `spacing.ts` and `typography.ts` arrive
- * in feature 02, and this screen is deleted before they matter.
+ * Temporary boot target, replaced by the Today screen in feature 07. It exists so the theme layer
+ * has somewhere real to render while features 03 and 04 build the domain underneath it.
  */
 export const PlaceholderScreen = () => {
   return (
-    <SafeAreaView style={styles.screen}>
-      <Text style={styles.title}>{APP_NAME}</Text>
-      <Text style={styles.tagline}>{TAGLINE}</Text>
-    </SafeAreaView>
+    <Screen>
+      <View style={styles.centre}>
+        <Text style={styles.title}>{APP_NAME}</Text>
+        <Text style={styles.tagline}>{TAGLINE}</Text>
+      </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
+  centre: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.bg,
-    gap: 12,
-    padding: 24,
+    gap: spacing.xl,
   },
   title: {
+    ...typography.greeting,
     color: colors.text,
-    fontSize: 32,
-    fontWeight: '800',
-    letterSpacing: 1,
   },
   tagline: {
+    ...typography.ruleMeta,
     color: colors.textSecondary,
-    fontSize: 14,
     textAlign: 'center',
   },
 });

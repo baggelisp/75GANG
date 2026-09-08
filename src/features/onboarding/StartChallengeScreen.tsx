@@ -14,7 +14,7 @@ import { typography } from '@/theme/typography';
 import { addDays, formatLongDate, toLocalIsoDate } from '@/utils/DateUtility';
 
 import { ModePicker } from './_components/ModePicker';
-import { StartDateStepper } from './_components/StartDateStepper';
+import { StartDateCalendar } from './_components/StartDateCalendar';
 import { StartErrorMessage } from './_components/StartErrorMessage';
 import {
   EARLIEST_START_OFFSET_DAYS,
@@ -22,8 +22,6 @@ import {
   StartErrorEnum,
   useStartChallenge,
 } from './_hooks/useStartChallenge';
-
-const ONE_DAY = 1;
 
 const ERROR_KEYS: Readonly<Record<StartError, string>> = {
   [StartErrorEnum.START_DATE_IN_FUTURE]: 'start.errorFuture',
@@ -52,25 +50,6 @@ export const StartChallengeScreen = () => {
   const [mode, setMode] = useState<ChallengeMode>(ChallengeModeEnum.HARD);
   const [startDate, setStartDate] = useState(today);
   const { startChallenge, error, isSaving } = useStartChallenge();
-
-  const canGoEarlier = startDate > earliestStart;
-  const isToday = startDate === today;
-
-  const moveEarlier = () => {
-    if (!canGoEarlier) {
-      return;
-    }
-
-    setStartDate(addDays(startDate, -ONE_DAY));
-  };
-
-  const moveLater = () => {
-    if (isToday) {
-      return;
-    }
-
-    setStartDate(addDays(startDate, ONE_DAY));
-  };
 
   const handleStart = async () => {
     const result = await startChallenge({ name, startDate, mode, today });
@@ -107,13 +86,15 @@ export const StartChallengeScreen = () => {
 
         <View style={styles.field}>
           <Text style={styles.label}>{t('start.startDateLabel')}</Text>
-          <StartDateStepper
-            formattedDate={formatLongDate(startDate, locale)}
-            isToday={isToday}
-            canGoEarlier={canGoEarlier}
-            onEarlier={moveEarlier}
-            onLater={moveLater}
+          <StartDateCalendar
+            selected={startDate}
+            today={today}
+            earliest={earliestStart}
+            onSelect={setStartDate}
           />
+          <Text style={styles.hint}>
+            {t('start.selectedDate', { date: formatLongDate(startDate, locale) })}
+          </Text>
         </View>
 
         <StartErrorMessage errorKey={decideErrorKey(error)} />

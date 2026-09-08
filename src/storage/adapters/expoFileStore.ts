@@ -38,6 +38,15 @@ export const createExpoFileStore = (): FileStore => {
     return relativePath;
   };
 
+  const writeText = async (relativePath: string, contents: string): Promise<string> => {
+    await ensureDirectory(relativePath);
+    await FileSystem.writeAsStringAsync(resolveUri(relativePath), contents);
+
+    return relativePath;
+  };
+
+  const readTextAt = (uri: string): Promise<string> => FileSystem.readAsStringAsync(uri);
+
   const exists = async (relativePath: string): Promise<boolean> => {
     const info = await FileSystem.getInfoAsync(resolveUri(relativePath));
 
@@ -52,5 +61,5 @@ export const createExpoFileStore = (): FileStore => {
     await FileSystem.deleteAsync(resolveUri(relativeDirectory), { idempotent: true });
   };
 
-  return { write, exists, remove, removeDirectory, resolveUri };
+  return { write, writeText, readTextAt, exists, remove, removeDirectory, resolveUri };
 };

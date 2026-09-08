@@ -16,6 +16,8 @@ export const colors = {
   raised: '#2E2D33',
   hairline: 'rgba(255, 255, 255, 0.07)',
   outline: 'rgba(255, 255, 255, 0.16)',
+  /** Behind a confirmation dialog, so the screen it interrupts stays visible but plainly inert. */
+  scrim: 'rgba(0, 0, 0, 0.72)',
 
   // Text
   text: '#F4F3F6',

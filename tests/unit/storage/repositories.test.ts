@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../support/storage/inMemoryNotificationScheduler';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -7,6 +8,7 @@ import { buildRepositories, Repositories } from '@/storage/repositories/buildRep
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
 import { expectFailure, expectValue } from '../../support/storage/expectResult';
+import { createInMemoryBackupTransport } from '../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../support/storage/inMemoryFileStore';
 import {
   createInMemoryKeyValueStore,
@@ -43,6 +45,8 @@ const buildTestRepositories = (): { store: InMemoryKeyValueStore; repositories: 
   const repositories = buildRepositories({
     store,
     files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => new Date('2026-09-07T09:00:00.000Z') },
   });
 

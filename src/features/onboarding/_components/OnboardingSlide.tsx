@@ -4,15 +4,26 @@ import { spacing } from '@/theme/spacing';
 import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
 
+import { OnboardingIllustration } from './OnboardingIllustration';
+
 export type OnboardingSlideProps = {
   kicker: string;
   title: string;
   body: string;
+  illustration: string;
+  illustrationLabel: string;
 };
 
-export const OnboardingSlide = ({ kicker, title, body }: OnboardingSlideProps) => {
+export const OnboardingSlide = ({
+  kicker,
+  title,
+  body,
+  illustration,
+  illustrationLabel,
+}: OnboardingSlideProps) => {
   return (
     <View style={styles.slide}>
+      <OnboardingIllustration xml={illustration} accessibilityLabel={illustrationLabel} />
       <Text style={styles.kicker}>{kicker}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{body}</Text>

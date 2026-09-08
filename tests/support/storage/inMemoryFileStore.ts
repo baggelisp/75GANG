@@ -25,8 +25,27 @@ export const createInMemoryFileStore = (): InMemoryFileStore => {
       .forEach((path) => files.delete(path));
   };
 
+  const writeText = async (relativePath: string, contents: string): Promise<string> => {
+    files.set(relativePath, contents);
+
+    return relativePath;
+  };
+
+  const readTextAt = async (uri: string): Promise<string> => {
+    const relativePath = uri.replace('file:///documents/', '');
+    const contents = files.get(relativePath);
+
+    if (contents === undefined) {
+      throw new Error(`No file at ${uri}`);
+    }
+
+    return contents;
+  };
+
   return {
     write,
+    writeText,
+    readTextAt,
     exists: async (relativePath) => files.has(relativePath),
     remove: async (relativePath) => {
       files.delete(relativePath);

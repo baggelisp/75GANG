@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
@@ -6,8 +7,10 @@ import { useTranslation } from '@/i18n';
 import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
 
+import { EmptySlideImage } from './_components/EmptySlideImage';
+import { OnboardingBottomBar } from './_components/OnboardingBottomBar';
+import { findIllustration, OnboardingSlideEnum } from './_illustrations/findIllustration';
 import { OnboardingSlide } from './_components/OnboardingSlide';
-import { SwiperLabel } from './_components/SwiperLabel';
 import { RulesSlide } from './_components/RulesSlide';
 
 /**
@@ -19,50 +22,69 @@ import { RulesSlide } from './_components/RulesSlide';
 export const OnboardingScreen = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(0);
+  const swiper = useRef<Onboarding>(null);
 
   const goToStart = () => {
     router.push('/onboarding/start');
   };
 
+  const goToNextPage = () => {
+    swiper.current?.goNext();
+  };
+
   const pages = [
     {
       backgroundColor: colors.bg,
-      image: <View />,
+      image: <EmptySlideImage />,
       title: (
         <OnboardingSlide
           kicker={t('onboarding.welcomeKicker')}
           title={t('onboarding.welcomeTitle')}
           body={t('onboarding.welcomeBody')}
+          illustration={findIllustration(OnboardingSlideEnum.WELCOME)}
+          illustrationLabel={t('onboarding.welcomeIllustration')}
         />
       ),
       subtitle: '',
     },
     {
       backgroundColor: colors.bg,
-      image: <View />,
+      image: <EmptySlideImage />,
       title: (
         <OnboardingSlide
           kicker={t('onboarding.howKicker')}
           title={t('onboarding.howTitle')}
           body={t('onboarding.howBody')}
+          illustration={findIllustration(OnboardingSlideEnum.HOW_IT_WORKS)}
+          illustrationLabel={t('onboarding.howIllustration')}
         />
       ),
       subtitle: '',
     },
     {
       backgroundColor: colors.bg,
-      image: <View />,
-      title: <RulesSlide kicker={t('onboarding.rulesKicker')} title={t('onboarding.rulesTitle')} />,
+      image: <EmptySlideImage />,
+      title: (
+        <RulesSlide
+          kicker={t('onboarding.rulesKicker')}
+          title={t('onboarding.rulesTitle')}
+          illustration={findIllustration(OnboardingSlideEnum.THE_RULES)}
+          illustrationLabel={t('onboarding.rulesIllustration')}
+        />
+      ),
       subtitle: '',
     },
     {
       backgroundColor: colors.bg,
-      image: <View />,
+      image: <EmptySlideImage />,
       title: (
         <OnboardingSlide
           kicker={t('onboarding.privacyKicker')}
           title={t('onboarding.privacyTitle')}
           body={t('onboarding.privacyBody')}
+          illustration={findIllustration(OnboardingSlideEnum.YOUR_DATA)}
+          illustrationLabel={t('onboarding.privacyIllustration')}
         />
       ),
       subtitle: '',
@@ -75,15 +97,19 @@ export const OnboardingScreen = () => {
         pages={pages}
         onSkip={goToStart}
         onDone={goToStart}
-        showSkip
-        skipLabel={<SwiperLabel label={t('onboarding.skip')} />}
-        nextLabel={<SwiperLabel label={t('onboarding.next')} />}
-        doneLabel={<SwiperLabel label={t('onboarding.done')} />}
-        bottomBarColor={colors.bg}
-        bottomBarHighlight={false}
+        showPagination={false}
+        pageIndexCallback={setCurrentPage}
+        ref={swiper}
         containerStyles={styles.container}
         titleStyles={styles.title}
         subTitleStyles={styles.subtitle}
+      />
+      <OnboardingBottomBar
+        pageCount={pages.length}
+        currentPage={currentPage}
+        onSkip={goToStart}
+        onNext={goToNextPage}
+        onDone={goToStart}
       />
     </View>
   );

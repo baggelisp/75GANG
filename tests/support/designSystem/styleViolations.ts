@@ -6,6 +6,7 @@ export const StyleViolationEnum = {
   COLOUR_LITERAL_OUTSIDE_TOKENS: 'COLOUR_LITERAL_OUTSIDE_TOKENS',
   SHADOW_OR_ELEVATION: 'SHADOW_OR_ELEVATION',
   HARDCODED_TYPE_STYLE: 'HARDCODED_TYPE_STYLE',
+  HAND_DRAWN_ICON: 'HAND_DRAWN_ICON',
 } as const;
 
 export type StyleViolationReason = (typeof StyleViolationEnum)[keyof typeof StyleViolationEnum];
@@ -23,10 +24,25 @@ export const TOKENS_PATH = 'src/theme/tokens.ts';
 export const TYPOGRAPHY_PATH = 'src/theme/typography.ts';
 
 /**
+ * Modules allowed to draw with react-native-svg.
+ *
+ * These are drawings — the progress rings, and the onboarding illustrations — not icons. An icon
+ * hand-drawn as a path drifts from the icon set, so icons come from `@expo/vector-icons`.
+ */
+const DRAWING_PATHS: readonly string[] = [
+  'src/components/charts/',
+  'src/features/onboarding/_components/OnboardingIllustration.tsx',
+];
+
+/**
  * Matches a colour written as a value — hex, rgb/rgba, hsl/hsla. Named CSS colours are caught by
  * the property-name check instead, because `'white'` is indistinguishable from any other word.
+ *
+ * Unanchored on purpose. It used to require the colour at the start of the string, which meant an
+ * SVG pasted in as a string — `'<svg …fill="#ed9da0"…'` — carried a whole off-palette set straight
+ * past the guard, and the onboarding illustrations did exactly that for four screens.
  */
-const COLOUR_SYNTAX = /^\s*(#[0-9a-fA-F]{3,8}|rgba?\s*\(|hsla?\s*\()/;
+const COLOUR_SYNTAX = /#[0-9a-fA-F]{3,8}\b|\brgba?\s*\(|\bhsla?\s*\(/;
 
 /**
  * Properties whose value is a colour. A string literal here is a violation whatever it says, which
@@ -55,6 +71,17 @@ const TYPE_PROPERTIES: readonly string[] = [
 ];
 
 const normalise = (filePath: string): string => filePath.replace(/\\/g, '/');
+
+/**
+ * Every node whose text a person could hide a colour in — a plain string, and each literal chunk
+ * of a template string. A template's chunks are separate nodes, so an interpolated
+ * `${colors.coral}` is invisible here and correctly passes.
+ */
+const isColourBearingText = (node: ts.Node): node is ts.StringLiteralLike | ts.TemplateHead =>
+  ts.isStringLiteralLike(node) ||
+  ts.isTemplateHead(node) ||
+  ts.isTemplateMiddle(node) ||
+  ts.isTemplateTail(node);
 
 const readPropertyName = (node: ts.PropertyAssignment | ts.JsxAttribute): string | null => {
   if (ts.isJsxAttribute(node)) {
@@ -121,11 +148,20 @@ const decideIsForbiddenColourValue = (node: ts.Node | undefined): boolean => {
 export const findStyleViolations = (filePath: string, source: string): StyleViolation[] => {
   const path = normalise(filePath);
   const violations: StyleViolation[] = [];
+  const mayDraw = DRAWING_PATHS.some((allowed) => path.startsWith(allowed));
+
+  if (!mayDraw && /from 'react-native-svg'/.test(source)) {
+    violations.push({
+      filePath: path,
+      reason: StyleViolationEnum.HAND_DRAWN_ICON,
+      detail: 'icons come from @expo/vector-icons; react-native-svg is for drawings',
+    });
+  }
   const isTokensFile = path === TOKENS_PATH;
   const isTypographyFile = path === TYPOGRAPHY_PATH;
 
   forEachNode(parseModule(path, source), (node) => {
-    if (ts.isStringLiteralLike(node) && !isTokensFile && COLOUR_SYNTAX.test(node.text)) {
+    if (isColourBearingText(node) && !isTokensFile && COLOUR_SYNTAX.test(node.text)) {
       violations.push({
         filePath: path,
         reason: StyleViolationEnum.COLOUR_LITERAL_OUTSIDE_TOKENS,

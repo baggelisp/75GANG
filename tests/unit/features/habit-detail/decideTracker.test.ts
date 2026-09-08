@@ -21,7 +21,7 @@ describe('decideTracker', () => {
     [HabitIdEnum.CONNECTION, TrackerEnum.TIMER],
     [HabitIdEnum.WORKOUTS, TrackerEnum.WORKOUTS],
     [HabitIdEnum.MORNING_DETOX, TrackerEnum.DETOX],
-    [HabitIdEnum.WEIGH_IN, TrackerEnum.NOT_BUILT_YET],
+    [HabitIdEnum.WEIGH_IN, TrackerEnum.WEIGH_IN],
     [HabitIdEnum.NO_ALCOHOL, TrackerEnum.NOT_BUILT_YET],
   ])('gives %s the %s tracker', (habitId, expected) => {
     expect(decideTracker(findHabit(habitId))).toBe(expected);

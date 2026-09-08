@@ -120,6 +120,66 @@ stroke width 12, round caps, each drawn over a full-circle track in `hairline`. 
 Rendered with `react-native-svg`. The legend sits beside the rings: label in the ring's accent,
 value with a small unit suffix, and the fraction on the right.
 
+## Icons
+
+Icons come from **`@expo/vector-icons`**. Never hand-draw one as an SVG path, and never type a
+glyph or an emoji into a label — a hand-drawn path drifts from the set, and a typed glyph falls
+back to a missing character on a device that lacks it.
+
+```tsx
+import AntDesign from '@expo/vector-icons/AntDesign';
+
+<AntDesign name="arrow-left" size={18} color={colors.text} />;
+```
+
+- **Back is always `AntDesign` `arrow-left`**, and it always sits beside the label. A word alone
+  reads as an action that could go anywhere; the arrow says which direction before anyone reads it.
+- **`color` comes from `tokens.ts`**, like every other colour. An icon is content, not chrome, and
+  `color="black"` on this app's near-black ground is invisible.
+- **`size` is a named constant** in the component, not a number in the JSX.
+- An icon that carries meaning on its own needs an `accessibilityLabel`. One that sits next to a
+  label it repeats does not — the label already says it.
+
+`react-native-svg` stays for **drawings**, not icons: the progress rings, the trend line, and the
+onboarding illustrations.
+
+## Controls
+
+Two platform components paint their own colours and must not be used:
+
+- **`Switch`** — its thumb and track come from the OS, and no combination of `trackColor` and
+  `thumbColor` reliably suppresses them. On react-native-web the "on" thumb renders **teal**, which
+  is a fourth colour. Use `src/components/ToggleSwitch.tsx`.
+- **`@react-native-community/datetimepicker`** — no web support at all, and the browser is where
+  this app is reviewed. Dates are picked on a calendar built from `src/components/calendar/`.
+
+**A disabled control is a surface, not a faded one.** `opacity` on a filled accent composites to a
+muddy colour with `ink` text on top and reads as broken. A disabled `PrimaryButton` is `raised`
+with a `textTertiary` label. Opacity is only for something that stays legible as itself — a dimmed
+arrow at the end of a stepper, say.
+
+**A `raised` surface needs an outline on anything sitting on it.** A `SecondaryButton` filled with
+`raised` disappears into a confirmation dialog and reads as a line of text.
+
+## Dates and calendars
+
+Every date the user reads goes through `src/utils/DateUtility.ts`. Never inline a
+`toLocaleDateString`, and never build a `Date` to do calendar arithmetic — that lives in
+`src/domain/calendar.ts` and `src/domain/monthGrid.ts`, as pure day-number maths.
+
+- **A calendar is Monday-first, seven columns, with weekday headings.** A flat run of cells reads
+  as a progress bar; weekday columns are what make "I always miss Sundays" visible. The shared
+  pieces are `WeekdayHeader`, `CalendarWeek`, `CalendarSlot`, `MonthTitle` and `PeriodStepper`.
+- **A missing day is a gap, not a skip.** Closing it slides every later day into the wrong weekday
+  column and lies about the whole month.
+- **Every cell carries its day of the month.** A bare dot says only "a day"; the number lets
+  someone find the Saturday they remember.
+- **A date that outlives its month carries its year** — `formatLongDateWithYear`. A challenge start
+  or a past day shown as "Wed, Jul 29" is ambiguous the moment there is a second challenge.
+- **A cell state is never colour alone.** Coral filled with an `ink` number for perfect, butter
+  filled for today (the spec's "butter filled with a glow"), a solid warm grey for missed, and an
+  outline on the app ground for still to come — plus a legend that says all four in words.
+
 ## Accessibility
 
 - Every tappable has an `accessibilityRole` and an `accessibilityLabel` from the translation layer.

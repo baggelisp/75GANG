@@ -4,8 +4,10 @@ import { HabitRecord } from '@/domain/types';
 
 import { Tracker, TrackerEnum } from '../decideTracker';
 import { CounterCard } from './CounterCard';
+import { WeighInActions } from '../_hooks/useWeighIn';
 import { DetoxCard } from './DetoxCard';
 import { TimerCard } from './TimerCard';
+import { WeighInCard } from './WeighInCard';
 import { WorkoutCard } from './WorkoutCard';
 
 export type HabitTrackerProps = {
@@ -24,6 +26,7 @@ export type HabitTrackerProps = {
   onUndoLast: () => void;
   onWakeUp: () => void;
   onClearWakeUp: () => void;
+  weighIn: WeighInActions;
 };
 
 /** Picks the controls for a habit's target type. */
@@ -43,7 +46,24 @@ export const HabitTracker = ({
   onUndoLast,
   onWakeUp,
   onClearWakeUp,
+  weighIn,
 }: HabitTrackerProps) => {
+  if (tracker === TrackerEnum.WEIGH_IN) {
+    return (
+      <WeighInCard
+        record={record}
+        isComplete={isComplete}
+        weightText={weighIn.weightText}
+        photoUri={weighIn.photoUri}
+        onChangeWeight={weighIn.changeWeight}
+        onStepDown={weighIn.stepDown}
+        onStepUp={weighIn.stepUp}
+        onTakePhoto={weighIn.takePhoto}
+        onChoosePhoto={weighIn.choosePhoto}
+      />
+    );
+  }
+
   if (tracker === TrackerEnum.DETOX) {
     return (
       <DetoxCard

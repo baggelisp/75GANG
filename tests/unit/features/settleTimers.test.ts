@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../support/storage/inMemoryNotificationScheduler';
 import { HabitIdEnum } from '@/domain/habitIds';
 import { ChallengeModeEnum } from '@/domain/modes';
 import { DayRecordsByDate } from '@/domain/types';
@@ -5,6 +6,7 @@ import { settleRunningTimers } from '@/features/shared/settleTimers';
 import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { endOfLocalDay, toLocalIsoDate } from '@/utils/DateUtility';
 
+import { createInMemoryBackupTransport } from '../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../support/storage/inMemoryFileStore';
 import {
   createInMemoryKeyValueStore,
@@ -16,7 +18,13 @@ const NOW = new Date('2026-09-20T09:00:00.000Z');
 const AN_OLD_DAY = '2026-09-06';
 
 const buildOver = (store: InMemoryKeyValueStore) =>
-  buildRepositories({ store, files: createInMemoryFileStore(), clock: { now: () => NOW } });
+  buildRepositories({
+    store,
+    files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
+    clock: { now: () => NOW },
+  });
 
 const dayWith = (habits: DayRecordsByDate[string]['habits']) => ({
   habits,

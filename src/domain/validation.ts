@@ -10,6 +10,7 @@ import {
   Settings,
 } from './types';
 import { isChallengeMode } from './modes';
+import { isReminderTime } from './settings';
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -201,7 +202,7 @@ export const isSettings = (candidate: unknown): candidate is Settings => {
   return (
     isBoolean(candidate.darkMode) &&
     isBoolean(candidate.notificationsEnabled) &&
-    isString(candidate.morningReminder) &&
-    isString(candidate.eveningReminder)
+    isReminderTime(candidate.morningReminder) &&
+    isReminderTime(candidate.eveningReminder)
   );
 };

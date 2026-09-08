@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../support/storage/inMemoryNotificationScheduler';
 import { applyCounterStep } from '@/domain/counters';
 import { applyHabitChange } from '@/domain/dayRecord';
 import { HabitIdEnum } from '@/domain/habitIds';
@@ -7,6 +8,7 @@ import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
 import { expectValue } from '../../support/storage/expectResult';
+import { createInMemoryBackupTransport } from '../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../support/storage/inMemoryFileStore';
 import { createInMemoryKeyValueStore } from '../../support/storage/inMemoryKeyValueStore';
 
@@ -22,6 +24,8 @@ const buildRepositoriesOverMemory = () => {
     repositories: buildRepositories({
       store,
       files: createInMemoryFileStore(),
+      transport: createInMemoryBackupTransport(),
+      notifications: createInMemoryNotificationScheduler(),
       clock: { now: () => new Date(UPDATED_AT) },
     }),
   };

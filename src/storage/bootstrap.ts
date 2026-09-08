@@ -1,5 +1,7 @@
 import { createAsyncStorageKeyValueStore } from './adapters/asyncStorageKeyValueStore';
+import { createExpoBackupTransport } from './adapters/expoBackupTransport';
 import { createExpoFileStore } from './adapters/expoFileStore';
+import { createExpoNotificationScheduler } from './adapters/expoNotificationScheduler';
 import { createSystemClock } from './adapters/systemClock';
 import { buildRepositories, Repositories } from './repositories/buildRepositories';
 
@@ -19,5 +21,7 @@ export const createRepositories = (): Repositories =>
   buildRepositories({
     store: createAsyncStorageKeyValueStore(),
     files: createExpoFileStore(),
+    transport: createExpoBackupTransport(),
+    notifications: createExpoNotificationScheduler(),
     clock: createSystemClock(),
   });

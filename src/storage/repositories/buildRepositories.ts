@@ -1,7 +1,10 @@
+import { BackupTransport } from '@/storage/ports/backupTransport';
 import { Clock } from '@/storage/ports/clock';
 import { FileStore } from '@/storage/ports/fileStore';
 import { KeyValueStore } from '@/storage/ports/keyValueStore';
+import { NotificationScheduler } from '@/storage/ports/notificationScheduler';
 
+import { BackupRepository, createBackupRepository } from './backupRepository';
 import { ChallengeRepository, createChallengeRepository } from './challengeRepository';
 import { createDayRepository, DayRepository } from './dayRepository';
 import { createJournalRepository, JournalRepository } from './journalRepository';
@@ -14,13 +17,18 @@ export type Repositories = {
   days: DayRepository;
   journal: JournalRepository;
   settings: SettingsRepository;
+  backups: BackupRepository;
   files: FileStore;
+  transport: BackupTransport;
+  notifications: NotificationScheduler;
   clock: Clock;
 };
 
 export type BuildRepositoriesConfig = {
   store: KeyValueStore;
   files: FileStore;
+  transport: BackupTransport;
+  notifications: NotificationScheduler;
   clock: Clock;
 };
 
@@ -33,6 +41,8 @@ export type BuildRepositoriesConfig = {
 export const buildRepositories = ({
   store,
   files,
+  transport,
+  notifications,
   clock,
 }: BuildRepositoriesConfig): Repositories => ({
   profile: createProfileRepository(store),
@@ -40,6 +50,9 @@ export const buildRepositories = ({
   days: createDayRepository(store),
   journal: createJournalRepository(store),
   settings: createSettingsRepository(store),
+  backups: createBackupRepository(store),
   files,
+  transport,
+  notifications,
   clock,
 });

@@ -1,3 +1,4 @@
+import { EASY_WATER_TARGET_LITRES, WATER_TARGET_LITRES } from '@/domain/targets';
 import { el, en, LocaleEnum, translate } from '@/i18n';
 
 describe('translate', () => {
@@ -5,8 +6,14 @@ describe('translate', () => {
     expect(translate(en, 'common.save')).toBe('Save');
   });
 
-  it('resolves a habit name by habit id', () => {
-    expect(translate(en, 'habits.water.name')).toBe('Drink 3 litres of water');
+  it('resolves a habit name by habit id, with the target of the challenge in hand', () => {
+    // The rules are the same in every challenge; the numbers are not.
+    expect(translate(en, 'habits.water.name', { target: WATER_TARGET_LITRES })).toBe(
+      'Drink 3 litres of water',
+    );
+    expect(translate(en, 'habits.water.name', { target: EASY_WATER_TARGET_LITRES })).toBe(
+      'Drink 2 litres of water',
+    );
   });
 
   it('interpolates values into a template', () => {

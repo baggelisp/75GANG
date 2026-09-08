@@ -1,3 +1,4 @@
+import { IsoDate } from './types';
 import { isIsoDate } from './validation';
 
 const DAYS_PER_ERA = 146097;
@@ -48,4 +49,52 @@ export const countDaysBetween = (fromIsoDate: string, toIsoDate: string): number
   }
 
   return to - from;
+};
+
+const DAYS_PER_FOUR_YEARS = 1460;
+const DAYS_PER_CENTURY = 36524;
+const MARCH_OFFSET = 2;
+const FIVE_MONTH_CYCLE = 153;
+
+/**
+ * The inverse of `countDaysFromCivil`, by Howard Hinnant's `civil_from_days`.
+ *
+ * Arithmetic rather than `new Date(...)`, because the domain never constructs one — and because
+ * adding days to a date through a Date object goes wrong across a daylight-saving boundary in
+ * exactly the way this whole module exists to avoid.
+ */
+export const fromDayNumber = (dayNumber: number): IsoDate => {
+  const shifted = dayNumber + CIVIL_EPOCH_SHIFT;
+  const era = Math.floor(shifted / DAYS_PER_ERA);
+  const dayOfEra = shifted - era * DAYS_PER_ERA;
+  const yearOfEra = Math.floor(
+    (dayOfEra -
+      Math.floor(dayOfEra / DAYS_PER_FOUR_YEARS) +
+      Math.floor(dayOfEra / DAYS_PER_CENTURY) -
+      Math.floor(dayOfEra / (DAYS_PER_ERA - 1))) /
+      DAYS_PER_YEAR,
+  );
+  const year = yearOfEra + era * ERA_YEARS;
+  const dayOfYear =
+    dayOfEra -
+    (DAYS_PER_YEAR * yearOfEra + Math.floor(yearOfEra / 4) - Math.floor(yearOfEra / 100));
+  const monthPortion = Math.floor((5 * dayOfYear + MARCH_OFFSET) / FIVE_MONTH_CYCLE);
+  const day = dayOfYear - Math.floor((FIVE_MONTH_CYCLE * monthPortion + MARCH_OFFSET) / 5) + 1;
+  const month = monthPortion < 10 ? monthPortion + MARCH : monthPortion - 9;
+  const calendarYear = month <= MARCH - 1 ? year + 1 : year;
+
+  return `${pad(calendarYear, 4)}-${pad(month, 2)}-${pad(day, 2)}`;
+};
+
+const pad = (value: number, width: number): string => `${value}`.padStart(width, '0');
+
+/** Adds days to a calendar date, purely. */
+export const addCalendarDays = (isoDate: IsoDate, days: number): IsoDate | null => {
+  const dayNumber = toDayNumber(isoDate);
+
+  if (dayNumber === null) {
+    return null;
+  }
+
+  return fromDayNumber(dayNumber + days);
 };

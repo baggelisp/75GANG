@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../../support/storage/inMemoryNotificationScheduler';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 import { HabitIdEnum } from '@/domain/habitIds';
@@ -8,6 +9,7 @@ import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { RepositoryProvider } from '@/storage/repositoryContext';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
+import { createInMemoryBackupTransport } from '../../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import {
   createInMemoryKeyValueStore,
@@ -46,6 +48,8 @@ const renderDetail = (
   const repositories = buildRepositories({
     store: { ...inner, ...(overrides ?? {}) },
     files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => NOW },
   });
 
@@ -215,18 +219,22 @@ describe('the reading counter', () => {
   });
 });
 
-describe('a rule whose tracker is not a counter', () => {
-  it.each([HabitIdEnum.WEIGH_IN])(
-    'says %s is not tracked here yet, rather than showing a counter it cannot use',
-    async (habitId) => {
-      renderDetail(habitId);
+describe('every measured rule now has its own tracker', () => {
+  it.each([
+    HabitIdEnum.WATER,
+    HabitIdEnum.READING,
+    HabitIdEnum.SKILL,
+    HabitIdEnum.WORKOUTS,
+    HabitIdEnum.MORNING_DETOX,
+    HabitIdEnum.WEIGH_IN,
+  ])('never shows %s a raw translation key', async (habitId) => {
+    renderDetail(habitId);
 
-      await waitFor(() => {
-        expect(screen.getByText('This rule is tracked on the Today screen for now.')).toBeTruthy();
-      });
+    await waitFor(() => {
       expect(screen.queryByText(/today\.progress\./)).toBeNull();
-    },
-  );
+    });
+    expect(screen.queryByText('This rule is tracked on the Today screen for now.')).toBeNull();
+  });
 });
 
 describe('when an increment cannot be saved', () => {

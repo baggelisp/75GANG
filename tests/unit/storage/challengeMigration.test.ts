@@ -1,8 +1,10 @@
+import { createInMemoryNotificationScheduler } from '../../support/storage/inMemoryNotificationScheduler';
 import { ChallengeModeEnum } from '@/domain/modes';
 import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
 import { expectValue } from '../../support/storage/expectResult';
+import { createInMemoryBackupTransport } from '../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../support/storage/inMemoryFileStore';
 import { createInMemoryKeyValueStore } from '../../support/storage/inMemoryKeyValueStore';
 
@@ -21,6 +23,8 @@ const buildOver = (seed: string) => {
   return buildRepositories({
     store,
     files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => new Date('2026-09-07T09:00:00.000Z') },
   });
 };

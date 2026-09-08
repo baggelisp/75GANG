@@ -77,19 +77,35 @@ export const settleDetox = (record: HabitRecord | undefined, now: Date): HabitRe
 
   return {
     ...(record ?? { completed: false }),
-    phoneFreeMinutes: bankMinutes(progress.phone.elapsedMinutes, PHONE_FREE_MINUTES_REQUIRED),
-    noContentMinutes: bankMinutes(progress.content.elapsedMinutes, NO_CONTENT_MINUTES_REQUIRED),
+    phoneFreeMinutes: bankMinutes(
+      progress.phone.elapsedMinutes,
+      PHONE_FREE_MINUTES_REQUIRED,
+      record?.phoneFreeMinutes,
+    ),
+    noContentMinutes: bankMinutes(
+      progress.content.elapsedMinutes,
+      NO_CONTENT_MINUTES_REQUIRED,
+      record?.noContentMinutes,
+    ),
   };
 };
 
 /**
- * Whole minutes, never more than the window is worth.
+ * Whole minutes, never more than the window is worth and never fewer than are already banked.
+ *
+ * Settling only ever adds. A phone clock corrected backwards, a flight across timezones, or a
+ * `wokeUpAt` that arrived in an imported backup can all make the elapsed time read as less than
+ * what the user genuinely earned — and taking an hour back off a finished morning would break a
+ * day, and with it a streak, for something the user did nothing wrong to cause.
  *
  * Rounded because the stored number is shown to the user and written into an export, and
  * `41.766666666666666 min` is not something anyone should read on a habit tracker.
  */
-const bankMinutes = (elapsed: number, required: number): number =>
-  Math.min(Math.round(elapsed), required);
+const bankMinutes = (elapsed: number, required: number, banked: number | undefined): number => {
+  const alreadyBanked = typeof banked === 'number' && banked > 0 ? banked : 0;
+
+  return Math.min(Math.max(Math.round(elapsed), alreadyBanked), required);
+};
 
 /** Undoes a mis-tap, so a morning recorded by accident is recoverable. */
 export const clearWakeUp = (record: HabitRecord | undefined): HabitRecord => ({

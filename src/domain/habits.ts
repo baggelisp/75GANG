@@ -177,3 +177,35 @@ export const findHabitForMode = (habitId: string, mode: ChallengeMode): Habit | 
 /** Counted from the resolved habits, so a duplicated id could never make a perfect day unreachable. */
 export const countHabitsForMode = (mode: ChallengeMode): number =>
   resolveHabitsForMode(mode).length;
+
+/**
+ * The numbers a habit's own copy interpolates.
+ *
+ * The rules are the same eleven in every challenge but the targets are not, so the name has to
+ * carry the target rather than being written out with Hard's numbers baked in. Easy showed "Drink
+ * 3 litres of water" above a progress line reading "0 / 2 L" — two different rules on one row.
+ */
+export const describeHabitTargets = (habit: Habit): Record<string, number> => ({
+  // Zero for a habit with no numeric target, which is safe here and only here: those habits' copy
+  // carries no placeholder, so the value is never read. Nothing else may coerce an absence to 0.
+  target: habit.targetValue ?? 0,
+  minutes: habit.sessionMinutes ?? 0,
+});
+
+/** A target of one. "1 workouts" is wrong, and the translation layer has no plural rules. */
+const SINGULAR_TARGET = 1;
+
+/**
+ * Which copy key a habit's name comes from.
+ *
+ * Keyed on the number rather than on the habit id: Easy and Medium drop the workouts to a single
+ * session, and any future mode that drops another habit to one gets the right words for free.
+ * `tests/unit/i18n/habitNames.test.ts` pins that every habit which can reach one has the key.
+ */
+export const decideHabitNameKey = (habit: Habit): string => {
+  if (habit.targetValue === SINGULAR_TARGET) {
+    return `habits.${habit.id}.nameSingle`;
+  }
+
+  return `habits.${habit.id}.name`;
+};

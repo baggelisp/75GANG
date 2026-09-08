@@ -42,7 +42,10 @@ export const ProgressRings = ({
       accessibilityRole="image"
       accessibilityLabel={accessibilityLabel}
     >
-      <G rotation={ROTATION_TO_TWELVE_OCLOCK} origin={`${RING_CENTRE}, ${RING_CENTRE}`}>
+      {/* One `transform` string rather than `rotation` + `origin`: react-native-svg passes `origin`
+          straight through as `transform-origin`, which React rejects as an invalid DOM property
+          and logs on every render of the home screen. */}
+      <G transform={`rotate(${ROTATION_TO_TWELVE_OCLOCK} ${RING_CENTRE} ${RING_CENTRE})`}>
         <RingTrack radius={RING_RADII.habits} />
         <RingTrack radius={RING_RADII.workouts} />
         <RingTrack radius={RING_RADII.water} />

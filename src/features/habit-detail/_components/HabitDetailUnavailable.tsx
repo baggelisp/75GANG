@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { SecondaryButton } from '@/components/SecondaryButton';
+import { BackButton } from '@/components/BackButton';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
 import { colors } from '@/theme/tokens';
@@ -18,9 +18,9 @@ export const HabitDetailUnavailable = ({ messageKey, onBack }: HabitDetailUnavai
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>{t(messageKey)}</Text>
-      <SecondaryButton
+      <BackButton
         label={t('counter.back')}
-        accessibilityLabel={t('counter.back')}
+        accessibilityLabel={t('counter.backAccessibility')}
         onPress={onBack}
       />
     </View>

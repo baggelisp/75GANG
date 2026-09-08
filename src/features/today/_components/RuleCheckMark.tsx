@@ -1,4 +1,4 @@
-import Svg, { Path } from 'react-native-svg';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { colors } from '@/theme/tokens';
 
@@ -6,8 +6,7 @@ export type RuleCheckMarkProps = {
   isDone: boolean;
 };
 
-const MARK_SIZE = 11;
-const MARK_STROKE = 3.5;
+const MARK_SIZE = 13;
 
 /**
  * The mark is what makes completion readable without colour — it survives greyscale and colour
@@ -18,16 +17,5 @@ export const RuleCheckMark = ({ isDone }: RuleCheckMarkProps) => {
     return null;
   }
 
-  return (
-    <Svg width={MARK_SIZE} height={MARK_SIZE} viewBox="0 0 24 24">
-      <Path
-        d="M4 12l5 5L20 6"
-        fill="none"
-        stroke={colors.ink}
-        strokeWidth={MARK_STROKE}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
+  return <AntDesign name="check" size={MARK_SIZE} color={colors.ink} />;
 };

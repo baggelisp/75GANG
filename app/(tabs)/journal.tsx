@@ -1,7 +1,7 @@
-import { ComingSoonScreen } from '@/features/shared/ComingSoonScreen';
+import { JournalScreen } from '@/features/journal/JournalScreen';
 
 const JournalRoute = () => {
-  return <ComingSoonScreen titleKey="today.tabJournal" />;
+  return <JournalScreen />;
 };
 
 export default JournalRoute;

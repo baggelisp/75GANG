@@ -7,6 +7,7 @@ export const TrackerEnum = {
   TIMER: 'TIMER',
   WORKOUTS: 'WORKOUTS',
   DETOX: 'DETOX',
+  WEIGH_IN: 'WEIGH_IN',
   NOT_BUILT_YET: 'NOT_BUILT_YET',
 } as const;
 
@@ -19,7 +20,7 @@ const TRACKER_BY_TARGET_TYPE: Readonly<Record<TargetType, Tracker>> = {
   [TargetTypeEnum.MINUTES]: TrackerEnum.TIMER,
   [TargetTypeEnum.SESSIONS]: TrackerEnum.WORKOUTS,
   [TargetTypeEnum.WINDOWS]: TrackerEnum.DETOX,
-  [TargetTypeEnum.MEASUREMENT]: TrackerEnum.NOT_BUILT_YET,
+  [TargetTypeEnum.MEASUREMENT]: TrackerEnum.WEIGH_IN,
 };
 
 /**

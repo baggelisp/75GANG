@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../../support/storage/inMemoryNotificationScheduler';
 import { act, render, waitFor } from '@testing-library/react-native';
 import { Text } from 'react-native';
 
@@ -7,6 +8,7 @@ import { buildRepositories, Repositories } from '@/storage/repositories/buildRep
 import { RepositoryProvider } from '@/storage/repositoryContext';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
+import { createInMemoryBackupTransport } from '../../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import {
   createInMemoryKeyValueStore,
@@ -28,6 +30,8 @@ const renderHook = (): Harness => {
   const repositories = buildRepositories({
     store,
     files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => NOW },
   });
 

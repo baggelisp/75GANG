@@ -1,4 +1,10 @@
-import { countDaysBetween, countDaysFromCivil, toDayNumber } from '@/domain/calendar';
+import {
+  addCalendarDays,
+  countDaysBetween,
+  countDaysFromCivil,
+  fromDayNumber,
+  toDayNumber,
+} from '@/domain/calendar';
 
 describe('countDaysFromCivil', () => {
   it.each([
@@ -44,5 +50,43 @@ describe('countDaysBetween', () => {
 describe('toDayNumber', () => {
   it('rejects a malformed date rather than guessing', () => {
     expect(toDayNumber('07/09/2026')).toBeNull();
+  });
+});
+
+describe('fromDayNumber', () => {
+  it.each([
+    ['the unix epoch', 0, '1970-01-01'],
+    ['the day after', 1, '1970-01-02'],
+    ['the day before', -1, '1969-12-31'],
+    ['a leap day', 21243, '2028-02-29'],
+    ['a century boundary', 47541, '2100-03-01'],
+  ])('turns %s back into %s', (_description, dayNumber, expected) => {
+    expect(fromDayNumber(dayNumber)).toBe(expected);
+  });
+
+  it('round-trips every day of a leap year', () => {
+    const start = countDaysFromCivil(2028, 1, 1);
+    const mismatches = Array.from({ length: 366 }, (_unused, offset) => start + offset).filter(
+      (dayNumber) => toDayNumber(fromDayNumber(dayNumber)) !== dayNumber,
+    );
+
+    expect(mismatches).toEqual([]);
+  });
+});
+
+describe('addCalendarDays', () => {
+  it.each([
+    ['a day forward', '2026-09-08', 1, '2026-09-09'],
+    ['across a month end', '2026-09-30', 1, '2026-10-01'],
+    ['across a year end', '2026-12-31', 1, '2027-01-01'],
+    ['across a leap day', '2028-02-28', 1, '2028-02-29'],
+    ['a whole challenge', '2026-09-01', 74, '2026-11-14'],
+    ['backwards', '2026-09-01', -1, '2026-08-31'],
+  ])('adds %s', (_description, from, days, expected) => {
+    expect(addCalendarDays(from, days)).toBe(expected);
+  });
+
+  it('returns null for a date that is not a real day', () => {
+    expect(addCalendarDays('2026-02-30', 1)).toBeNull();
   });
 });

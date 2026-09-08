@@ -25,7 +25,15 @@ export type JsonRecordStoreConfig<TValue> = {
  */
 const writeQueues = new Map<string, Promise<unknown>>();
 
-const enqueue = <TValue>(key: string, task: () => Promise<TValue>): Promise<TValue> => {
+/**
+ * Runs a task with the queue for a storage key held.
+ *
+ * Exported so a restore can take the same turn a habit tap takes: an import replaces every key,
+ * and a tap landing halfway through would otherwise write a day into a challenge that no longer
+ * exists.
+ */
+
+export const enqueue = <TValue>(key: string, task: () => Promise<TValue>): Promise<TValue> => {
   const previous = writeQueues.get(key) ?? Promise.resolve();
   const next = previous.then(task, task);
 

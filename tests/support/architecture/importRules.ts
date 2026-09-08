@@ -93,16 +93,25 @@ const PORTS_MAY_ONLY_IMPORT_DOMAIN_OR_PORTS = allowOnlyPaths(
 );
 
 /**
+ * The packages that reach the device directly. Each has exactly one adapter, and nothing
+ * above the storage layer may import one — that is what keeps a swap behind the port.
+ */
+const DEVICE_PACKAGES: readonly string[] = [
+  '@react-native-async-storage/',
+  'expo-file-system',
+  'expo-sharing',
+  'expo-document-picker',
+  'expo-notifications',
+];
+
+/**
  * A shared component is leaf UI: it may reach for React, React Native and a rendering library,
  * plus the domain and the theme, but never for persistence or a feature.
  */
 const COMPONENTS_MAY_NOT_REACH_STORAGE_OR_FEATURES: readonly ImportRule[] = [
   denyPaths('a shared component may not import storage', ['src/storage/']),
   denyPaths('a shared component may not import a feature', ['src/features/']),
-  denyPackages('a shared component may not import device storage directly', [
-    '@react-native-async-storage/',
-    'expo-file-system',
-  ]),
+  denyPackages('a shared component may not import device storage directly', DEVICE_PACKAGES),
 ];
 
 const RULES_BY_LAYER: Readonly<Record<Layer, readonly ImportRule[]>> = {
@@ -125,10 +134,7 @@ const RULES_BY_LAYER: Readonly<Record<Layer, readonly ImportRule[]>> = {
   ],
   [LayerEnum.FEATURES]: [
     denyPaths('a feature may not import an adapter', ['src/storage/adapters/']),
-    denyPackages('a feature may not import device storage directly', [
-      '@react-native-async-storage/',
-      'expo-file-system',
-    ]),
+    denyPackages('a feature may not import device storage directly', DEVICE_PACKAGES),
   ],
   [LayerEnum.ROUTES]: [
     ROUTE_MAY_ONLY_REACH_THE_COMPOSITION_ROOT,

@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../support/storage/inMemoryNotificationScheduler';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
@@ -7,6 +8,7 @@ import { KeyValueStore } from '@/storage/ports/keyValueStore';
 import { buildRepositories, Repositories } from '@/storage/repositories/buildRepositories';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
+import { createInMemoryBackupTransport } from '../../support/storage/inMemoryBackupTransport';
 import { expectFailure, expectValue } from '../../support/storage/expectResult';
 import {
   createInMemoryKeyValueStore,
@@ -26,11 +28,15 @@ const buildOver = (store: KeyValueStore): Repositories =>
     store,
     files: {
       write: async () => 'photos/x.jpg',
+      writeText: async () => 'backup.json',
+      readTextAt: async () => '{}',
       exists: async () => true,
       remove: async () => undefined,
       removeDirectory: async () => undefined,
       resolveUri: (path) => `file:///documents/${path}`,
     },
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => new Date('2026-09-07T09:00:00.000Z') },
   });
 

@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../../support/storage/inMemoryNotificationScheduler';
 import { render, screen, waitFor } from '@testing-library/react-native';
 
 import { ChallengeModeEnum } from '@/domain/modes';
@@ -7,6 +8,7 @@ import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { RepositoryProvider } from '@/storage/repositoryContext';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
+import { createInMemoryBackupTransport } from '../../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import { createInMemoryKeyValueStore } from '../../../support/storage/inMemoryKeyValueStore';
 
@@ -64,6 +66,8 @@ const renderToday = (seed: Seed) => {
   const repositories = buildRepositories({
     store,
     files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => NOW },
   });
 

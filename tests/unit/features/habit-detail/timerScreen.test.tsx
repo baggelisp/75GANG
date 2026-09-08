@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../../support/storage/inMemoryNotificationScheduler';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 import { HabitIdEnum } from '@/domain/habitIds';
@@ -8,6 +9,7 @@ import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { RepositoryProvider } from '@/storage/repositoryContext';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
+import { createInMemoryBackupTransport } from '../../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import {
   createInMemoryKeyValueStore,
@@ -53,6 +55,8 @@ const renderDetail = (habitId: string, seededDay?: string): Harness => {
       repositories={buildRepositories({
         store,
         files: createInMemoryFileStore(),
+        transport: createInMemoryBackupTransport(),
+        notifications: createInMemoryNotificationScheduler(),
         clock: { now: () => clock.value },
       })}
     >

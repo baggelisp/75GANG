@@ -306,7 +306,7 @@ twice does not restart a running window.
 
 ---
 
-## [ ] 13 — Weigh-in and progress photo
+## [~] 13 — Weigh-in and progress photo
 
 **Acceptance**
 - Weight in kg to one decimal, with `-` / `+` and direct entry.
@@ -325,7 +325,7 @@ picker leaves the record untouched.
 
 ---
 
-## [ ] 14 — Progress screen and the 75-day grid
+## [~] 14 — Progress screen and the 75-day grid
 
 **Acceptance**
 - Current day, days completed, days remaining, current streak, best streak.
@@ -349,7 +349,7 @@ does not divide by zero.
 
 ---
 
-## [ ] 15 — Journal
+## [~] 15 — Journal
 
 **Acceptance**
 - One entry per day: how was your day, what went well, what was difficult, what to improve.
@@ -365,7 +365,7 @@ rather than appending; a very long entry is handled.
 
 ---
 
-## [ ] 16 — Profile, settings and reset/restart
+## [~] 16 — Profile, settings and reset/restart
 
 **Acceptance**
 - Name, start date, current day, current and best streak.
@@ -383,7 +383,7 @@ rather than appending; a very long entry is handled.
 
 ---
 
-## [ ] 17 — Export and import
+## [~] 17 — Export and import
 
 **Acceptance**
 - Export writes the five keys wrapped in the spec's header to
@@ -404,7 +404,7 @@ a failed import leaves the existing data completely intact; a missing photo path
 
 ---
 
-## [ ] 18 — Local notifications
+## [~] 18 — Local notifications
 
 **Acceptance**
 - Morning and evening reminders at the times in settings, scheduled locally with
@@ -421,7 +421,7 @@ today schedules for tomorrow; disabling cancels everything; reset cancels everyt
 
 ---
 
-## [ ] 19 — Achievements
+## [~] 19 — Achievements
 
 **Acceptance**
 - The five MVP badges: 7 Day Warrior, Perfect Week, 30 Day Discipline, Halfway There (day 38),
@@ -437,7 +437,7 @@ days, not seven days; badges recompute correctly after a reset.
 
 ---
 
-## [ ] 20 — Perfect Day celebration
+## [~] 20 — Perfect Day celebration
 
 **Acceptance**
 - Fires when the 11th habit of the day completes, once per day, not on every subsequent render.

@@ -1,7 +1,7 @@
-import { ComingSoonScreen } from '@/features/shared/ComingSoonScreen';
+import { ProfileScreen } from '@/features/profile/ProfileScreen';
 
 const ProfileRoute = () => {
-  return <ComingSoonScreen titleKey="today.tabProfile" />;
+  return <ProfileScreen />;
 };
 
 export default ProfileRoute;

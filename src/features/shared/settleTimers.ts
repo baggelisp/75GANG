@@ -1,6 +1,6 @@
 import { ChallengeMode } from '@/domain/modes';
 import { calculateDayCompletion } from '@/domain/completion';
-import { decideDayNeedsSettling, settleDayTimers } from '@/domain/timers';
+import { decideDayNeedsSettling, settleDayTimers } from '@/domain/daySettlement';
 import { DayRecordsByDate, IsoDate } from '@/domain/types';
 import { Repositories } from '@/storage/repositories/buildRepositories';
 import { endOfLocalDay, toLocalIsoDate } from '@/utils/DateUtility';

@@ -52,13 +52,39 @@ Pure core, adapters at the edges. Full rules in `.claude/rules/architecture.md`.
 - **Today** shows the day, the rings, the streak and the rules of your own challenge. Tapping a
   simple rule completes it; tapping a measured one opens its detail screen.
 - **Habit detail** holds the controls each rule needs: counters for water and reading, timers for
-  the skill, spirituality and connection rules, two sessions for the workouts, and the morning
-  detox windows. The weigh-in arrives in a later feature.
+  the skill, spirituality and connection rules, two sessions for the workouts, the morning detox
+  windows and the daily weigh-in.
+- **Progress** is the whole challenge: the stats, the seventy-five days laid out as a real
+  Monday-first calendar, and the weight trend. Tapping a day opens what was recorded on it, and
+  arrows walk from there to the day before or after.
+- **Journal** is one reflection a day, saved without leaving the screen.
+- **Profile** is who you are and where the challenge stands, and the way through to **Settings** —
+  your name, the reminder times, and the two ways to start over. **Restart** begins day 1 again on
+  the same challenge; **erase** clears everything recorded and sends you back to choose a new one.
+  Both name exactly what is deleted before they touch anything, and both keep your name and your
+  settings.
+- **Export and import** live in Settings. Export writes the five storage keys under the spec's
+  header to `75gang-backup-YYYY-MM-DD.json` and opens the share sheet; progress photos stay on the
+  phone. Import validates the whole file before a single byte is written, describes the backup, and
+  only then replaces everything — and puts your data back if the write fails halfway.
+- **Credits** sit at the foot of Settings, not on the onboarding slides the artwork appears on:
+  unDraw for the illustrations, AntDesign for the icons, Archivo and Manrope for the type. None of
+  them require attribution.
+- **Reminders** are two local notifications a day at the times in Settings, scheduled with
+  `expo-notifications` and no server anywhere. The evening one carries the live completed count, so
+  it is cancelled and rebuilt after every tap; reset, a finished challenge and the off switch all
+  clear the queue through the same path.
+- **Badges** sit on Profile: the five from the spec, computed from the day records rather than
+  stored, so a reset really does take them away. Earned and unearned differ by mark, weight and
+  words, never by colour alone.
+- **The Perfect Day celebration** is the one real animation. It fires on the _transition_ to all
+  rules met, so it happens once and never again on reopening the app, it lets taps through to the
+  screen underneath, and it degrades to a static banner under reduce motion.
 
 ## Screenshots
 
-`Docs/screenshots.md` — captured from the app running for real, not mockups. Regenerate them with
-`node Docs/screenshots/capture.mjs` while `npm run web` is up on port 8090.
+`Docs/screenshots.md` — all eighteen screens, captured from the app running for real, not mockups.
+Regenerate with `node Docs/screenshots/capture.mjs` while `npm run web` is up on port 8090.
 
 ## Constraints
 

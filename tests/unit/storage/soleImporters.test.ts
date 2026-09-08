@@ -25,6 +25,9 @@ describe('device libraries have exactly one importer, in src and in tests alike'
       'src/storage/adapters/asyncStorageKeyValueStore.ts',
     ],
     ['expo-file-system', 'src/storage/adapters/expoFileStore.ts'],
+    ['expo-sharing', 'src/storage/adapters/expoBackupTransport.ts'],
+    ['expo-document-picker', 'src/storage/adapters/expoBackupTransport.ts'],
+    ['expo-notifications', 'src/storage/adapters/expoNotificationScheduler.ts'],
   ])('only %s is imported by %s', (packagePrefix, expectedImporter) => {
     expect(findImportersOf(packagePrefix)).toEqual([expectedImporter]);
   });

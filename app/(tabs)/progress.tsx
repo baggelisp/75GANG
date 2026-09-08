@@ -1,7 +1,7 @@
-import { ComingSoonScreen } from '@/features/shared/ComingSoonScreen';
+import { ProgressScreen } from '@/features/progress/ProgressScreen';
 
 const ProgressRoute = () => {
-  return <ComingSoonScreen titleKey="today.tabProgress" />;
+  return <ProgressScreen />;
 };
 
 export default ProgressRoute;

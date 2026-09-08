@@ -13,7 +13,6 @@ export type PrimaryButtonProps = {
 };
 
 const MINIMUM_TAP_TARGET = 44;
-const DISABLED_OPACITY = 0.4;
 
 export const PrimaryButton = ({
   label,
@@ -22,6 +21,7 @@ export const PrimaryButton = ({
   isDisabled = false,
 }: PrimaryButtonProps) => {
   const stateStyle = isDisabled ? styles.disabled : null;
+  const labelStyle = isDisabled ? styles.disabledLabel : styles.label;
 
   return (
     <Pressable
@@ -32,7 +32,7 @@ export const PrimaryButton = ({
       onPress={onPress}
       style={[styles.button, stateStyle]}
     >
-      <Text style={styles.label}>{label}</Text>
+      <Text style={labelStyle}>{label}</Text>
     </Pressable>
   );
 };
@@ -46,11 +46,19 @@ const styles = StyleSheet.create({
     borderRadius: radii.pill,
     paddingHorizontal: spacing.massive,
   },
+  /**
+   * A disabled button is a surface, not a faded coral one. Coral at 40% composites to a muddy
+   * red with `ink` text on top of it — unreadable, and it reads as broken rather than as not yet.
+   */
   disabled: {
-    opacity: DISABLED_OPACITY,
+    backgroundColor: colors.raised,
   },
   label: {
     ...typography.sectionLabel,
     color: colors.ink,
+  },
+  disabledLabel: {
+    ...typography.sectionLabel,
+    color: colors.textTertiary,
   },
 });

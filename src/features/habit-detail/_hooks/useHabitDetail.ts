@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { applyCounterStep, findCounter } from '@/domain/counters';
 import { clearWakeUp, recordWakeUp } from '@/domain/detox';
+import { adjustWeight, attachPhoto, setWeight } from '@/domain/weighIn';
 import { pauseTimer, startTimer } from '@/domain/timers';
 import {
   finishWorkout,
@@ -164,6 +165,15 @@ export const useHabitDetail = (habitId: string) => {
 
   const clearWokeUp = (): Promise<boolean> => writeRecord((current) => clearWakeUp(current));
 
+  const recordWeight = (kilograms: number): Promise<boolean> =>
+    writeRecord((current) => setWeight(current, kilograms));
+
+  const stepWeight = (delta: number): Promise<boolean> =>
+    writeRecord((current) => adjustWeight(current, delta));
+
+  const recordPhoto = (path: string): Promise<boolean> =>
+    writeRecord((current) => attachPhoto(current, path));
+
   const dismissError = () => {
     setView((current) => ({ ...current, writeFailed: false }));
   };
@@ -179,6 +189,9 @@ export const useHabitDetail = (habitId: string) => {
     undoLastWorkout,
     wakeUp,
     clearWokeUp,
+    recordWeight,
+    stepWeight,
+    recordPhoto,
     dismissError,
     refresh: load,
   };

@@ -1,25 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Avatar, AVATAR_SIZE_SMALL } from '@/components/Avatar';
 import { spacing } from '@/theme/spacing';
 import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
 
-import { TodayAvatar } from './TodayAvatar';
-
 export type TodayHeaderProps = {
   kicker: string;
   greeting: string;
-  initial: string | null;
+  name: string | null;
 };
 
-export const TodayHeader = ({ kicker, greeting, initial }: TodayHeaderProps) => {
+export const TodayHeader = ({ kicker, greeting, name }: TodayHeaderProps) => {
   return (
     <View style={styles.header}>
       <View style={styles.text}>
         <Text style={styles.kicker}>{kicker}</Text>
         <Text style={styles.greeting}>{greeting}</Text>
       </View>
-      <TodayAvatar initial={initial} />
+      <Avatar name={name} size={AVATAR_SIZE_SMALL} hasStatusDot />
     </View>
   );
 };

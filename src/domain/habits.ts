@@ -177,3 +177,17 @@ export const findHabitForMode = (habitId: string, mode: ChallengeMode): Habit | 
 /** Counted from the resolved habits, so a duplicated id could never make a perfect day unreachable. */
 export const countHabitsForMode = (mode: ChallengeMode): number =>
   resolveHabitsForMode(mode).length;
+
+/**
+ * The numbers a habit's own copy interpolates.
+ *
+ * The rules are the same eleven in every challenge but the targets are not, so the name has to
+ * carry the target rather than being written out with Hard's numbers baked in. Easy showed "Drink
+ * 3 litres of water" above a progress line reading "0 / 2 L" — two different rules on one row.
+ */
+export const describeHabitTargets = (habit: Habit): Record<string, number> => ({
+  // Zero for a habit with no numeric target, which is safe here and only here: those habits' copy
+  // carries no placeholder, so the value is never read. Nothing else may coerce an absence to 0.
+  target: habit.targetValue ?? 0,
+  minutes: habit.sessionMinutes ?? 0,
+});

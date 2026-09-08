@@ -181,3 +181,61 @@ describe('deciding whether a day still needs settling', () => {
     );
   });
 });
+
+describe('settling never takes minutes away', () => {
+  const WOKE_UP = '2026-09-08T06:00:00.000Z';
+
+  it('keeps an hour already banked when the clock has moved backwards', () => {
+    const finished = {
+      completed: false,
+      wokeUpAt: WOKE_UP,
+      phoneFreeMinutes: 60,
+      noContentMinutes: 180,
+    };
+
+    // A phone whose clock was corrected back to before the user woke up.
+    const settled = settleDetox(finished, new Date('2026-09-08T05:00:00.000Z'));
+
+    expect(settled.phoneFreeMinutes).toBe(60);
+    expect(settled.noContentMinutes).toBe(180);
+  });
+
+  it('keeps what was banked when the wake-up belongs to another day entirely', () => {
+    const importedFromElsewhere = {
+      completed: false,
+      wokeUpAt: '2026-11-01T06:00:00.000Z',
+      phoneFreeMinutes: 60,
+      noContentMinutes: 180,
+    };
+
+    const settled = settleDetox(importedFromElsewhere, new Date('2026-09-08T23:59:00.000Z'));
+
+    expect(settled.phoneFreeMinutes).toBe(60);
+    expect(settled.noContentMinutes).toBe(180);
+  });
+
+  it('still adds the minutes that have genuinely run', () => {
+    const started = {
+      completed: false,
+      wokeUpAt: WOKE_UP,
+      phoneFreeMinutes: 10,
+      noContentMinutes: 10,
+    };
+
+    const settled = settleDetox(started, new Date('2026-09-08T06:45:00.000Z'));
+
+    expect(settled.phoneFreeMinutes).toBe(45);
+    expect(settled.noContentMinutes).toBe(45);
+  });
+
+  it('leaves a settled past day alone rather than rewriting it on every read', () => {
+    const finished = {
+      completed: false,
+      wokeUpAt: WOKE_UP,
+      phoneFreeMinutes: 60,
+      noContentMinutes: 180,
+    };
+
+    expect(decideDetoxIsUnsettled(finished, new Date('2026-09-08T05:00:00.000Z'))).toBe(false);
+  });
+});

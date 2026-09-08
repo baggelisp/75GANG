@@ -1,3 +1,4 @@
+import { createInMemoryNotificationScheduler } from '../../../support/storage/inMemoryNotificationScheduler';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 import { StartChallengeScreen } from '@/features/onboarding/StartChallengeScreen';
@@ -9,7 +10,9 @@ import {
 import { buildRepositories } from '@/storage/repositories/buildRepositories';
 import { RepositoryProvider } from '@/storage/repositoryContext';
 import { StorageKeyEnum } from '@/storage/storageKeys';
+import { addDays, formatLongDate, toLocalIsoDate } from '@/utils/DateUtility';
 
+import { createInMemoryBackupTransport } from '../../../support/storage/inMemoryBackupTransport';
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import {
   createInMemoryKeyValueStore,
@@ -25,11 +28,16 @@ jest.mock('expo-router', () => ({
 
 const TODAY = new Date('2026-09-07T09:00:00.000Z');
 
+/** Derived, not written out: the calendar buckets by local date, in every timezone. */
+const TODAY_DATE = toLocalIsoDate(TODAY);
+
 const renderStartScreen = (): InMemoryKeyValueStore => {
   const store = createInMemoryKeyValueStore();
   const repositories = buildRepositories({
     store,
     files: createInMemoryFileStore(),
+    transport: createInMemoryBackupTransport(),
+    notifications: createInMemoryNotificationScheduler(),
     clock: { now: () => TODAY },
   });
 
@@ -65,20 +73,37 @@ describe('the start screen', () => {
     expect(screen.getByPlaceholderText('Optional')).toBeTruthy();
   });
 
-  it('starts on today and disables moving the date forward', () => {
+  it('opens on today, already chosen', () => {
     renderStartScreen();
 
-    const later = screen.getByLabelText('Later');
-
-    expect(later.props.accessibilityState.disabled).toBe(true);
+    expect(screen.getByText(`Starting ${formatLongDate(TODAY_DATE, 'en')}`)).toBeTruthy();
+    expect(
+      screen.getByLabelText(formatLongDate(TODAY_DATE, 'en')).props.accessibilityState.selected,
+    ).toBe(true);
   });
 
-  it('moves the start date back a day at a time', () => {
+  it('lets a day be picked straight off the calendar, not one tap at a time', () => {
+    renderStartScreen();
+    const fourDaysBack = addDays(TODAY_DATE, -4);
+
+    fireEvent.press(screen.getByLabelText(formatLongDate(fourDaysBack, 'en')));
+
+    expect(screen.getByText(`Starting ${formatLongDate(fourDaysBack, 'en')}`)).toBeTruthy();
+  });
+
+  it('will not let a day in the future be chosen', () => {
+    renderStartScreen();
+    const tomorrow = addDays(TODAY_DATE, 1);
+
+    expect(
+      screen.getByLabelText(formatLongDate(tomorrow, 'en')).props.accessibilityState.disabled,
+    ).toBe(true);
+  });
+
+  it('will not step past the month a challenge could still have started in', () => {
     renderStartScreen();
 
-    fireEvent.press(screen.getByLabelText('Earlier'));
-
-    expect(screen.getByLabelText('Later').props.accessibilityState.disabled).toBe(false);
+    expect(screen.getByLabelText('Next month').props.accessibilityState.disabled).toBe(true);
   });
 
   it('writes the challenge and leaves the start screen when Start is pressed', async () => {
@@ -109,6 +134,8 @@ describe('the start screen', () => {
     const repositories = buildRepositories({
       store,
       files: createInMemoryFileStore(),
+      transport: createInMemoryBackupTransport(),
+      notifications: createInMemoryNotificationScheduler(),
       clock: { now: () => TODAY },
     });
 

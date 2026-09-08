@@ -1,14 +1,17 @@
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Screen } from '@/components/Screen';
 import { CHALLENGE_LENGTH_DAYS } from '@/domain/challenge';
 import { TargetTypeEnum } from '@/domain/targets';
+import { useReminderSync } from '@/features/shared/useReminderSync';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
 import { formatLongDate } from '@/utils/DateUtility';
 
 import { ChallengeCard } from './_components/ChallengeCard';
+import { PerfectDayCelebration } from './_components/PerfectDayCelebration';
 import { RuleList } from './_components/RuleList';
 import { TodayHeader } from './_components/TodayHeader';
 import { TodayLoading } from './_components/TodayLoading';
@@ -17,8 +20,8 @@ import { TodayTiles } from './_components/TodayTiles';
 import { TodayUnavailable } from './_components/TodayUnavailable';
 import { WriteErrorBanner } from './_components/WriteErrorBanner';
 import { useHabitToggle } from './_hooks/useHabitToggle';
+import { usePerfectDayCelebration } from './_hooks/usePerfectDayCelebration';
 import { TodayStatusEnum, useToday } from './_hooks/useToday';
-import { decideAvatarInitial } from './decideAvatarInitial';
 import { decideChallengeMode } from './decideChallengeMode';
 
 /**
@@ -34,6 +37,22 @@ export const TodayScreen = () => {
     mode: decideChallengeMode(today.challenge),
     onWritten: today.refresh,
   });
+  const reminders = useReminderSync();
+  const celebration = usePerfectDayCelebration({
+    date: today.today,
+    completedHabits: today.completion.completedHabits,
+    totalHabits: today.completion.totalHabits,
+  });
+
+  // The evening reminder carries the live count, so it is rebuilt whenever the count moves. The
+  // status is deliberately ignored here: a reminder that could not be rescheduled must never
+  // interrupt someone recording a habit.
+  const syncReminders = reminders.sync;
+  const completedHabits = today.completion.completedHabits;
+
+  useEffect(() => {
+    void syncReminders();
+  }, [syncReminders, completedHabits, today.status]);
 
   if (today.status === TodayStatusEnum.LOADING) {
     return <TodayLoading />;
@@ -73,11 +92,7 @@ export const TodayScreen = () => {
   return (
     <Screen>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <TodayHeader
-          kicker={kicker}
-          greeting={greeting}
-          initial={decideAvatarInitial(today.name)}
-        />
+        <TodayHeader kicker={kicker} greeting={greeting} name={today.name} />
 
         <TodayRingsCard
           habitsCompleted={today.completion.completedHabits}
@@ -108,6 +123,14 @@ export const TodayScreen = () => {
           onPressRule={pressRule}
         />
       </ScrollView>
+
+      <PerfectDayCelebration
+        isShowing={celebration.isShowing}
+        prefersReducedMotion={celebration.prefersReducedMotion}
+        day={today.currentDay}
+        totalHabits={today.completion.totalHabits}
+        onDismiss={celebration.dismiss}
+      />
     </Screen>
   );
 };

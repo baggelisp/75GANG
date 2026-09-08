@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Screen } from '@/components/Screen';
-import { SecondaryButton } from '@/components/SecondaryButton';
+import { BackButton } from '@/components/BackButton';
 import { decideHabitIsComplete } from '@/domain/completion';
+import { describeHabitTargets } from '@/domain/habits';
 import { decideTimerIsRunning } from '@/domain/timers';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
@@ -16,6 +17,7 @@ import { HabitDetailLoading } from './_components/HabitDetailLoading';
 import { HabitDetailUnavailable } from './_components/HabitDetailUnavailable';
 import { HabitWriteErrorBanner } from './_components/HabitWriteErrorBanner';
 import { HabitDetailStatusEnum, useHabitDetail } from './_hooks/useHabitDetail';
+import { useWeighIn } from './_hooks/useWeighIn';
 import { decideTracker, TrackerEnum } from './decideTracker';
 
 export type HabitDetailScreenProps = {
@@ -32,6 +34,7 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
   const router = useRouter();
   const detail = useHabitDetail(habitId);
   const [chosenOutdoor, setChosenOutdoor] = useState(false);
+  const weighIn = useWeighIn(detail);
 
   if (detail.status === HabitDetailStatusEnum.LOADING) {
     return <HabitDetailLoading />;
@@ -74,12 +77,17 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
     <Screen>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.heading}>
-          <Text style={styles.title}>{t(`habits.${habit.id}.name`)}</Text>
-          <Text style={styles.description}>{t(`habits.${habit.id}.description`)}</Text>
+          <Text style={styles.title}>
+            {t(`habits.${habit.id}.name`, describeHabitTargets(habit))}
+          </Text>
+          <Text style={styles.description}>
+            {t(`habits.${habit.id}.description`, describeHabitTargets(habit))}
+          </Text>
         </View>
 
         <HabitTracker
           tracker={tracker}
+          weighIn={weighIn}
           habit={habit}
           record={record}
           isComplete={isComplete}
@@ -98,9 +106,9 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
 
         <HabitWriteErrorBanner isVisible={detail.writeFailed} onDismiss={detail.dismissError} />
 
-        <SecondaryButton
+        <BackButton
           label={t('counter.back')}
-          accessibilityLabel={t('counter.back')}
+          accessibilityLabel={t('counter.backAccessibility')}
           onPress={router.back}
         />
       </ScrollView>

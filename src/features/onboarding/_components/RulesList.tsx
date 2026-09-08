@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { HABITS } from '@/domain/habits';
+import { describeHabitTargets, HABITS } from '@/domain/habits';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
 
@@ -13,7 +13,11 @@ export const RulesList = () => {
   return (
     <ScrollView style={styles.list} contentContainerStyle={styles.content}>
       {HABITS.map((habit) => (
-        <RuleLine key={habit.id} number={habit.number} name={t(`habits.${habit.id}.name`)} />
+        <RuleLine
+          key={habit.id}
+          number={habit.number}
+          name={t(`habits.${habit.id}.name`, describeHabitTargets(habit))}
+        />
       ))}
     </ScrollView>
   );

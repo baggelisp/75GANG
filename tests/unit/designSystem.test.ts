@@ -25,6 +25,30 @@ describe('findStyleViolations', () => {
     expect(violations[0]?.reason).toBe(StyleViolationEnum.COLOUR_LITERAL_OUTSIDE_TOKENS);
   });
 
+  it('rejects a colour buried inside a longer string, such as a pasted SVG', () => {
+    const source = `const art = '<svg viewBox="0 0 10 10"><path fill="#ed9da0"/></svg>';`;
+
+    const violations = findStyleViolations(A_COMPONENT, source);
+
+    expect(violations).toHaveLength(1);
+    expect(violations[0]?.reason).toBe(StyleViolationEnum.COLOUR_LITERAL_OUTSIDE_TOKENS);
+  });
+
+  it('rejects a colour buried inside a template string too', () => {
+    const source = 'const art = `<svg><path fill="#d6d6e3"/></svg>`;';
+
+    const violations = findStyleViolations(A_COMPONENT, source);
+
+    expect(violations).toHaveLength(1);
+    expect(violations[0]?.reason).toBe(StyleViolationEnum.COLOUR_LITERAL_OUTSIDE_TOKENS);
+  });
+
+  it('allows a drawing that interpolates its colours from the tokens', () => {
+    const source = 'const art = `<svg><path fill="${colors.coral}"/></svg>`;';
+
+    expect(findStyleViolations(A_COMPONENT, source)).toEqual([]);
+  });
+
   it('allows colour literals inside tokens.ts, which is the one file licensed to hold them', () => {
     const source = "export const colors = { bg: '#1A191C' };";
 
@@ -126,6 +150,31 @@ describe('findStyleViolations', () => {
     const source = 'const styles = { title: { fontSize: typography.hero.fontSize } };';
 
     expect(findStyleViolations(A_COMPONENT, source)).toEqual([]);
+  });
+});
+
+describe('icons', () => {
+  it('rejects an icon hand-drawn as an svg path in a component', () => {
+    const source = "import Svg, { Path } from 'react-native-svg';\nexport const X = () => null;";
+
+    const violations = findStyleViolations('src/components/BackButton.tsx', source);
+
+    expect(violations).toHaveLength(1);
+    expect(violations[0]?.reason).toBe(StyleViolationEnum.HAND_DRAWN_ICON);
+  });
+
+  it('allows a drawing to use react-native-svg, which is what it is for', () => {
+    const source = "import Svg, { Circle } from 'react-native-svg';\nexport const X = () => null;";
+
+    expect(findStyleViolations('src/components/charts/ProgressRings.tsx', source)).toEqual([]);
+  });
+
+  it('allows the onboarding illustrations, which are drawings too', () => {
+    const source = "import { SvgXml } from 'react-native-svg';\nexport const X = () => null;";
+
+    expect(
+      findStyleViolations('src/features/onboarding/_components/OnboardingIllustration.tsx', source),
+    ).toEqual([]);
   });
 });
 

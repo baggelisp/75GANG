@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Card } from '@/components/Card';
 import { decideHabitIsComplete } from '@/domain/completion';
-import { Habit } from '@/domain/habits';
+import { describeHabitTargets, Habit } from '@/domain/habits';
 import { ChallengeMode } from '@/domain/modes';
 import { HabitRecord } from '@/domain/types';
 import { useTranslation } from '@/i18n';
@@ -57,7 +57,7 @@ export const RuleList = ({
           <RuleRow
             key={habit.id}
             habitId={habit.id}
-            name={t(`habits.${habit.id}.name`)}
+            name={t(`habits.${habit.id}.name`, describeHabitTargets(habit))}
             meta={describe(habit)}
             isDone={decideHabitIsComplete(
               habit.id,
@@ -65,7 +65,7 @@ export const RuleList = ({
               mode,
             )}
             isFirst={index === 0}
-            accessibilityLabel={t(`habits.${habit.id}.name`)}
+            accessibilityLabel={t(`habits.${habit.id}.name`, describeHabitTargets(habit))}
             onPress={onPressRule}
           />
         ))}

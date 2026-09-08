@@ -144,7 +144,7 @@ day 75, day 76, a future start date, a DST transition, a leap day; an empty hist
 
 ---
 
-## [ ] 05 — i18n scaffold
+## [~] 05 — i18n scaffold — PR #5
 
 **Acceptance**
 - `src/i18n/` with an `en` locale and the hook every component uses. Greek locale stubbed with the

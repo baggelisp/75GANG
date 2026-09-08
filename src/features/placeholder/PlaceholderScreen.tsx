@@ -1,23 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Screen } from '@/components/Screen';
-import { colors } from '@/theme/tokens';
+import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
+import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
 
-const APP_NAME = '75 G-ANG';
-const TAGLINE = '75 Days. 11 Rules. A Better You.';
-
 /**
- * Temporary boot target, replaced by the Today screen in feature 07. It exists so the theme layer
- * has somewhere real to render while features 03 and 04 build the domain underneath it.
+ * Temporary boot target, replaced by the Today screen in feature 07. It exists so the theme and
+ * translation layers have somewhere real to render while the domain is built underneath them.
  */
 export const PlaceholderScreen = () => {
+  const { t } = useTranslation();
+
   return (
     <Screen>
       <View style={styles.centre}>
-        <Text style={styles.title}>{APP_NAME}</Text>
-        <Text style={styles.tagline}>{TAGLINE}</Text>
+        <Text style={styles.title}>{t('app.name')}</Text>
+        <Text style={styles.tagline}>{t('app.tagline')}</Text>
       </View>
     </Screen>
   );

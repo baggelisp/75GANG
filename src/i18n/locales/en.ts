@@ -404,6 +404,14 @@ export const en = {
     fontsSource: 'Archivo and Manrope, from Google Fonts',
     note: 'Recoloured into this app\u2019s own palette.',
   },
+  markDone: {
+    hint: 'Did this one but did not track it? Mark it done and it counts towards the day.',
+    mark: 'Mark as done',
+    markAccessibility: 'Mark this rule as done',
+    marked: 'You marked this done yourself.',
+    undo: 'Undo',
+    undoAccessibility: 'Take the mark off and go back to what the counter says',
+  },
   common: {
     start: 'Start',
     cancel: 'Cancel',

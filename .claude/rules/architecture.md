@@ -83,6 +83,7 @@ src/
 | `src/storage/adapters/**` | its own library + `src/storage/ports/**` | `src/features/**`, another adapter |
 | `src/storage/repositories/**` | `src/storage/ports/**`, `src/domain/**` | an adapter directly, `src/features/**` |
 | `src/features/**` | `src/domain/**`, `src/storage/repositories/**`, `src/components/**`, `src/theme/**` | `src/storage/adapters/**`, `@react-native-async-storage/*`, `expo-file-system` |
+| `src/components/**` | React, React Native, a render library, `src/domain/**`, `src/theme/**` | `src/storage/**`, `src/features/**` |
 | `app/**` | `src/features/**`, `src/theme/**`, and `src/storage/bootstrap` in `_layout.tsx` only | any other `src/storage/**`, `src/domain/**` directly |
 
 Anything under `app/` is a route: it imports one screen component and renders it. Logic in a route

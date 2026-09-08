@@ -191,3 +191,21 @@ export const describeHabitTargets = (habit: Habit): Record<string, number> => ({
   target: habit.targetValue ?? 0,
   minutes: habit.sessionMinutes ?? 0,
 });
+
+/** A target of one. "1 workouts" is wrong, and the translation layer has no plural rules. */
+const SINGULAR_TARGET = 1;
+
+/**
+ * Which copy key a habit's name comes from.
+ *
+ * Keyed on the number rather than on the habit id: Easy and Medium drop the workouts to a single
+ * session, and any future mode that drops another habit to one gets the right words for free.
+ * `tests/unit/i18n/habitNames.test.ts` pins that every habit which can reach one has the key.
+ */
+export const decideHabitNameKey = (habit: Habit): string => {
+  if (habit.targetValue === SINGULAR_TARGET) {
+    return `habits.${habit.id}.nameSingle`;
+  }
+
+  return `habits.${habit.id}.name`;
+};

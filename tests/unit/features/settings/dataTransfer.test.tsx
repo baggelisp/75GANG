@@ -248,8 +248,8 @@ describe('choosing a file to import', () => {
             IMPORTED_START,
             'en',
           )}. Importing replaces your current challenge, every day you have recorded and every ` +
-            'journal entry with what is in the file, and deletes your progress photos, which a ' +
-            'backup never carries. This cannot be undone.',
+            'journal entry with what is in the file. Your progress photos stay where they are. ' +
+            'This cannot be undone.',
         ),
       ).toBeTruthy();
     });
@@ -340,10 +340,8 @@ describe('confirming the import', () => {
     await waitFor(() => expect(mockRouter.replace).toHaveBeenCalledWith('/today'));
   });
 
-  it('deletes the progress photos, which belonged to the challenge it just replaced', async () => {
+  it('leaves the progress photos alone, since a backup cannot put one back', async () => {
     const harness = renderSettings();
-    // A photo is keyed by date alone, so this one would be matched to an imported day and shown
-    // as that day's body photo.
     await harness.files.write('photos/2026-09-01.jpg', 'file:///camera/one.jpg');
     await waitForSettings();
     await offerBackup(harness, buildBackup());
@@ -352,30 +350,17 @@ describe('confirming the import', () => {
     fireEvent.press(screen.getByLabelText(REPLACE));
 
     await waitFor(() => expect(mockRouter.replace).toHaveBeenCalled());
-    expect(harness.files.snapshot()['photos/2026-09-01.jpg']).toBeUndefined();
+    expect(harness.files.snapshot()['photos/2026-09-01.jpg']).toBe('file:///camera/one.jpg');
   });
 
-  it('says the photos go, so the confirmation names everything that is lost', async () => {
+  it('says the photos stay, so the confirmation is accurate about them', async () => {
     const harness = renderSettings();
     await waitForSettings();
 
     await offerBackup(harness, buildBackup());
 
     await waitFor(() => {
-      expect(screen.getByText(/deletes your progress photos/)).toBeTruthy();
-    });
-  });
-
-  it('still imports when the photo directory cannot be removed', async () => {
-    const harness = renderSettings();
-    await waitForSettings();
-    await offerBackup(harness, buildBackup());
-    await waitFor(() => expect(screen.getByLabelText(REPLACE)).toBeTruthy());
-
-    fireEvent.press(screen.getByLabelText(REPLACE));
-
-    await waitFor(() => {
-      expect(readKey(harness.store, StorageKeyEnum.CHALLENGE)).toEqual(IMPORTED_CHALLENGE);
+      expect(screen.getByText(/Your progress photos stay where they are/)).toBeTruthy();
     });
   });
 });

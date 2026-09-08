@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { buildBackupFileName, buildExportEnvelope } from '@/domain/export/schema';
 import { ImportPayload, ImportRejection, validateImport } from '@/domain/export/validateImport';
 import { buildBackupPath } from '@/storage/backupPaths';
-import { PHOTO_DIRECTORY } from '@/storage/photoPaths';
 import { Repositories } from '@/storage/repositories/buildRepositories';
 import { useRepositories } from '@/storage/repositoryContext';
 import { toLocalIsoDate } from '@/utils/DateUtility';
@@ -43,8 +42,13 @@ const JSON_INDENT = 2;
  * to the share sheet, and touches nothing the challenge is made of.
  *
  * Import validates the whole file before a single byte is written, and then still waits for an
- * explicit confirmation — it replaces everything on the device, progress photos included, and the
- * user is entitled to see what they are about to lose first.
+ * explicit confirmation — it replaces every stored record, and the user is entitled to see what
+ * they are about to lose first.
+ *
+ * Progress photos are deliberately left where they are. A backup never carries them, so deleting
+ * them would lose pictures the file cannot put back. The cost is that photos are keyed by date
+ * alone: importing a backup from another device onto one that already has photos can show an
+ * imported day a photo that belonged to the challenge it replaced.
  */
 export const useDataTransfer = () => {
   const repositories = useRepositories();
@@ -127,12 +131,6 @@ export const useDataTransfer = () => {
 
       return false;
     }
-
-    // Photos are keyed by date and nothing else, so a photo left behind from the challenge this
-    // import just replaced would be matched to an imported day and shown as that day's body
-    // photo. The backup never carries photos, so there is nothing to put back — but showing the
-    // wrong one is worse than showing the placeholder the weigh-in screen already falls back to.
-    await repositories.files.removeDirectory(PHOTO_DIRECTORY).catch(() => undefined);
 
     setView(IDLE);
 

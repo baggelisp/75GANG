@@ -74,7 +74,8 @@ export const en = {
       description: 'Minimum {target} litres across the day.',
     },
     [HabitIdEnum.WORKOUTS]: {
-      name: 'Workouts of {minutes} minutes',
+      name: '{target} workouts, {minutes} minutes each',
+      nameSingle: '{target} workout of {minutes} minutes',
       description: 'At least {minutes} minutes each. One outdoors if you can.',
     },
     [HabitIdEnum.SKILL]: {
@@ -367,8 +368,7 @@ export const en = {
     confirmImportBody:
       'The backup holds a {mode} challenge that started on {date}. Importing replaces your ' +
       'current challenge, every day you have recorded and every journal entry with what is in ' +
-      'the file, and deletes your progress photos, which a backup never carries. This cannot ' +
-      'be undone.',
+      'the file. Your progress photos stay where they are. This cannot be undone.',
     confirmImport: 'Replace',
     rejectNotJson: 'That file could not be read as JSON, so it is not a backup.',
     rejectNotBackup: 'That file was not made by 75 G-ANG.',
@@ -403,7 +403,7 @@ export const en = {
     iconsSource: 'AntDesign, through @expo/vector-icons',
     fontsLabel: 'Type',
     fontsSource: 'Archivo and Manrope, from Google Fonts',
-    note: 'Recoloured into this app\u2019s own palette. None of them require attribution; they get it anyway.',
+    note: 'Recoloured into this app\u2019s own palette.',
   },
   common: {
     start: 'Start',

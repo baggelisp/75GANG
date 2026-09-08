@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Screen } from '@/components/Screen';
 import { BackButton } from '@/components/BackButton';
 import { decideHabitIsComplete } from '@/domain/completion';
-import { describeHabitTargets } from '@/domain/habits';
+import { decideHabitNameKey, describeHabitTargets } from '@/domain/habits';
 import { decideTimerIsRunning } from '@/domain/timers';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
@@ -78,7 +78,7 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.heading}>
           <Text style={styles.title}>
-            {t(`habits.${habit.id}.name`, describeHabitTargets(habit))}
+            {t(decideHabitNameKey(habit), describeHabitTargets(habit))}
           </Text>
           <Text style={styles.description}>
             {t(`habits.${habit.id}.description`, describeHabitTargets(habit))}

@@ -19,6 +19,8 @@ export const el: Translations = {
     dayKicker: '{date} · Ημέρα {day} από {total}',
     dayOf: 'Ημέρα {day} από {total}',
     dayKickerOutsideChallenge: '{date}',
+    writeFailed: 'Το τσεκάρισμα δεν αποθηκεύτηκε. Δοκίμασε ξανά.',
+    writeFailedDismiss: 'Κλείσε το μήνυμα σφάλματος',
     unavailableTitle: 'Το σήμερα δεν φορτώθηκε',
     unavailableBody:
       'Η πρόοδός σου είναι ασφαλής στο κινητό. Δοκίμασε ξανά σε λίγο ή άνοιξε πάλι την εφαρμογή.',
@@ -64,6 +66,7 @@ export const el: Translations = {
     },
     [HabitIdEnum.DIET]: {
       name: 'Υγιεινή διατροφή',
+      note: 'Ούτε ένα cheat meal. Τίποτα μετά τις 22:00.',
       description:
         'Υγιεινή διατροφή της επιλογής σου χωρίς ούτε ένα cheat meal, σοκολάτα ή αναψυκτικό κλπ (όχι γεύματα μετά τις 22:00).',
     },
@@ -90,6 +93,7 @@ export const el: Translations = {
     },
     [HabitIdEnum.NO_DEVICES_BED]: {
       name: 'Καμία συσκευή στο κρεβάτι',
+      note: 'Επιβεβαίωσε το βράδυ',
       description: 'Καμία συσκευή (κινητό, iPad, τηλεόραση) στο κρεβάτι το βράδυ.',
     },
     [HabitIdEnum.WEIGH_IN]: {

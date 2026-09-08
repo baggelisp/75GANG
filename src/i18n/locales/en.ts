@@ -16,6 +16,8 @@ export const en = {
     dayKicker: '{date} · Day {day} of {total}',
     dayOf: 'Day {day} of {total}',
     dayKickerOutsideChallenge: '{date}',
+    writeFailed: 'That tap was not saved. Tap again to retry.',
+    writeFailedDismiss: 'Dismiss the save error',
     unavailableTitle: 'Today could not be loaded',
     unavailableBody:
       'Your progress is safe on this phone. Try again in a moment, or reopen the app.',
@@ -61,6 +63,7 @@ export const en = {
     },
     [HabitIdEnum.DIET]: {
       name: 'Healthy diet',
+      note: 'No cheat meal. Nothing after 22:00.',
       description: 'No cheat meal, no chocolate, no soft drinks. Nothing after 22:00.',
     },
     [HabitIdEnum.WATER]: {
@@ -85,6 +88,7 @@ export const en = {
     },
     [HabitIdEnum.NO_DEVICES_BED]: {
       name: 'No devices in bed',
+      note: 'Confirm tonight',
       description: 'No phone, tablet or television at night.',
     },
     [HabitIdEnum.WEIGH_IN]: {

@@ -20,6 +20,11 @@ export type Habit = {
   readonly targetValue: number | null;
   /** For a sessions habit, how long each session must be. Null for every other target type. */
   readonly sessionMinutes: number | null;
+  /**
+   * Translation key for a standing reminder shown under the rule, for habits whose rule carries a
+   * condition the checkbox cannot express — the diet cut-off, for instance. Null for the rest.
+   */
+  readonly noteKey: string | null;
 };
 
 /**
@@ -37,6 +42,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.BOOLEAN,
     targetValue: null,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.DIET,
@@ -45,6 +51,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.BOOLEAN,
     targetValue: null,
     sessionMinutes: null,
+    noteKey: 'habits.diet.note',
   },
   {
     id: HabitIdEnum.WATER,
@@ -53,6 +60,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.LITRES,
     targetValue: WATER_TARGET_LITRES,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.WORKOUTS,
@@ -61,6 +69,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.SESSIONS,
     targetValue: WORKOUT_SESSIONS_REQUIRED,
     sessionMinutes: WORKOUT_MINUTES_REQUIRED,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.SKILL,
@@ -69,6 +78,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.MINUTES,
     targetValue: SKILL_TARGET_MINUTES,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.READING,
@@ -77,6 +87,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.PAGES,
     targetValue: READING_TARGET_PAGES,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.MORNING_DETOX,
@@ -85,6 +96,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.WINDOWS,
     targetValue: null,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.NO_DEVICES_BED,
@@ -93,6 +105,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.BOOLEAN,
     targetValue: null,
     sessionMinutes: null,
+    noteKey: 'habits.no-devices-bed.note',
   },
   {
     id: HabitIdEnum.WEIGH_IN,
@@ -101,6 +114,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.MEASUREMENT,
     targetValue: null,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.SPIRITUALITY,
@@ -109,6 +123,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.MINUTES,
     targetValue: SPIRITUALITY_TARGET_MINUTES,
     sessionMinutes: null,
+    noteKey: null,
   },
   {
     id: HabitIdEnum.CONNECTION,
@@ -117,6 +132,7 @@ export const HABITS: readonly Habit[] = [
     targetType: TargetTypeEnum.MINUTES,
     targetValue: CONNECTION_TARGET_MINUTES,
     sessionMinutes: null,
+    noteKey: null,
   },
 ];
 

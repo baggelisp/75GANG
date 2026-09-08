@@ -168,3 +168,58 @@ describe('a timed rule', () => {
     expect(readHabit(store, HabitIdEnum.SKILL).value).toBe(5);
   });
 });
+
+describe('what the numbers say once a rule is marked done', () => {
+  it('shows the water target met, not the half litre that was logged', async () => {
+    renderHabit(HabitIdEnum.WATER, {
+      [HabitIdEnum.WATER]: { completed: false, value: 0.5 },
+    });
+    await waitFor(() => expect(screen.getByText('0.5 / 3 L')).toBeTruthy());
+
+    fireEvent.press(screen.getByLabelText(MARK));
+
+    await waitFor(() => expect(screen.getByText('3 / 3 L')).toBeTruthy());
+  });
+
+  it('shows the full time on a timer that was never run', async () => {
+    renderHabit(HabitIdEnum.SKILL, {
+      [HabitIdEnum.SKILL]: { completed: false, value: 5 },
+    });
+    await waitFor(() => expect(screen.getByText('05:00')).toBeTruthy());
+
+    fireEvent.press(screen.getByLabelText(MARK));
+
+    await waitFor(() => expect(screen.getByText('45:00')).toBeTruthy());
+  });
+
+  it('fills both detox windows, which is what marking the morning done means', async () => {
+    const NINETY_FIVE_MINUTES = 95 * 60 * 1000;
+
+    renderHabit(HabitIdEnum.MORNING_DETOX, {
+      [HabitIdEnum.MORNING_DETOX]: {
+        completed: false,
+        wokeUpAt: new Date(NOW.getTime() - NINETY_FIVE_MINUTES).toISOString(),
+        phoneFreeMinutes: 60,
+        noContentMinutes: 95,
+      },
+    });
+    await waitFor(() => expect(screen.getByText('1:35:00 / 3:00:00')).toBeTruthy());
+
+    fireEvent.press(screen.getByLabelText(MARK));
+
+    await waitFor(() => expect(screen.getByText('3:00:00 / 3:00:00')).toBeTruthy());
+  });
+
+  it('puts the real numbers back when the mark comes off', async () => {
+    renderHabit(HabitIdEnum.WATER, {
+      [HabitIdEnum.WATER]: { completed: false, value: 0.5 },
+    });
+    await waitFor(() => expect(screen.getByLabelText(MARK)).toBeTruthy());
+    fireEvent.press(screen.getByLabelText(MARK));
+    await waitFor(() => expect(screen.getByText('3 / 3 L')).toBeTruthy());
+
+    fireEvent.press(screen.getByLabelText(UNDO));
+
+    await waitFor(() => expect(screen.getByText('0.5 / 3 L')).toBeTruthy());
+  });
+});

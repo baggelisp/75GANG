@@ -51,6 +51,7 @@ export const el: Translations = {
     progressWindows: 'Κινητό {phone} λ, content {content} λ',
     progressWeighInDone: '{weight} kg, φωτογραφία αποθηκεύτηκε',
     progressWeighInPending: 'Χρειάζεται βάρος και φωτογραφία',
+    progressMarkedDone: 'Σημάνθηκε ως ολοκληρωμένο',
     progress: {
       litres: '{current} / {target} L',
       pages: '{current} / {target} σελίδες',

@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Card } from '@/components/Card';
 import { SecondaryButton } from '@/components/SecondaryButton';
+import { decideShownProgress } from '@/domain/progress';
 import { Habit } from '@/domain/habits';
 import { WORKOUT_MINUTES_REQUIRED } from '@/domain/targets';
 import { calculateElapsedMinutes, decideTimerIsRunning } from '@/domain/timers';
@@ -52,8 +53,12 @@ export const WorkoutCard = ({
   const now = useTicker(isRunning);
   const sessions = record.sessions ?? [];
   const minutesRequired = habit.sessionMinutes ?? WORKOUT_MINUTES_REQUIRED;
-  const sessionsDone = countQualifyingSessions(record, minutesRequired);
   const sessionsRequired = habit.targetValue ?? 0;
+  const sessionsDone = decideShownProgress(
+    record,
+    countQualifyingSessions(record, minutesRequired),
+    sessionsRequired,
+  );
 
   return (
     <Card>

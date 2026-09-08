@@ -1,6 +1,11 @@
 import { Habit } from '@/domain/habits';
-import { calculateHabitProgress } from '@/domain/progress';
-import { TargetTypeEnum } from '@/domain/targets';
+import { decideIsMarkedDone } from '@/domain/markDone';
+import { calculateHabitProgress, decideShownProgress } from '@/domain/progress';
+import {
+  NO_CONTENT_MINUTES_REQUIRED,
+  PHONE_FREE_MINUTES_REQUIRED,
+  TargetTypeEnum,
+} from '@/domain/targets';
 import { HabitRecord } from '@/domain/types';
 
 export type HabitProgressDescription = {
@@ -39,8 +44,16 @@ export const describeHabitProgress = (
     return {
       key: 'today.progressWindows',
       values: {
-        phone: readNumber(current.phoneFreeMinutes),
-        content: readNumber(current.noContentMinutes),
+        phone: decideShownProgress(
+          current,
+          readNumber(current.phoneFreeMinutes),
+          PHONE_FREE_MINUTES_REQUIRED,
+        ),
+        content: decideShownProgress(
+          current,
+          readNumber(current.noContentMinutes),
+          NO_CONTENT_MINUTES_REQUIRED,
+        ),
       },
     };
   }
@@ -51,6 +64,12 @@ export const describeHabitProgress = (
 
     if (hasWeight && hasPhoto) {
       return { key: 'today.progressWeighInDone', values: { weight: readNumber(current.weightKg) } };
+    }
+
+    // Marked by hand with nothing recorded: there is no weight to quote, so the line says what
+    // actually happened rather than inventing a measurement.
+    if (decideIsMarkedDone(current)) {
+      return { key: 'today.progressMarkedDone', values: {} };
     }
 
     return { key: 'today.progressWeighInPending', values: {} };

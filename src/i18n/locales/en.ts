@@ -48,6 +48,7 @@ export const en = {
     progressWindows: 'Phone {phone} min, content {content} min',
     progressWeighInDone: '{weight} kg, photo saved',
     progressWeighInPending: 'Weight and photo needed',
+    progressMarkedDone: 'Marked as done',
     progress: {
       litres: '{current} / {target} L',
       pages: '{current} / {target} pages',

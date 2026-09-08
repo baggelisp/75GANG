@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import { useEffect } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { useCallback, useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Screen } from '@/components/Screen';
@@ -33,6 +33,17 @@ export const TodayScreen = () => {
   const { t, locale } = useTranslation();
   const router = useRouter();
   const today = useToday();
+
+  // Expo Router keeps a tab mounted while you are away on a detail screen, so nothing reloads on
+  // the way back. Without this, adding half a litre of water and pressing back left the home
+  // screen showing the count from before the tap.
+  const refreshToday = today.refresh;
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshToday();
+    }, [refreshToday]),
+  );
   const { toggleHabit, writeFailed, dismissError } = useHabitToggle({
     mode: decideChallengeMode(today.challenge),
     onWritten: today.refresh,

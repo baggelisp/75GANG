@@ -21,10 +21,15 @@ import {
 
 const mockReplace = jest.fn();
 
-jest.mock('expo-router', () => ({
-  useRouter: () => ({ push: jest.fn(), replace: mockReplace }),
-  Redirect: () => null,
-}));
+jest.mock('expo-router', () => {
+  const { useEffect } = jest.requireActual<typeof import('react')>('react');
+
+  return {
+    useFocusEffect: (effect: () => void) => useEffect(effect, [effect]),
+    useRouter: () => ({ push: jest.fn(), replace: mockReplace }),
+    Redirect: () => null,
+  };
+});
 
 const TODAY = new Date('2026-09-07T09:00:00.000Z');
 

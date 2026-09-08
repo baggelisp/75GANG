@@ -56,6 +56,14 @@ export type DayRecord = {
 
 export type DayRecordsByDate = Record<IsoDate, DayRecord>;
 
+/** The derived half of a day record, recomputed from the habits rather than trusted. */
+export type DayCompletion = {
+  completedHabits: number;
+  totalHabits: number;
+  completionPercentage: number;
+  perfectDay: boolean;
+};
+
 export type JournalEntry = {
   content: string;
   whatWentWell: string;

@@ -1,16 +1,27 @@
 {
   "habits": {
-    "no-alcohol": { "completed": true, "value": null },
-    "diet": { "completed": true, "value": null },
-    "water": { "completed": true, "value": 3 },
-    "workouts": { "completed": true, "value": 2, "sessions": [] },
-    "skill": { "completed": true, "value": 45 },
-    "reading": { "completed": true, "value": 15 },
-    "morning-detox": { "completed": true, "value": null },
-    "no-devices-bed": { "completed": true, "value": null },
-    "weigh-in": { "completed": true, "value": null },
-    "spirituality": { "completed": true, "value": 15 },
-    "connection": { "completed": true, "value": 15 }
+    "no-alcohol": { "completed": true },
+    "diet": { "completed": true },
+    "water": { "completed": false, "value": 3 },
+    "workouts": {
+      "completed": false,
+      "sessions": [
+        { "minutes": 45, "outdoor": true, "completedAt": "2026-09-06T08:10:00.000Z" },
+        { "minutes": 50, "outdoor": false, "completedAt": "2026-09-06T18:30:00.000Z" }
+      ]
+    },
+    "skill": { "completed": false, "value": 45 },
+    "reading": { "completed": false, "value": 15 },
+    "morning-detox": {
+      "completed": false,
+      "wokeUpAt": "2026-09-06T07:10:00.000Z",
+      "phoneFreeMinutes": 60,
+      "noContentMinutes": 180
+    },
+    "no-devices-bed": { "completed": true },
+    "weigh-in": { "completed": false, "weightKg": 88.4, "photo": "photos/2026-09-06.jpg" },
+    "spirituality": { "completed": false, "value": 15 },
+    "connection": { "completed": false, "value": 15 }
   },
   "completedHabits": 11,
   "totalHabits": 11,

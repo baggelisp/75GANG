@@ -1,0 +1,28 @@
+{
+  "habits": {
+    "no-alcohol": { "completed": true },
+    "diet": { "completed": true },
+    "water": { "completed": false, "value": 2.5 },
+    "workouts": {
+      "completed": false,
+      "sessions": [{ "minutes": 48, "outdoor": true, "completedAt": "2026-09-07T08:10:00.000Z" }]
+    },
+    "skill": { "completed": false, "value": 45 },
+    "reading": { "completed": false, "value": 12 },
+    "morning-detox": {
+      "completed": false,
+      "wokeUpAt": "2026-09-07T07:10:00.000Z",
+      "phoneFreeMinutes": 60,
+      "noContentMinutes": 145
+    },
+    "no-devices-bed": { "completed": false },
+    "weigh-in": { "completed": false, "weightKg": 88.4, "photo": "photos/2026-09-07.jpg" },
+    "spirituality": { "completed": false, "value": 15 },
+    "connection": { "completed": false, "value": 0 }
+  },
+  "completedHabits": 5,
+  "totalHabits": 11,
+  "completionPercentage": 45,
+  "perfectDay": false,
+  "updatedAt": "2026-09-07T21:14:00.000Z"
+}

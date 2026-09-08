@@ -1,0 +1,2 @@
+// A deliberately illegal module: the domain reaching for the clock instead of taking `now`.
+export const decideIsToday = (candidate: number) => candidate === Date.now();

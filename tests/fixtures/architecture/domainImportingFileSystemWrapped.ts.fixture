@@ -1,0 +1,11 @@
+// The same illegal import as domainImportingFileSystem, wrapped across lines exactly as this
+// repository's own Prettier config formats a four-symbol import list.
+import {
+  documentDirectory,
+  getInfoAsync,
+  readAsStringAsync,
+  writeAsStringAsync,
+} from 'expo-file-system';
+
+export const readSomething = () => documentDirectory;
+export const helpers = { getInfoAsync, readAsStringAsync, writeAsStringAsync };

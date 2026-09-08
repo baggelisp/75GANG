@@ -1,0 +1,5 @@
+// A deliberately illegal module used by tests/unit/architecture.test.ts.
+// It stands in for someone adding an I/O import to the pure domain at 1am.
+import * as FileSystem from 'expo-file-system';
+
+export const readSomething = () => FileSystem.documentDirectory;

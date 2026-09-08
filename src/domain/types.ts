@@ -41,6 +41,10 @@ export type WorkoutSession = {
 export type HabitRecord = {
   completed: boolean;
   value?: number | null;
+  /** When a running timer was started. Elapsed time is derived from it, never ticked into `value`. */
+  startedAt?: IsoTimestamp | null;
+  /** Whether the workout currently being timed is outdoors. */
+  outdoor?: boolean;
   sessions?: WorkoutSession[];
   wokeUpAt?: IsoTimestamp | null;
   phoneFreeMinutes?: number;

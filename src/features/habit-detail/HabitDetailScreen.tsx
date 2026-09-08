@@ -1,41 +1,37 @@
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Card } from '@/components/Card';
 import { Screen } from '@/components/Screen';
 import { SecondaryButton } from '@/components/SecondaryButton';
 import { decideHabitIsComplete } from '@/domain/completion';
-import { findCounter } from '@/domain/counters';
-import { calculateHabitProgress } from '@/domain/progress';
+import { decideTimerIsRunning } from '@/domain/timers';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
 import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
 
-import { describeHabitProgress } from '../today/describeHabitProgress';
-import { CounterReadout } from './_components/CounterReadout';
-import { CounterSteps } from './_components/CounterSteps';
-import { CounterUndoButton } from './_components/CounterUndoButton';
+import { HabitTracker } from './_components/HabitTracker';
 import { HabitDetailLoading } from './_components/HabitDetailLoading';
 import { HabitDetailUnavailable } from './_components/HabitDetailUnavailable';
 import { HabitWriteErrorBanner } from './_components/HabitWriteErrorBanner';
 import { HabitDetailStatusEnum, useHabitDetail } from './_hooks/useHabitDetail';
+import { decideTracker, TrackerEnum } from './decideTracker';
 
 export type HabitDetailScreenProps = {
   habitId: string;
 };
 
 /**
- * One habit, with the controls its target type calls for.
- *
- * Only counters are built. A habit whose target type has no controls yet is told so plainly rather
- * than shown a counter it cannot use — which is what put a raw translation key where the number
- * should be, on three of the eleven rules.
+ * One habit, with the controls its target type calls for: a counter, a timer, or the two workout
+ * sessions. A habit whose tracker is not built yet is told so plainly rather than shown controls
+ * it cannot use.
  */
 export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
   const { t } = useTranslation();
   const router = useRouter();
   const detail = useHabitDetail(habitId);
+  const [chosenOutdoor, setChosenOutdoor] = useState(false);
 
   if (detail.status === HabitDetailStatusEnum.LOADING) {
     return <HabitDetailLoading />;
@@ -50,16 +46,29 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
   }
 
   const habit = detail.habit;
-  const counter = findCounter(habit);
   const record = detail.record ?? { completed: false };
+  const tracker = decideTracker(habit);
+  const isComplete = decideHabitIsComplete(habit.id, record, detail.challenge.mode);
 
-  if (counter === null) {
+  if (tracker === TrackerEnum.NOT_BUILT_YET) {
     return <HabitDetailUnavailable messageKey="counter.notBuiltYet" onBack={router.back} />;
   }
 
-  const progress = calculateHabitProgress(habit, record);
-  const description = describeHabitProgress(habit, record);
-  const isComplete = decideHabitIsComplete(habit.id, record, detail.challenge.mode);
+  // While a workout is running, what was chosen when it started is the truth — reading it back
+  // from the record means a force-quit mid-workout cannot leave the toggle lying about it.
+  const isOutdoor = decideTimerIsRunning(record) ? (record.outdoor ?? false) : chosenOutdoor;
+
+  const toggleOutdoor = () => {
+    setChosenOutdoor(!chosenOutdoor);
+  };
+
+  const startWorkoutNow = () => {
+    void detail.beginWorkout(isOutdoor);
+  };
+
+  const recordByHand = () => {
+    void detail.addWorkoutByHand(habit.sessionMinutes ?? 0, isOutdoor);
+  };
 
   return (
     <Screen>
@@ -69,24 +78,21 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
           <Text style={styles.description}>{t(`habits.${habit.id}.description`)}</Text>
         </View>
 
-        <Card>
-          <CounterReadout
-            readout={t(description?.key ?? '', {
-              current: progress.current,
-              target: progress.target,
-            })}
-            isComplete={isComplete}
-          />
-          <View style={styles.controls}>
-            <CounterSteps steps={counter.steps} onStep={detail.step} />
-            <CounterUndoButton
-              label={t(counter.undo.labelKey)}
-              accessibilityLabel={t(counter.undo.labelKey)}
-              amount={counter.undo.amount}
-              onStep={detail.step}
-            />
-          </View>
-        </Card>
+        <HabitTracker
+          tracker={tracker}
+          habit={habit}
+          record={record}
+          isComplete={isComplete}
+          isOutdoor={isOutdoor}
+          onStep={detail.step}
+          onStart={detail.start}
+          onPause={detail.pause}
+          onStartWorkout={startWorkoutNow}
+          onFinishWorkout={detail.endWorkout}
+          onToggleOutdoor={toggleOutdoor}
+          onRecordByHand={recordByHand}
+          onUndoLast={detail.undoLastWorkout}
+        />
 
         <HabitWriteErrorBanner isVisible={detail.writeFailed} onDismiss={detail.dismissError} />
 
@@ -116,9 +122,5 @@ const styles = StyleSheet.create({
   description: {
     ...typography.ruleName,
     color: colors.textSecondary,
-  },
-  controls: {
-    gap: spacing.lg,
-    marginTop: spacing.giant,
   },
 });

@@ -1,3 +1,4 @@
+import { decideDetoxIsUnsettled, settleDetox } from './detox';
 import { HabitRecord, IsoTimestamp } from './types';
 
 const MILLISECONDS_PER_MINUTE = 60000;
@@ -94,8 +95,20 @@ export const settleDayTimers = (
   asOf: Date,
 ): Record<string, HabitRecord> =>
   Object.fromEntries(
-    Object.entries(habits).map(([habitId, record]) => [habitId, foldRunningTimer(record, asOf)]),
+    Object.entries(habits).map(([habitId, record]) => [
+      habitId,
+      settleDetox(foldRunningTimer(record, asOf), asOf),
+    ]),
   );
 
-export const decideDayHasRunningTimer = (habits: Record<string, HabitRecord>): boolean =>
-  Object.values(habits).some(decideTimerIsRunning);
+/**
+ * Whether settling this day against `asOf` would change anything.
+ *
+ * Asked as "would it change", not "is something running", so a day that has nothing left to gain
+ * is never rewritten again — which is what stops a historical record being restamped on every
+ * read for the rest of the challenge.
+ */
+export const decideDayNeedsSettling = (habits: Record<string, HabitRecord>, asOf: Date): boolean =>
+  Object.values(habits).some(
+    (record) => decideTimerIsRunning(record) || decideDetoxIsUnsettled(record, asOf),
+  );

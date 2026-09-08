@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { applyCounterStep, findCounter } from '@/domain/counters';
+import { clearWakeUp, recordWakeUp } from '@/domain/detox';
 import { pauseTimer, startTimer } from '@/domain/timers';
 import {
   finishWorkout,
@@ -159,6 +160,10 @@ export const useHabitDetail = (habitId: string) => {
   const undoLastWorkout = (): Promise<boolean> =>
     writeRecord((current) => removeLastWorkout(current));
 
+  const wakeUp = (): Promise<boolean> => writeRecord((current, now) => recordWakeUp(current, now));
+
+  const clearWokeUp = (): Promise<boolean> => writeRecord((current) => clearWakeUp(current));
+
   const dismissError = () => {
     setView((current) => ({ ...current, writeFailed: false }));
   };
@@ -172,6 +177,8 @@ export const useHabitDetail = (habitId: string) => {
     endWorkout,
     addWorkoutByHand,
     undoLastWorkout,
+    wakeUp,
+    clearWokeUp,
     dismissError,
     refresh: load,
   };

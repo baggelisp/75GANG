@@ -199,6 +199,16 @@ export const el: Translations = {
     recordByHandAccessibility: 'Κατέγραψε προπόνηση {minutes} λεπτών χωρίς χρονομέτρηση',
     undoSession: 'Αφαίρεσε την τελευταία προπόνηση',
   },
+  detox: {
+    wokeUp: 'Ξύπνησα',
+    wokeUpAccessibility: 'Ξεκίνα τα πρωινά παράθυρα από τώρα',
+    phoneWindow: 'Χωρίς κινητό',
+    contentWindow: 'Χωρίς content',
+    honesty: 'Στην τιμή σου. Η εφαρμογή δεν μπλοκάρει ούτε παρακολουθεί το κινητό, απλώς μετράει.',
+    reading: '{elapsed} / {target}',
+    clear: 'Μηδένισε το πρωινό',
+    clearAccessibility: 'Μηδένισε τα πρωινά παράθυρα και ξεκίνα ξανά',
+  },
   common: {
     start: 'Έναρξη',
     cancel: 'Άκυρο',

@@ -20,7 +20,7 @@ describe('decideTracker', () => {
     [HabitIdEnum.SPIRITUALITY, TrackerEnum.TIMER],
     [HabitIdEnum.CONNECTION, TrackerEnum.TIMER],
     [HabitIdEnum.WORKOUTS, TrackerEnum.WORKOUTS],
-    [HabitIdEnum.MORNING_DETOX, TrackerEnum.NOT_BUILT_YET],
+    [HabitIdEnum.MORNING_DETOX, TrackerEnum.DETOX],
     [HabitIdEnum.WEIGH_IN, TrackerEnum.NOT_BUILT_YET],
     [HabitIdEnum.NO_ALCOHOL, TrackerEnum.NOT_BUILT_YET],
   ])('gives %s the %s tracker', (habitId, expected) => {

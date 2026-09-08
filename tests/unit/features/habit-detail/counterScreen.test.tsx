@@ -216,7 +216,7 @@ describe('the reading counter', () => {
 });
 
 describe('a rule whose tracker is not a counter', () => {
-  it.each([HabitIdEnum.MORNING_DETOX, HabitIdEnum.WEIGH_IN])(
+  it.each([HabitIdEnum.WEIGH_IN])(
     'says %s is not tracked here yet, rather than showing a counter it cannot use',
     async (habitId) => {
       renderDetail(habitId);

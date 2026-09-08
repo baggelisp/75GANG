@@ -284,13 +284,18 @@ incomplete, two of 45 complete; one 90-minute session is **not** two workouts.
 
 ---
 
-## [ ] 12 — Morning detox
+## [~] 12 — Morning detox — PR #12
 
 **Acceptance**
 - "I woke up" starts both windows at once from a single `wokeUpAt` timestamp.
 - 1 hour phone-free and 3 hours no-content run in parallel; the habit completes when both finish.
 - An honesty timer — the app blocks nothing.
 - Both windows keep elapsing with the app closed.
+
+**Known limitation:** a morning belongs to the calendar day it began on, so a wake-up late enough
+that the three-hour window would cross midnight cannot complete rule 7 — the window is settled at
+the day boundary. Same day-bucket semantics as the timers in feature 11. Revisit if anyone actually
+runs the challenge on a night shift.
 
 **Tests first** — one window done and the other at 179 minutes is incomplete; both done is complete;
 `wokeUpAt` in the future; a window completed while closed credited on reopen; "I woke up" pressed

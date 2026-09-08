@@ -4,6 +4,7 @@ import { HabitRecord } from '@/domain/types';
 
 import { Tracker, TrackerEnum } from '../decideTracker';
 import { CounterCard } from './CounterCard';
+import { DetoxCard } from './DetoxCard';
 import { TimerCard } from './TimerCard';
 import { WorkoutCard } from './WorkoutCard';
 
@@ -21,6 +22,8 @@ export type HabitTrackerProps = {
   onToggleOutdoor: () => void;
   onRecordByHand: () => void;
   onUndoLast: () => void;
+  onWakeUp: () => void;
+  onClearWakeUp: () => void;
 };
 
 /** Picks the controls for a habit's target type. */
@@ -38,7 +41,20 @@ export const HabitTracker = ({
   onToggleOutdoor,
   onRecordByHand,
   onUndoLast,
+  onWakeUp,
+  onClearWakeUp,
 }: HabitTrackerProps) => {
+  if (tracker === TrackerEnum.DETOX) {
+    return (
+      <DetoxCard
+        record={record}
+        isComplete={isComplete}
+        onWakeUp={onWakeUp}
+        onClear={onClearWakeUp}
+      />
+    );
+  }
+
   if (tracker === TrackerEnum.WORKOUTS) {
     return (
       <WorkoutCard

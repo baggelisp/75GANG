@@ -6,6 +6,7 @@ export const TrackerEnum = {
   COUNTER: 'COUNTER',
   TIMER: 'TIMER',
   WORKOUTS: 'WORKOUTS',
+  DETOX: 'DETOX',
   NOT_BUILT_YET: 'NOT_BUILT_YET',
 } as const;
 
@@ -17,7 +18,7 @@ const TRACKER_BY_TARGET_TYPE: Readonly<Record<TargetType, Tracker>> = {
   [TargetTypeEnum.PAGES]: TrackerEnum.COUNTER,
   [TargetTypeEnum.MINUTES]: TrackerEnum.TIMER,
   [TargetTypeEnum.SESSIONS]: TrackerEnum.WORKOUTS,
-  [TargetTypeEnum.WINDOWS]: TrackerEnum.NOT_BUILT_YET,
+  [TargetTypeEnum.WINDOWS]: TrackerEnum.DETOX,
   [TargetTypeEnum.MEASUREMENT]: TrackerEnum.NOT_BUILT_YET,
 };
 

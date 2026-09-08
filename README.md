@@ -45,6 +45,15 @@ Pure core, adapters at the edges. Full rules in `.claude/rules/architecture.md`.
 - **`tests/unit/architecture.test.ts`** parses every module under `src/` and `app/` and fails the
   build if an import crosses a boundary the wrong way.
 
+## Where things are
+
+- **Onboarding** picks one of three challenges — Easy (6 rules), Medium (9) or Hard (11, the rules
+  in `Docs/rules.jpeg`) — and a start date.
+- **Today** shows the day, the rings, the streak and the rules of your own challenge. Tapping a
+  simple rule completes it; tapping a measured one opens its detail screen.
+- **Habit detail** holds the counters for water and reading. The timers, the morning detox and the
+  weigh-in arrive in later features.
+
 ## Constraints
 
 No backend, no database, no network, no accounts. Local storage is the only persistence, and

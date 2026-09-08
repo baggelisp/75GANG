@@ -248,7 +248,7 @@ both; a rejected write rolls the UI back.
 
 ---
 
-## [ ] 10 — Water and reading counters
+## [~] 10 — Water and reading counters — PR #10
 
 **Acceptance**
 - Water: `0 / 3 Litres`, +250 ml / +500 ml / +1 L, auto-completes at 3 L.

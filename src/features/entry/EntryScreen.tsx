@@ -1,8 +1,6 @@
 import { Redirect } from 'expo-router';
 import { useState } from 'react';
 
-import { PlaceholderScreen } from '@/features/placeholder/PlaceholderScreen';
-
 import { EntryLoading } from './_components/EntryLoading';
 import { EntryUnavailable } from './_components/EntryUnavailable';
 import { decideEntryDestination, EntryDestinationEnum } from './decideEntryDestination';
@@ -33,5 +31,5 @@ export const EntryScreen = () => {
     return <Redirect href="/onboarding" />;
   }
 
-  return <PlaceholderScreen />;
+  return <Redirect href="/today" />;
 };

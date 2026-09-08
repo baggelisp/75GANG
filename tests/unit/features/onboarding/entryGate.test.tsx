@@ -14,16 +14,17 @@ import { StorageKeyEnum } from '@/storage/storageKeys';
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import { createInMemoryKeyValueStore } from '../../../support/storage/inMemoryKeyValueStore';
 
-const REDIRECT_TEXT = 'redirected to onboarding';
-
 jest.mock('expo-router', () => ({
-  Redirect: () => {
+  Redirect: ({ href }: { href: string }) => {
     const { Text: MockText } = jest.requireActual('react-native');
 
-    return <MockText>redirected to onboarding</MockText>;
+    return <MockText>{`redirected to ${href}`}</MockText>;
   },
   useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
 }));
+
+const TO_ONBOARDING = 'redirected to /onboarding';
+const TO_TODAY = 'redirected to /today';
 
 const A_LIVE_CHALLENGE = JSON.stringify({
   startDate: '2026-07-10',
@@ -64,7 +65,7 @@ describe('the entry gate over a real store', () => {
     renderEntryOver(createInMemoryKeyValueStore());
 
     await waitFor(() => {
-      expect(screen.getByText(REDIRECT_TEXT)).toBeTruthy();
+      expect(screen.getByText(TO_ONBOARDING)).toBeTruthy();
     });
   });
 
@@ -75,9 +76,9 @@ describe('the entry gate over a real store', () => {
     renderEntryOver(store);
 
     await waitFor(() => {
-      expect(screen.getByText('75 G-ANG')).toBeTruthy();
+      expect(screen.getByText(TO_TODAY)).toBeTruthy();
     });
-    expect(screen.queryByText(REDIRECT_TEXT)).toBeNull();
+    expect(screen.queryByText(TO_ONBOARDING)).toBeNull();
   });
 
   /**
@@ -100,6 +101,6 @@ describe('the entry gate over a real store', () => {
     await waitFor(() => {
       expect(screen.getByText('Your challenge could not be opened')).toBeTruthy();
     });
-    expect(screen.queryByText(REDIRECT_TEXT)).toBeNull();
+    expect(screen.queryByText(TO_ONBOARDING)).toBeNull();
   });
 });

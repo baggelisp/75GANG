@@ -9,7 +9,7 @@ export type ScreenProps = {
   children: ReactNode;
 };
 
-/** The bottom edge belongs to the tab bar, which arrives in feature 07. */
+/** The bottom edge belongs to the tab bar, which owns its own safe-area inset. */
 const SAFE_AREA_EDGES = ['top', 'left', 'right'] as const;
 
 export const Screen = ({ children }: ScreenProps) => {

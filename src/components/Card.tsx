@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderRadius: radii.card,
     paddingVertical: spacing.xxxl,
-    paddingHorizontal: spacing.xxxl,
+    paddingHorizontal: spacing.huge,
   },
 });

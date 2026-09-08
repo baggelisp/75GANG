@@ -15,6 +15,7 @@ export const colors = {
   card: '#252429',
   raised: '#2E2D33',
   hairline: 'rgba(255, 255, 255, 0.07)',
+  outline: 'rgba(255, 255, 255, 0.16)',
 
   // Text
   text: '#F4F3F6',

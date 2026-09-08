@@ -124,7 +124,6 @@ export const el: Translations = {
     welcomeKicker: 'Καλώς ήρθες',
     welcomeIllustration: 'Κάποιος προπονείται στο σπίτι το πρωί',
     howIllustration: 'Μια λίστα με όλα τσεκαρισμένα',
-    rulesIllustration: 'Κάποιος γράφει μια λίστα σε σημειωματάριο',
     privacyIllustration: 'Ένα λουκέτο, για δεδομένα που μένουν στο κινητό σου',
     welcomeTitle: '75 μέρες. 11 κανόνες.',
     welcomeBody: 'Μία πρόκληση, έντεκα κανόνες κάθε μέρα, χωρίς ρεπό.',
@@ -132,8 +131,8 @@ export const el: Translations = {
     howTitle: 'Κάθε κανόνας, κάθε μέρα',
     howBody:
       'Τσέκαρε κάθε κανόνα μόλις τον ολοκληρώσεις. Και οι έντεκα σε μία μέρα είναι τέλεια μέρα.',
-    rulesKicker: 'Οι κανόνες',
-    rulesTitle: 'Οι 11 κανόνες',
+    modesKicker: 'Η πρόκλησή σου',
+    ruleLine: 'Κανόνας {number}: {name}',
     privacyKicker: 'Τα δεδομένα σου',
     privacyTitle: 'Μένουν στο κινητό σου',
     privacyBody: 'Χωρίς λογαριασμό, χωρίς εγγραφή, χωρίς server. Όλα μένουν σε αυτή τη συσκευή.',

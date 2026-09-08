@@ -118,7 +118,6 @@ export const en = {
     welcomeKicker: 'Welcome',
     welcomeIllustration: 'Someone working out at home in the morning',
     howIllustration: 'A checklist with every item ticked off',
-    rulesIllustration: 'Someone writing a list in a notebook',
     privacyIllustration: 'A padlock, standing for data kept on your own phone',
     welcomeTitle: '75 Days. 11 Rules.',
     welcomeBody: 'One challenge, eleven daily rules, no days off. Miss one and you start again.',
@@ -126,8 +125,8 @@ export const en = {
     howTitle: 'Every rule, every day',
     howBody:
       'Tick each rule as you finish it. All eleven in a day is a perfect day, and perfect days build your streak.',
-    rulesKicker: 'The rules',
-    rulesTitle: 'The 11 rules',
+    modesKicker: 'Your challenge',
+    ruleLine: 'Rule {number}: {name}',
     privacyKicker: 'Your data',
     privacyTitle: 'Stays on your phone',
     privacyBody:

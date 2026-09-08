@@ -1,6 +1,5 @@
 import {
   HOW_IT_WORKS_ILLUSTRATION,
-  THE_RULES_ILLUSTRATION,
   WELCOME_ILLUSTRATION,
   YOUR_DATA_ILLUSTRATION,
 } from './illustrations';
@@ -8,7 +7,6 @@ import {
 export const OnboardingSlideEnum = {
   WELCOME: 'welcome',
   HOW_IT_WORKS: 'howItWorks',
-  THE_RULES: 'theRules',
   YOUR_DATA: 'yourData',
 } as const;
 
@@ -17,7 +15,6 @@ export type OnboardingSlideName = (typeof OnboardingSlideEnum)[keyof typeof Onbo
 const ILLUSTRATION_BY_SLIDE: Readonly<Record<OnboardingSlideName, string>> = {
   [OnboardingSlideEnum.WELCOME]: WELCOME_ILLUSTRATION,
   [OnboardingSlideEnum.HOW_IT_WORKS]: HOW_IT_WORKS_ILLUSTRATION,
-  [OnboardingSlideEnum.THE_RULES]: THE_RULES_ILLUSTRATION,
   [OnboardingSlideEnum.YOUR_DATA]: YOUR_DATA_ILLUSTRATION,
 };
 

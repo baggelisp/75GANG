@@ -119,6 +119,10 @@ const RULES_BY_LAYER: Readonly<Record<Layer, readonly ImportRule[]>> = {
   ],
   [LayerEnum.STORAGE_ROOT]: [denyPaths('storage may not import a feature', ['src/features/'])],
   [LayerEnum.COMPONENTS]: COMPONENTS_MAY_NOT_REACH_STORAGE_OR_FEATURES,
+  [LayerEnum.UTILS]: [
+    denyPaths('a utility may not import storage', ['src/storage/']),
+    denyPaths('a utility may not import a feature', ['src/features/']),
+  ],
   [LayerEnum.FEATURES]: [
     denyPaths('a feature may not import an adapter', ['src/storage/adapters/']),
     denyPackages('a feature may not import device storage directly', [

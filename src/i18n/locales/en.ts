@@ -66,6 +66,50 @@ export const en = {
       description: 'Real contact and real conversation.',
     },
   },
+  entry: {
+    unreadableTitle: 'Your challenge could not be opened',
+    unreadableBody:
+      'Your progress is still saved on this phone. Try again in a moment, or reopen the app.',
+    retry: 'Try again',
+  },
+  onboarding: {
+    welcomeKicker: 'Welcome',
+    welcomeTitle: '75 Days. 11 Rules.',
+    welcomeBody: 'One challenge, eleven daily rules, no days off. Miss one and you start again.',
+    howKicker: 'How it works',
+    howTitle: 'Every rule, every day',
+    howBody:
+      'Tick each rule as you finish it. All eleven in a day is a perfect day, and perfect days build your streak.',
+    rulesKicker: 'The rules',
+    rulesTitle: 'The 11 rules',
+    privacyKicker: 'Your data',
+    privacyTitle: 'Stays on your phone',
+    privacyBody:
+      'No account, no sign up, no server. Everything lives on this device, and you can export it whenever you want.',
+    skip: 'Skip',
+    next: 'Next',
+    done: 'Get started',
+  },
+  start: {
+    title: 'Start your challenge',
+    nameLabel: 'Your name',
+    namePlaceholder: 'Optional',
+    nameHint: 'Only used to greet you. It never leaves this phone.',
+    startDateLabel: 'Start date',
+    today: 'Today',
+    earlier: 'Earlier',
+    later: 'Later',
+    alreadyStartedHint: 'Already a few days in? Move the start date back.',
+    startButton: 'Start day 1',
+    startAccessibility: 'Start the 75 day challenge',
+    errorFuture: 'A challenge cannot start in the future. Pick today or an earlier day.',
+    errorTooFarBack:
+      'A 75 day challenge that started then would already be over. Pick a later day.',
+    errorExists:
+      'You already have a challenge running. Reset it from Profile before starting a new one.',
+    errorInvalid: 'That is not a real date. Pick another day.',
+    errorSave: 'Your challenge could not be saved. Try again.',
+  },
   common: {
     start: 'Start',
     cancel: 'Cancel',

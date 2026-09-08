@@ -15,7 +15,9 @@ export type Translate = (key: string, values?: TranslationValues) => string;
  * The hook every component uses for copy. The MVP ships English; the locale argument exists so
  * feature work never hardcodes a string on the way to supporting Greek.
  */
-export const useTranslation = (locale: Locale = LocaleEnum.EN): { t: Translate } => {
+export const useTranslation = (
+  locale: Locale = LocaleEnum.EN,
+): { t: Translate; locale: Locale } => {
   const translations = TRANSLATIONS_BY_LOCALE[locale];
 
   const t = useMemo<Translate>(
@@ -23,5 +25,5 @@ export const useTranslation = (locale: Locale = LocaleEnum.EN): { t: Translate }
     [translations],
   );
 
-  return { t };
+  return { t, locale };
 };

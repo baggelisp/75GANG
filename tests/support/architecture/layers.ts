@@ -5,6 +5,7 @@ export const LayerEnum = {
   STORAGE_REPOSITORIES: 'STORAGE_REPOSITORIES',
   STORAGE_ROOT: 'STORAGE_ROOT',
   COMPONENTS: 'COMPONENTS',
+  UTILS: 'UTILS',
   FEATURES: 'FEATURES',
   ROUTES: 'ROUTES',
   UNGOVERNED: 'UNGOVERNED',
@@ -19,6 +20,7 @@ const LAYER_BY_PATH_PREFIX: readonly (readonly [string, Layer])[] = [
   ['src/storage/repositories/', LayerEnum.STORAGE_REPOSITORIES],
   ['src/storage/', LayerEnum.STORAGE_ROOT],
   ['src/components/', LayerEnum.COMPONENTS],
+  ['src/utils/', LayerEnum.UTILS],
   ['src/features/', LayerEnum.FEATURES],
   ['app/', LayerEnum.ROUTES],
 ];

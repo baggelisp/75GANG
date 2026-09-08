@@ -1,9 +1,9 @@
-import { act, render, screen, waitFor } from '@testing-library/react-native';
+import { act, render, waitFor } from '@testing-library/react-native';
 import { Text } from 'react-native';
 
+import { ChallengeModeEnum } from '@/domain/modes';
 import { StartErrorEnum, useStartChallenge } from '@/features/onboarding/_hooks/useStartChallenge';
-import { Repositories } from '@/storage/repositories/buildRepositories';
-import { buildRepositories } from '@/storage/repositories/buildRepositories';
+import { buildRepositories, Repositories } from '@/storage/repositories/buildRepositories';
 import { RepositoryProvider } from '@/storage/repositoryContext';
 import { StorageKeyEnum } from '@/storage/storageKeys';
 
@@ -40,7 +40,7 @@ const renderHook = (): Harness => {
     const { startChallenge, error } = useStartChallenge();
 
     captured.start = async (name, startDate) => {
-      await startChallenge({ name, startDate, today: TODAY });
+      await startChallenge({ name, startDate, mode: ChallengeModeEnum.HARD, today: TODAY });
     };
     captured.error = error;
 

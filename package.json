@@ -9,9 +9,9 @@
     "ios": "expo start --ios",
     "android": "expo start --android",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "check": "tsc --noEmit && eslint . && prettier --check . && jest",
+    "check": "tsc --noEmit && eslint . --max-warnings=0 && prettier --check . && jest",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

@@ -24,6 +24,10 @@ Tagline: **75 Days. 11 Rules. A Better You.**
 - **Write on every habit interaction.** A force-quit must never lose progress.
 - **Export/import is the only backup path.** JSON only, full replace on import, validated before a
   single byte is written. Photos are deliberately excluded from the export.
+- **Three challenges, one set of rules.** `Docs/rules.jpeg` is the **Hard** challenge and is never
+  softened. Easy (6 rules) and Medium (9 rules) are strict subsets of it at lighter targets, defined
+  in `src/domain/modes.ts`. A perfect day is all the rules of the user's own challenge. The mode is
+  stored on the challenge record and fixed for its duration.
 - **Dark mode is the default and the only theme that has to look right** in the MVP.
 - **Post-MVP features do not leak in early:** no auth, no cloud sync, no social feed, no friends,
   no leaderboards, no AI coach, no Apple Health, no subscriptions. If a backlog item seems to need

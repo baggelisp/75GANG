@@ -1,5 +1,4 @@
 import { render, screen, waitFor } from '@testing-library/react-native';
-import { Text } from 'react-native';
 
 import {
   decideEntryDestination,
@@ -28,6 +27,7 @@ jest.mock('expo-router', () => ({
 
 const A_LIVE_CHALLENGE = JSON.stringify({
   startDate: '2026-07-10',
+  mode: 'hard',
   totalDays: 75,
   currentStreak: 41,
   longestStreak: 41,

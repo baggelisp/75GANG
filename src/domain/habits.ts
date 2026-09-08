@@ -1,4 +1,5 @@
 import { HabitId, HabitIdEnum } from './habitIds';
+import { ChallengeMode, findModeDefinition } from './modes';
 import {
   CONNECTION_TARGET_MINUTES,
   READING_TARGET_PAGES,
@@ -7,6 +8,7 @@ import {
   TargetType,
   TargetTypeEnum,
   WATER_TARGET_LITRES,
+  WORKOUT_MINUTES_REQUIRED,
   WORKOUT_SESSIONS_REQUIRED,
 } from './targets';
 
@@ -16,6 +18,8 @@ export type Habit = {
   readonly icon: string;
   readonly targetType: TargetType;
   readonly targetValue: number | null;
+  /** For a sessions habit, how long each session must be. Null for every other target type. */
+  readonly sessionMinutes: number | null;
 };
 
 /**
@@ -32,6 +36,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'ban',
     targetType: TargetTypeEnum.BOOLEAN,
     targetValue: null,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.DIET,
@@ -39,6 +44,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'salad',
     targetType: TargetTypeEnum.BOOLEAN,
     targetValue: null,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.WATER,
@@ -46,6 +52,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'droplet',
     targetType: TargetTypeEnum.LITRES,
     targetValue: WATER_TARGET_LITRES,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.WORKOUTS,
@@ -53,6 +60,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'dumbbell',
     targetType: TargetTypeEnum.SESSIONS,
     targetValue: WORKOUT_SESSIONS_REQUIRED,
+    sessionMinutes: WORKOUT_MINUTES_REQUIRED,
   },
   {
     id: HabitIdEnum.SKILL,
@@ -60,6 +68,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'brain',
     targetType: TargetTypeEnum.MINUTES,
     targetValue: SKILL_TARGET_MINUTES,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.READING,
@@ -67,6 +76,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'book',
     targetType: TargetTypeEnum.PAGES,
     targetValue: READING_TARGET_PAGES,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.MORNING_DETOX,
@@ -74,6 +84,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'phone-off',
     targetType: TargetTypeEnum.WINDOWS,
     targetValue: null,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.NO_DEVICES_BED,
@@ -81,6 +92,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'bed',
     targetType: TargetTypeEnum.BOOLEAN,
     targetValue: null,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.WEIGH_IN,
@@ -88,6 +100,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'scale',
     targetType: TargetTypeEnum.MEASUREMENT,
     targetValue: null,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.SPIRITUALITY,
@@ -95,6 +108,7 @@ export const HABITS: readonly Habit[] = [
     icon: 'sparkle',
     targetType: TargetTypeEnum.MINUTES,
     targetValue: SPIRITUALITY_TARGET_MINUTES,
+    sessionMinutes: null,
   },
   {
     id: HabitIdEnum.CONNECTION,
@@ -102,8 +116,48 @@ export const HABITS: readonly Habit[] = [
     icon: 'heart',
     targetType: TargetTypeEnum.MINUTES,
     targetValue: CONNECTION_TARGET_MINUTES,
+    sessionMinutes: null,
   },
 ];
 
 export const findHabit = (habitId: HabitId): Habit | null =>
   HABITS.find((habit) => habit.id === habitId) ?? null;
+
+/**
+ * The habits of one challenge, with that mode's targets applied.
+ *
+ * Hard returns the eleven rules exactly as `Docs/rules.jpeg` states them; Easy and Medium return
+ * a subset at their own targets.
+ */
+export const resolveHabitsForMode = (mode: ChallengeMode): readonly Habit[] => {
+  const definition = findModeDefinition(mode);
+
+  return definition.habitIds.flatMap((habitId) => {
+    const habit = findHabit(habitId);
+
+    if (habit === null) {
+      return [];
+    }
+
+    const override = definition.overrides[habitId];
+
+    if (override === undefined) {
+      return [habit];
+    }
+
+    return [
+      {
+        ...habit,
+        targetValue: override.targetValue ?? habit.targetValue,
+        sessionMinutes: override.sessionMinutes ?? habit.sessionMinutes,
+      },
+    ];
+  });
+};
+
+export const findHabitForMode = (habitId: string, mode: ChallengeMode): Habit | null =>
+  resolveHabitsForMode(mode).find((habit) => habit.id === habitId) ?? null;
+
+/** Counted from the resolved habits, so a duplicated id could never make a perfect day unreachable. */
+export const countHabitsForMode = (mode: ChallengeMode): number =>
+  resolveHabitsForMode(mode).length;

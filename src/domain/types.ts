@@ -4,6 +4,8 @@
  *
  * Dates are ISO calendar days (`YYYY-MM-DD`); timestamps are ISO date-times.
  */
+import { ChallengeMode } from './modes';
+
 export type IsoDate = string;
 export type IsoTimestamp = string;
 
@@ -22,6 +24,8 @@ export type Profile = {
 
 export type Challenge = {
   startDate: IsoDate;
+  /** Which of the three challenges this is. See `src/domain/modes.ts`. */
+  mode: ChallengeMode;
   totalDays: number;
   currentStreak: number;
   longestStreak: number;

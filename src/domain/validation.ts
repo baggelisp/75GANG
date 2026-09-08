@@ -9,6 +9,7 @@ import {
   Profile,
   Settings,
 } from './types';
+import { isChallengeMode } from './modes';
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -92,6 +93,10 @@ export const isChallenge = (candidate: unknown): candidate is Challenge => {
   }
 
   if (!isIsoDate(candidate.startDate)) {
+    return false;
+  }
+
+  if (!isChallengeMode(candidate.mode)) {
     return false;
   }
 

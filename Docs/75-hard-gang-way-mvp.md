@@ -71,6 +71,58 @@ Kept verbatim so the rules do not drift during translation.
 11. 15' ΤΗ ΜΕΡΑ ΟΥΣΙΑΣΤΙΚΗ ΕΠΑΦΗ & ΣΥΖΗΤΗΣΗ ΜΕ ΟΠΟΙΟΔΗΠΟΤΕ ΑΓΑΠΗΜΕΝΟ ΣΟΥ ΠΡΟΣΩΠΟ.
 ```
 
+## Three Challenges
+
+The rules above are the **Hard** challenge and are never softened. Two lighter challenges exist so
+someone can start where they actually are.
+
+| Mode | Rules | Who it is for |
+|------|-------|---------------|
+| **Easy** | 6 | Building the base habits before raising the bar |
+| **Medium** | 9 | Adds diet, focused work and real conversation, at tougher targets |
+| **Hard** | 11 | The full 75 Hard Gang Way, exactly as `Docs/rules.jpeg` states it |
+
+Easy and Medium are **strict subsets** of Hard: every habit in a lighter challenge also appears in
+a harder one, at a target that is equal or harder. Moving up is a step, never a different
+challenge.
+
+### Easy — 6 rules
+
+| # | Rule | Target |
+|---|------|--------|
+| 1 | No alcohol & no cigarettes | tap |
+| 3 | Water | 2 litres |
+| 4 | Workouts | 1 session of 30 minutes |
+| 6 | Reading | 5 pages |
+| 8 | No devices in bed | tap |
+| 10 | Spirituality | 10 minutes |
+
+### Medium — 9 rules
+
+| # | Rule | Target |
+|---|------|--------|
+| 1 | No alcohol & no cigarettes | tap |
+| 2 | Healthy diet | tap |
+| 3 | Water | 2.5 litres |
+| 4 | Workouts | 1 session of 45 minutes |
+| 5 | Business or skill | 30 minutes |
+| 6 | Reading | 10 pages |
+| 8 | No devices in bed | tap |
+| 10 | Spirituality | 15 minutes |
+| 11 | Connection | 15 minutes |
+
+### Hard — 11 rules
+
+Every rule above, at the targets in `Docs/rules.jpeg`. This is the challenge the app is named
+after and its rules are fixed.
+
+The mode is chosen during onboarding, stored on the challenge record, and cannot be changed
+mid-challenge — a streak only means something against a fixed set of rules. Changing challenge
+means resetting.
+
+A perfect day is **all the rules of your own challenge**: six on Easy, nine on Medium, eleven on
+Hard.
+
 ## Habit IDs
 
 Used everywhere in the data model:
@@ -689,6 +741,7 @@ There are no tables and no `user_id`. Everything is a JSON value written to a lo
 ```json
 {
   "startDate": "2026-09-07",
+  "mode": "hard",
   "totalDays": 75,
   "currentStreak": 12,
   "longestStreak": 12,
@@ -696,13 +749,15 @@ There are no tables and no `user_id`. Everything is a JSON value written to a lo
 }
 ```
 
-`status` is one of `active`, `completed`, `reset`.
+`status` is one of `active`, `completed`, `reset`. `mode` is one of `easy`, `medium`, `hard` and
+decides which rules the challenge is scored against.
 
 The current day is derived from `startDate` and today's date. It is never stored.
 
 ## Habits
 
-The 11 habits are a **hardcoded constant in the app**, not stored data.
+The 11 habits are a **hardcoded constant in the app**, not stored data. The challenge's `mode`
+selects which of them apply and at what target.
 
 ```json
 {

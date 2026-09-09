@@ -7,7 +7,6 @@ with no attribution required.
 | ------------------ | ---------------------------------------- |
 | `welcome.svg`      | Morning Workout (`morning-workout_73u9`) |
 | `how-it-works.svg` | Completed (`completed_vjc6`)             |
-| `the-rules.svg`    | Taking Notes (`taking-notes_oyqz`)       |
 | `your-data.svg`    | Security On (`security-on_3ykb`)         |
 
 These files are the source of truth. They are inlined as strings into

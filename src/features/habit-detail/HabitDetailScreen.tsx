@@ -6,6 +6,7 @@ import { Screen } from '@/components/Screen';
 import { BackButton } from '@/components/BackButton';
 import { decideHabitIsComplete } from '@/domain/completion';
 import { decideHabitNameKey, describeHabitTargets } from '@/domain/habits';
+import { decideIsMarkedDone } from '@/domain/markDone';
 import { decideTimerIsRunning } from '@/domain/timers';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
@@ -16,6 +17,7 @@ import { HabitTracker } from './_components/HabitTracker';
 import { HabitDetailLoading } from './_components/HabitDetailLoading';
 import { HabitDetailUnavailable } from './_components/HabitDetailUnavailable';
 import { HabitWriteErrorBanner } from './_components/HabitWriteErrorBanner';
+import { MarkDoneCard } from './_components/MarkDoneCard';
 import { HabitDetailStatusEnum, useHabitDetail } from './_hooks/useHabitDetail';
 import { useWeighIn } from './_hooks/useWeighIn';
 import { decideTracker, TrackerEnum } from './decideTracker';
@@ -73,6 +75,14 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
     void detail.addWorkoutByHand(habit.sessionMinutes ?? 0, isOutdoor);
   };
 
+  const markByHand = () => {
+    void detail.markByHand();
+  };
+
+  const unmarkByHand = () => {
+    void detail.unmarkByHand();
+  };
+
   return (
     <Screen>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -102,6 +112,12 @@ export const HabitDetailScreen = ({ habitId }: HabitDetailScreenProps) => {
           onUndoLast={detail.undoLastWorkout}
           onWakeUp={detail.wakeUp}
           onClearWakeUp={detail.clearWokeUp}
+        />
+
+        <MarkDoneCard
+          isMarkedDone={decideIsMarkedDone(record)}
+          onMark={markByHand}
+          onUnmark={unmarkByHand}
         />
 
         <HabitWriteErrorBanner isVisible={detail.writeFailed} onDismiss={detail.dismissError} />

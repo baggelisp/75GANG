@@ -1,4 +1,5 @@
 import { Habit } from './habits';
+import { decideIsMarkedDone } from './markDone';
 import { TargetTypeEnum } from './targets';
 import { HabitRecord } from './types';
 
@@ -27,6 +28,25 @@ const countLongEnoughSessions = (
 };
 
 /**
+ * What a readout should show.
+ *
+ * A rule the user marked done reads as its full target: a checked box beside "0.5 / 3 L" says two
+ * opposite things at once, and marking done means the whole thing was done. A number already past
+ * the target is left alone — nobody wants their 50 minutes rounded down to the 45 they owed.
+ */
+export const decideShownProgress = (
+  record: HabitRecord | undefined,
+  actual: number,
+  target: number,
+): number => {
+  if (!decideIsMarkedDone(record)) {
+    return actual;
+  }
+
+  return Math.max(actual, target);
+};
+
+/**
  * How far a habit has got towards its own target, in the units the habit is measured in.
  *
  * One place decides this. The rings, the legend and the progress line under a rule all read it, so
@@ -40,8 +60,10 @@ export const calculateHabitProgress = (
   const target = habit.targetValue ?? 0;
 
   if (habit.targetType === TargetTypeEnum.SESSIONS) {
-    return { current: countLongEnoughSessions(record, habit.sessionMinutes), target };
+    const done = countLongEnoughSessions(record, habit.sessionMinutes);
+
+    return { current: decideShownProgress(record, done, target), target };
   }
 
-  return { current: readValue(record), target };
+  return { current: decideShownProgress(record, readValue(record), target), target };
 };

@@ -51,6 +51,8 @@ export type HabitRecord = {
   noContentMinutes?: number;
   weightKg?: number;
   photo?: string | null;
+  /** Set when the user marked the rule done themselves. See `src/domain/markDone.ts`. */
+  markedDone?: boolean;
 };
 
 export type DayRecord = {

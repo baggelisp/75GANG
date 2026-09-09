@@ -8,7 +8,6 @@ import { readFileSync, writeFileSync } from 'fs';
 const SLIDES = [
   ['welcome', 'WELCOME'],
   ['how-it-works', 'HOW_IT_WORKS'],
-  ['the-rules', 'THE_RULES'],
   ['your-data', 'YOUR_DATA'],
 ];
 

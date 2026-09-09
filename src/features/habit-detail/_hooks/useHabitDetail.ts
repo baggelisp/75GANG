@@ -15,6 +15,7 @@ import { findHabitForMode, Habit } from '@/domain/habits';
 import { Challenge, DayRecord, HabitRecord } from '@/domain/types';
 import { settleRunningTimers } from '@/features/shared/settleTimers';
 import { useRepositories } from '@/storage/repositoryContext';
+import { clearMarkedDone, markDone } from '@/domain/markDone';
 import { toLocalIsoDate } from '@/utils/DateUtility';
 
 export const HabitDetailStatusEnum = {
@@ -165,6 +166,10 @@ export const useHabitDetail = (habitId: string) => {
 
   const clearWokeUp = (): Promise<boolean> => writeRecord((current) => clearWakeUp(current));
 
+  const markByHand = (): Promise<boolean> => writeRecord((current) => markDone(current));
+
+  const unmarkByHand = (): Promise<boolean> => writeRecord((current) => clearMarkedDone(current));
+
   const recordWeight = (kilograms: number): Promise<boolean> =>
     writeRecord((current) => setWeight(current, kilograms));
 
@@ -194,5 +199,7 @@ export const useHabitDetail = (habitId: string) => {
     recordPhoto,
     dismissError,
     refresh: load,
+    markByHand,
+    unmarkByHand,
   };
 };

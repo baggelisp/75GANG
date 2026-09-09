@@ -1,6 +1,14 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
@@ -63,58 +71,71 @@ export const StartChallengeScreen = () => {
 
   return (
     <Screen>
-      <View style={styles.content}>
-        <Text style={styles.title}>{t('start.title')}</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.keyboard}
+      >
+        <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>{t('start.title')}</Text>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>{t('start.nameLabel')}</Text>
-          <TextInput
-            accessibilityLabel={t('start.nameLabel')}
-            placeholder={t('start.namePlaceholder')}
-            placeholderTextColor={colors.textTertiary}
-            value={name}
-            onChangeText={setName}
-            style={styles.input}
+          <View style={styles.field}>
+            <Text style={styles.label}>{t('start.nameLabel')}</Text>
+            <TextInput
+              accessibilityLabel={t('start.nameLabel')}
+              placeholder={t('start.namePlaceholder')}
+              placeholderTextColor={colors.textTertiary}
+              value={name}
+              onChangeText={setName}
+              style={styles.input}
+            />
+            <Text style={styles.hint}>{t('start.nameHint')}</Text>
+          </View>
+
+          <View style={styles.field}>
+            <Text style={styles.label}>{t('modes.label')}</Text>
+            <ModePicker selected={mode} onSelect={setMode} />
+          </View>
+
+          <View style={styles.field}>
+            <Text style={styles.label}>{t('start.startDateLabel')}</Text>
+            <StartDateCalendar
+              selected={startDate}
+              today={today}
+              earliest={earliestStart}
+              onSelect={setStartDate}
+            />
+            <Text style={styles.hint}>
+              {t('start.selectedDate', { date: formatLongDate(startDate, locale) })}
+            </Text>
+          </View>
+
+          <StartErrorMessage errorKey={decideErrorKey(error)} />
+
+          <PrimaryButton
+            label={t('start.startButton')}
+            accessibilityLabel={t('start.startAccessibility')}
+            onPress={handleStart}
+            isDisabled={isSaving}
           />
-          <Text style={styles.hint}>{t('start.nameHint')}</Text>
-        </View>
-
-        <View style={styles.field}>
-          <Text style={styles.label}>{t('modes.label')}</Text>
-          <ModePicker selected={mode} onSelect={setMode} />
-        </View>
-
-        <View style={styles.field}>
-          <Text style={styles.label}>{t('start.startDateLabel')}</Text>
-          <StartDateCalendar
-            selected={startDate}
-            today={today}
-            earliest={earliestStart}
-            onSelect={setStartDate}
-          />
-          <Text style={styles.hint}>
-            {t('start.selectedDate', { date: formatLongDate(startDate, locale) })}
-          </Text>
-        </View>
-
-        <StartErrorMessage errorKey={decideErrorKey(error)} />
-
-        <PrimaryButton
-          label={t('start.startButton')}
-          accessibilityLabel={t('start.startAccessibility')}
-          onPress={handleStart}
-          isDisabled={isSaving}
-        />
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  content: {
+  keyboard: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  /**
+   * A scrolling column, not a centred one. The date is picked on a calendar now, and the screen
+   * is taller than a phone: centring inside a fixed height simply cut the button off with no way
+   * to reach it.
+   */
+  content: {
     gap: spacing.massive,
+    paddingTop: spacing.giant,
+    paddingBottom: spacing.massive,
   },
   title: {
     ...typography.greeting,

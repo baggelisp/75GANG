@@ -16,14 +16,19 @@ import { createInMemoryBackupTransport } from '../../../support/storage/inMemory
 import { createInMemoryFileStore } from '../../../support/storage/inMemoryFileStore';
 import { createInMemoryKeyValueStore } from '../../../support/storage/inMemoryKeyValueStore';
 
-jest.mock('expo-router', () => ({
-  Redirect: ({ href }: { href: string }) => {
-    const { Text: MockText } = jest.requireActual('react-native');
+jest.mock('expo-router', () => {
+  const { useEffect } = jest.requireActual<typeof import('react')>('react');
 
-    return <MockText>{`redirected to ${href}`}</MockText>;
-  },
-  useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
-}));
+  return {
+    useFocusEffect: (effect: () => void) => useEffect(effect, [effect]),
+    Redirect: ({ href }: { href: string }) => {
+      const { Text: MockText } = jest.requireActual('react-native');
+
+      return <MockText>{`redirected to ${href}`}</MockText>;
+    },
+    useRouter: () => ({ push: jest.fn(), replace: jest.fn() }),
+  };
+});
 
 const TO_ONBOARDING = 'redirected to /onboarding';
 const TO_TODAY = 'redirected to /today';

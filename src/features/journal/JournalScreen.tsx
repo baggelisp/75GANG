@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+import { useFocusEffect } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -19,6 +21,17 @@ import { JournalStatusEnum, useJournal } from './_hooks/useJournal';
 export const JournalScreen = () => {
   const { t, locale } = useTranslation();
   const journal = useJournal();
+
+  // Expo Router keeps a tab mounted while you are away on a detail screen, so nothing reloads on
+  // the way back. Without this, adding half a litre of water and pressing back left the home
+  // screen showing the count from before the tap.
+  const refreshJournal = journal.refresh;
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshJournal();
+    }, [refreshJournal]),
+  );
 
   if (journal.status === JournalStatusEnum.LOADING) {
     return <JournalLoading />;

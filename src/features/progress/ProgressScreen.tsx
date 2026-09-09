@@ -1,4 +1,5 @@
-import { useRouter } from 'expo-router';
+import { useCallback } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Screen } from '@/components/Screen';
@@ -15,6 +16,17 @@ import { ProgressStatusEnum, useProgress } from './_hooks/useProgress';
 export const ProgressScreen = () => {
   const router = useRouter();
   const progress = useProgress();
+
+  // Expo Router keeps a tab mounted while you are away on a detail screen, so nothing reloads on
+  // the way back. Without this, adding half a litre of water and pressing back left the home
+  // screen showing the count from before the tap.
+  const refreshProgress = progress.refresh;
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshProgress();
+    }, [refreshProgress]),
+  );
 
   if (progress.status === ProgressStatusEnum.LOADING) {
     return <ProgressLoading />;

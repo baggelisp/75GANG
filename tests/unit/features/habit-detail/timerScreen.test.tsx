@@ -16,10 +16,15 @@ import {
   InMemoryKeyValueStore,
 } from '../../../support/storage/inMemoryKeyValueStore';
 
-jest.mock('expo-router', () => ({
-  useRouter: () => ({ push: jest.fn(), replace: jest.fn(), back: jest.fn() }),
-  Redirect: () => null,
-}));
+jest.mock('expo-router', () => {
+  const { useEffect } = jest.requireActual<typeof import('react')>('react');
+
+  return {
+    useFocusEffect: (effect: () => void) => useEffect(effect, [effect]),
+    useRouter: () => ({ push: jest.fn(), replace: jest.fn(), back: jest.fn() }),
+    Redirect: () => null,
+  };
+});
 
 const TODAY = '2026-09-07';
 

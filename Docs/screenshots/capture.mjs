@@ -190,28 +190,66 @@ const tap = (label) => async (page) => {
   await page.getByLabel(label, { exact: true }).first().click();
 };
 
-await shoot('01-onboarding', '/onboarding', {});
-await shoot('02-choose-challenge', '/onboarding/start', {}, { full: true });
-await shoot('03-today-easy-day-one', '/today', dayOneEasy, { full: true });
-await shoot('04-today-mid', '/today', midChallenge, { full: true });
-await shoot('05-today-perfect', '/today', perfectDayState, { full: true });
-await shoot('06-progress', '/progress', midChallenge, { full: true });
-await shoot('07-journal', '/journal', midChallenge, { full: true });
-await shoot('08-profile', '/profile', midChallenge, { full: true });
-await shoot('09-profile-no-challenge', '/profile', noChallenge, { full: true });
-await shoot('10-settings', '/settings', midChallenge, { full: true });
-await shoot('11-settings-confirm-erase', '/settings', midChallenge, {
+const nextSlide = async (page) => {
+  await page.getByLabel('Next', { exact: true }).first().click();
+  await page.waitForTimeout(1000);
+};
+
+await shoot('01-onboarding-welcome', '/onboarding', {});
+await shoot('02-onboarding-how', '/onboarding', {}, { act: nextSlide });
+await shoot('03-onboarding-easy', '/onboarding', {}, {
+  act: async (page) => {
+    await nextSlide(page);
+    await nextSlide(page);
+  },
+});
+await shoot('04-onboarding-medium', '/onboarding', {}, {
+  act: async (page) => {
+    await nextSlide(page);
+    await nextSlide(page);
+    await nextSlide(page);
+  },
+});
+await shoot('05-onboarding-hard', '/onboarding', {}, {
+  act: async (page) => {
+    await nextSlide(page);
+    await nextSlide(page);
+    await nextSlide(page);
+    await nextSlide(page);
+  },
+});
+await shoot('06-onboarding-privacy', '/onboarding', {}, {
+  act: async (page) => {
+    for (let i = 0; i < 5; i += 1) {
+      await nextSlide(page);
+    }
+  },
+});
+await shoot('07-choose-challenge', '/onboarding/start', {}, { full: true });
+await shoot('08-today-easy-day-one', '/today', dayOneEasy, { full: true });
+await shoot('09-today-mid', '/today', midChallenge, { full: true });
+await shoot('10-today-perfect', '/today', perfectDayState, { full: true });
+await shoot('11-progress', '/progress', midChallenge, { full: true });
+await shoot('12-journal', '/journal', midChallenge, { full: true });
+await shoot('13-profile', '/profile', midChallenge, { full: true });
+await shoot('14-profile-no-challenge', '/profile', noChallenge, { full: true });
+await shoot('15-settings', '/settings', midChallenge, { full: true });
+await shoot('16-settings-confirm-erase', '/settings', midChallenge, {
   act: tap('Erase your challenge'),
 });
-await shoot('12-settings-confirm-restart', '/settings', midChallenge, {
+await shoot('17-settings-confirm-restart', '/settings', midChallenge, {
   act: tap('Restart the challenge'),
 });
-await shoot('13-water', '/habit/water', midChallenge, { full: true });
-await shoot('14-workouts', '/habit/workouts', midChallenge, { full: true });
-await shoot('15-skill-timer', '/habit/skill', midChallenge, { full: true });
-await shoot('16-morning-detox', '/habit/morning-detox', midChallenge, { full: true });
-await shoot('17-weigh-in', '/habit/weigh-in', midChallenge, { full: true });
-await shoot('18-day-detail', `/day/${iso(ago(2))}`, midChallenge, { full: true });
+await shoot('18-water', '/habit/water', midChallenge, { full: true });
+await shoot('19-workouts', '/habit/workouts', midChallenge, { full: true });
+await shoot('20-skill-timer', '/habit/skill', midChallenge, { full: true });
+await shoot('21-morning-detox', '/habit/morning-detox', midChallenge, { full: true });
+await shoot('22-weigh-in', '/habit/weigh-in', midChallenge, { full: true });
+await shoot('23-day-detail', `/day/${iso(ago(2))}`, midChallenge, { full: true });
+await shoot('24-marked-done', '/habit/morning-detox', midChallenge, {
+  full: true,
+  act: tap('Mark this rule as done'),
+});
 
 await browser.close();
 console.log(errors.length ? `\nPAGE ERRORS:\n${errors.join('\n')}` : '\nno page errors');

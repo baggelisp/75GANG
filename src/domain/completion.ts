@@ -1,4 +1,5 @@
 import { countHabitsForMode, findHabitForMode, Habit } from './habits';
+import { decideIsMarkedDone } from './markDone';
 import { ChallengeMode } from './modes';
 import {
   NO_CONTENT_MINUTES_REQUIRED,
@@ -79,8 +80,9 @@ const RULES_BY_TARGET_TYPE: Readonly<Record<TargetType, CompletionRule>> = {
  * Whether one habit meets its own rule in this challenge.
  *
  * The mode decides the target, so 2 litres completes water on Easy and does not on Hard.
- * Completion is always derived from the recorded value, so a stale `completed` flag can never
- * disagree with the numbers the user actually entered.
+ * Completion is otherwise derived from the recorded value, so a stale `completed` flag can never
+ * disagree with the numbers the user actually entered. The single exception is a rule the user
+ * marked done themselves, which `src/domain/markDone.ts` explains.
  */
 export const decideHabitIsComplete = (
   habitId: string,
@@ -91,6 +93,12 @@ export const decideHabitIsComplete = (
 
   if (habit === null) {
     return false;
+  }
+
+  // The user's own word comes first. Some rules cannot be caught up once the moment has passed,
+  // and this is the only way to record a day that was lived but not logged.
+  if (decideIsMarkedDone(record)) {
+    return true;
   }
 
   return RULES_BY_TARGET_TYPE[habit.targetType](record, habit);

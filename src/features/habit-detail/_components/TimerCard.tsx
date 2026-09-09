@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Card } from '@/components/Card';
 import { Habit } from '@/domain/habits';
+import { decideShownProgress } from '@/domain/progress';
 import { calculateTimerMinutes, decideTimerIsRunning } from '@/domain/timers';
 import { HabitRecord } from '@/domain/types';
 import { useTranslation } from '@/i18n';
@@ -29,12 +30,17 @@ export const TimerCard = ({ habit, record, isComplete, onStart, onPause }: Timer
   const isRunning = decideTimerIsRunning(record);
   const now = useTicker(isRunning);
   const targetMinutes = habit.targetValue ?? 0;
+  const shownMinutes = decideShownProgress(
+    record,
+    calculateTimerMinutes(record, now),
+    targetMinutes,
+  );
 
   return (
     <Card>
       <View style={styles.body}>
         <TimerReadout
-          elapsed={formatDuration(calculateTimerMinutes(record, now))}
+          elapsed={formatDuration(shownMinutes)}
           target={t('timer.target', { minutes: targetMinutes })}
           isComplete={isComplete}
         />

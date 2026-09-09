@@ -1,7 +1,7 @@
 import { TabList, Tabs, TabSlot, TabTrigger } from 'expo-router/ui';
 
 import { AppTabBar } from '@/components/AppTabBar';
-import { TabBarButton } from '@/components/TabBarButton';
+import { TabBarButton, TabIconEnum } from '@/components/TabBarButton';
 import { useTranslation } from '@/i18n';
 
 /**
@@ -17,16 +17,16 @@ const TabsLayout = () => {
       <TabList asChild>
         <AppTabBar>
           <TabTrigger name="today" href="/today" asChild>
-            <TabBarButton label={t('today.tabToday')} />
+            <TabBarButton label={t('today.tabToday')} icon={TabIconEnum.TODAY} />
           </TabTrigger>
           <TabTrigger name="progress" href="/progress" asChild>
-            <TabBarButton label={t('today.tabProgress')} />
+            <TabBarButton label={t('today.tabProgress')} icon={TabIconEnum.PROGRESS} />
           </TabTrigger>
           <TabTrigger name="journal" href="/journal" asChild>
-            <TabBarButton label={t('today.tabJournal')} />
+            <TabBarButton label={t('today.tabJournal')} icon={TabIconEnum.JOURNAL} />
           </TabTrigger>
           <TabTrigger name="profile" href="/profile" asChild>
-            <TabBarButton label={t('today.tabProfile')} />
+            <TabBarButton label={t('today.tabProfile')} icon={TabIconEnum.PROFILE} />
           </TabTrigger>
         </AppTabBar>
       </TabList>

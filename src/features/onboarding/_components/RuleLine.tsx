@@ -7,11 +7,12 @@ import { typography } from '@/theme/typography';
 export type RuleLineProps = {
   number: number;
   name: string;
+  accessibilityLabel: string;
 };
 
-export const RuleLine = ({ number, name }: RuleLineProps) => {
+export const RuleLine = ({ number, name, accessibilityLabel }: RuleLineProps) => {
   return (
-    <View style={styles.row}>
+    <View accessibilityRole="text" accessibilityLabel={accessibilityLabel} style={styles.row}>
       <Text style={styles.number}>{number}</Text>
       <Text style={styles.name}>{name}</Text>
     </View>

@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
+import { CHALLENGE_MODES } from '@/domain/modes';
 import { useTranslation } from '@/i18n';
 import { colors } from '@/theme/tokens';
 import { typography } from '@/theme/typography';
@@ -11,7 +12,7 @@ import { EmptySlideImage } from './_components/EmptySlideImage';
 import { OnboardingBottomBar } from './_components/OnboardingBottomBar';
 import { findIllustration, OnboardingSlideEnum } from './_illustrations/findIllustration';
 import { OnboardingSlide } from './_components/OnboardingSlide';
-import { RulesSlide } from './_components/RulesSlide';
+import { ModeSlide } from './_components/ModeSlide';
 
 /**
  * The intro carousel, using `react-native-onboarding-swiper` rather than a hand-rolled pager.
@@ -62,19 +63,14 @@ export const OnboardingScreen = () => {
       ),
       subtitle: '',
     },
-    {
+    // One slide per challenge, in the order they step up. These replace a single "the 11 rules"
+    // slide, which was the Hard challenge under another name and promised its targets to everyone.
+    ...CHALLENGE_MODES.map((mode) => ({
       backgroundColor: colors.bg,
       image: <EmptySlideImage />,
-      title: (
-        <RulesSlide
-          kicker={t('onboarding.rulesKicker')}
-          title={t('onboarding.rulesTitle')}
-          illustration={findIllustration(OnboardingSlideEnum.THE_RULES)}
-          illustrationLabel={t('onboarding.rulesIllustration')}
-        />
-      ),
+      title: <ModeSlide mode={mode} />,
       subtitle: '',
-    },
+    })),
     {
       backgroundColor: colors.bg,
       image: <EmptySlideImage />,

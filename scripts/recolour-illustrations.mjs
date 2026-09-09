@@ -8,7 +8,7 @@
 // drawings sit on the near-black ground instead of disappearing into it.
 import { readFileSync, writeFileSync } from 'fs';
 
-const FILES = ['welcome', 'how-it-works', 'the-rules', 'your-data'];
+const FILES = ['welcome', 'how-it-works', 'your-data'];
 
 // Every value on the right is a token from src/theme/tokens.ts. Nothing else may appear in an
 // SVG: the drawings sit on the app's own ground and must be part of its palette, not beside it.

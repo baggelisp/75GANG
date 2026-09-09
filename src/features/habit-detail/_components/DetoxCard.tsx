@@ -4,6 +4,7 @@ import { Card } from '@/components/Card';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { SecondaryButton } from '@/components/SecondaryButton';
 import { calculateDetoxProgress, decideHasWokenUp } from '@/domain/detox';
+import { decideShownProgress } from '@/domain/progress';
 import { HabitRecord } from '@/domain/types';
 import { useTranslation } from '@/i18n';
 import { spacing } from '@/theme/spacing';
@@ -34,6 +35,16 @@ export const DetoxCard = ({ record, isComplete, onWakeUp, onClear }: DetoxCardPr
   const hasWokenUp = decideHasWokenUp(record);
   const now = useTicker(hasWokenUp && !isComplete);
   const progress = calculateDetoxProgress(record, now);
+  const phoneMinutes = decideShownProgress(
+    record,
+    progress.phone.elapsedMinutes,
+    progress.phone.requiredMinutes,
+  );
+  const contentMinutes = decideShownProgress(
+    record,
+    progress.content.elapsedMinutes,
+    progress.content.requiredMinutes,
+  );
 
   if (!hasWokenUp) {
     return (
@@ -56,7 +67,7 @@ export const DetoxCard = ({ record, isComplete, onWakeUp, onClear }: DetoxCardPr
         <DetoxWindowRow
           label={t('detox.phoneWindow')}
           reading={t('detox.reading', {
-            elapsed: formatDuration(progress.phone.elapsedMinutes),
+            elapsed: formatDuration(phoneMinutes),
             target: formatDuration(progress.phone.requiredMinutes),
           })}
           isDone={progress.phone.isDone}
@@ -65,7 +76,7 @@ export const DetoxCard = ({ record, isComplete, onWakeUp, onClear }: DetoxCardPr
         <DetoxWindowRow
           label={t('detox.contentWindow')}
           reading={t('detox.reading', {
-            elapsed: formatDuration(progress.content.elapsedMinutes),
+            elapsed: formatDuration(contentMinutes),
             target: formatDuration(progress.content.requiredMinutes),
           })}
           isDone={progress.content.isDone}

@@ -7,7 +7,8 @@ const SLIDES = Object.values(OnboardingSlideEnum);
 
 describe('onboarding illustrations', () => {
   it('has one for every slide, so a slide cannot ship without a picture', () => {
-    expect(SLIDES).toHaveLength(4);
+    // Three narrative slides. The challenge slides carry their rules instead of a picture.
+    expect(SLIDES).toHaveLength(3);
 
     SLIDES.forEach((slide) => {
       expect(findIllustration(slide).length).toBeGreaterThan(0);

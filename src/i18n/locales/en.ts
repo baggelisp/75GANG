@@ -48,6 +48,7 @@ export const en = {
     progressWindows: 'Phone {phone} min, content {content} min',
     progressWeighInDone: '{weight} kg, photo saved',
     progressWeighInPending: 'Weight and photo needed',
+    progressMarkedDone: 'Marked as done',
     progress: {
       litres: '{current} / {target} L',
       pages: '{current} / {target} pages',
@@ -118,7 +119,6 @@ export const en = {
     welcomeKicker: 'Welcome',
     welcomeIllustration: 'Someone working out at home in the morning',
     howIllustration: 'A checklist with every item ticked off',
-    rulesIllustration: 'Someone writing a list in a notebook',
     privacyIllustration: 'A padlock, standing for data kept on your own phone',
     welcomeTitle: '75 Days. 11 Rules.',
     welcomeBody: 'One challenge, eleven daily rules, no days off. Miss one and you start again.',
@@ -126,8 +126,8 @@ export const en = {
     howTitle: 'Every rule, every day',
     howBody:
       'Tick each rule as you finish it. All eleven in a day is a perfect day, and perfect days build your streak.',
-    rulesKicker: 'The rules',
-    rulesTitle: 'The 11 rules',
+    modesKicker: 'Your challenge',
+    ruleLine: 'Rule {number}: {name}',
     privacyKicker: 'Your data',
     privacyTitle: 'Stays on your phone',
     privacyBody:
@@ -404,6 +404,14 @@ export const en = {
     fontsLabel: 'Type',
     fontsSource: 'Archivo and Manrope, from Google Fonts',
     note: 'Recoloured into this app\u2019s own palette.',
+  },
+  markDone: {
+    hint: 'Did this one but did not track it? Mark it done and it counts towards the day.',
+    mark: 'Mark as done',
+    markAccessibility: 'Mark this rule as done',
+    marked: 'You marked this done yourself.',
+    undo: 'Undo',
+    undoAccessibility: 'Take the mark off and go back to what the counter says',
   },
   common: {
     start: 'Start',

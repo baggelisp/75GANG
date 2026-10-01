@@ -117,7 +117,7 @@ export const en = {
   },
   onboarding: {
     welcomeKicker: 'Welcome',
-    welcomeIllustration: 'Someone working out at home in the morning',
+    welcomeIllustration: 'The 75 BRO logo, a muscular figure seen from behind',
     howIllustration: 'A checklist with every item ticked off',
     privacyIllustration: 'A padlock, standing for data kept on your own phone',
     welcomeTitle: '75 Days. 11 Rules.',

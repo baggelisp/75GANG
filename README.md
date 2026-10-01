@@ -39,6 +39,10 @@ eas build -p ios --profile production --auto-submit   # TestFlight
 Profiles live in `eas.json`. Camera and photo-library permission prompts are configured in
 `app.json` through the `expo-image-picker` plugin.
 
+The icon, splash, favicon and Google Play store images are all rendered from the vector logo
+`assets/logo/logo.svg` by `python3 scripts/generate-app-icons.py` (needs
+`pip install pillow resvg-py`). Edit the SVG, never the PNGs.
+
 ## Verify
 
 ```bash

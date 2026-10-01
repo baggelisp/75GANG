@@ -1,13 +1,13 @@
 # Onboarding illustrations
 
-Four SVGs from [unDraw](https://undraw.co), which is free to use for anything, commercial included,
-with no attribution required.
+The app logo on the welcome slide, and two SVGs from [unDraw](https://undraw.co), which is free to use
+for anything, commercial included, with no attribution required.
 
-| File               | unDraw illustration                      |
-| ------------------ | ---------------------------------------- |
-| `welcome.svg`      | Morning Workout (`morning-workout_73u9`) |
-| `how-it-works.svg` | Completed (`completed_vjc6`)             |
-| `your-data.svg`    | Security On (`security-on_3ykb`)         |
+| File               | unDraw illustration                            |
+| ------------------ | ---------------------------------------------- |
+| `welcome.svg`      | The app logo, a copy of `assets/logo/logo.svg` |
+| `how-it-works.svg` | Completed (`completed_vjc6`)                   |
+| `your-data.svg`    | Security On (`security-on_3ykb`)               |
 
 These files are the source of truth. They are inlined as strings into
 `src/features/onboarding/_illustrations/illustrations.ts` so the app needs no Metro SVG transformer

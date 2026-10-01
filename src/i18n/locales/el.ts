@@ -123,7 +123,7 @@ export const el: Translations = {
   },
   onboarding: {
     welcomeKicker: 'Καλώς ήρθες',
-    welcomeIllustration: 'Κάποιος προπονείται στο σπίτι το πρωί',
+    welcomeIllustration: 'Το λογότυπο 75 BRO, μια μυώδης φιγούρα από πίσω',
     howIllustration: 'Μια λίστα με όλα τσεκαρισμένα',
     privacyIllustration: 'Ένα λουκέτο, για δεδομένα που μένουν στο κινητό σου',
     welcomeTitle: '75 μέρες. 11 κανόνες.',

@@ -28,7 +28,7 @@ const TOKENS = {
 };
 
 const HEADER = `/**
- * Onboarding illustrations from unDraw (https://undraw.co), free to use without attribution.
+ * Onboarding illustrations: the app logo, and unDraw (https://undraw.co) drawings free to use without attribution.
  *
  * Inlined as template strings rather than imported as \`.svg\` files: that would need a Metro
  * transformer and a Jest mock, and would give the web export a separate asset to fetch. A string

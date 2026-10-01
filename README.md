@@ -23,6 +23,22 @@ npm run ios        # iOS simulator or Expo Go
 npm run android    # Android emulator
 ```
 
+## Install on an iPhone
+
+Builds run on Expo's cloud (EAS), so no Mac is needed. An Apple Developer Program membership is.
+
+```bash
+npm install -g eas-cli
+eas login
+eas init                                         # links the project to your Expo account
+eas device:create                                # once per iPhone, for the internal build
+eas build -p ios --profile preview               # installable link, registered devices only
+eas build -p ios --profile production --auto-submit   # TestFlight
+```
+
+Profiles live in `eas.json`. Camera and photo-library permission prompts are configured in
+`app.json` through the `expo-image-picker` plugin.
+
 ## Verify
 
 ```bash

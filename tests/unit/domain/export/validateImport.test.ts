@@ -98,7 +98,7 @@ describe('a file that is not valid JSON', () => {
   });
 });
 
-describe('a file that is not a 75 G-ANG backup', () => {
+describe('a file that is not a 75 BRO backup', () => {
   it('is rejected when the app field is something else', () => {
     expectRejection(buildFile({ app: 'someotherapp' }), ImportRejectionEnum.NOT_A_BACKUP);
   });

@@ -137,7 +137,7 @@ describe('when the phone refuses notifications', () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          'Your phone is not allowing reminders. Turn notifications on for 75 G-ANG in your ' +
+          'Your phone is not allowing reminders. Turn notifications on for 75 BRO in your ' +
             'phone settings, and these times take effect.',
         ),
       ).toBeTruthy();

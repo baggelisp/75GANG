@@ -1,4 +1,4 @@
-# 75 G-ANG
+# 75 BRO
 
 **75 Days. 11 Rules. A Better You.**
 

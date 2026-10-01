@@ -7,7 +7,7 @@ import { HabitIdEnum } from '@/domain/habitIds';
  */
 export const en = {
   app: {
-    name: '75 G-ANG',
+    name: '75 BRO',
     tagline: '75 Days. 11 Rules. A Better You.',
   },
   today: {
@@ -343,7 +343,7 @@ export const en = {
     notificationsHint:
       'The reminders themselves arrive in a later update. Your times are saved now.',
     permissionDenied:
-      'Your phone is not allowing reminders. Turn notifications on for 75 G-ANG in your phone ' +
+      'Your phone is not allowing reminders. Turn notifications on for 75 BRO in your phone ' +
       'settings, and these times take effect.',
     morningLabel: 'Morning',
     eveningLabel: 'Evening',
@@ -371,9 +371,9 @@ export const en = {
       'the file. Your progress photos stay where they are. This cannot be undone.',
     confirmImport: 'Replace',
     rejectNotJson: 'That file could not be read as JSON, so it is not a backup.',
-    rejectNotBackup: 'That file was not made by 75 G-ANG.',
+    rejectNotBackup: 'That file was not made by 75 BRO.',
     rejectSchemaTooNew:
-      'That backup was made by a newer version of the app. Update 75 G-ANG and try again.',
+      'That backup was made by a newer version of the app. Update 75 BRO and try again.',
     rejectChallengeInvalid:
       'That backup has no usable challenge in it, so there is nothing to restore.',
     sectionStartAgain: 'Start again',

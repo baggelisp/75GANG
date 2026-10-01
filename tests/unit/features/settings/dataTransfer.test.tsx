@@ -368,7 +368,7 @@ describe('confirming the import', () => {
 describe('a file the app will not accept', () => {
   it.each([
     ['not json at all', 'That file could not be read as JSON, so it is not a backup.'],
-    [JSON.stringify({ app: 'anotherapp' }), 'That file was not made by 75 G-ANG.'],
+    [JSON.stringify({ app: 'anotherapp' }), 'That file was not made by 75 BRO.'],
   ])('is refused with its own reason', async (contents, message) => {
     const harness = renderSettings();
     await waitForSettings();
@@ -387,7 +387,7 @@ describe('a file the app will not accept', () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          'That backup was made by a newer version of the app. Update 75 G-ANG and try again.',
+          'That backup was made by a newer version of the app. Update 75 BRO and try again.',
         ),
       ).toBeTruthy();
     });

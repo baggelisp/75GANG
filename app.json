@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "75 G-ANG",
+    "name": "75 BRO",
     "slug": "75gang",
     "version": "0.1.0",
     "orientation": "portrait",
@@ -43,8 +43,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "75 G-ANG uses your photo library so you can attach a progress photo to your daily weigh-in. Photos stay on this device.",
-          "cameraPermission": "75 G-ANG uses the camera so you can take a progress photo for your daily weigh-in. Photos stay on this device.",
+          "photosPermission": "75 BRO uses your photo library so you can attach a progress photo to your daily weigh-in. Photos stay on this device.",
+          "cameraPermission": "75 BRO uses the camera so you can take a progress photo for your daily weigh-in. Photos stay on this device.",
           "microphonePermission": false
         }
       ],
